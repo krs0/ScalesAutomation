@@ -25,7 +25,7 @@ namespace ScalesAutomation
         void serialPort_DataReceived(object s, SerialDataReceivedEventArgs e)
         {
             byte[] data = new byte[serialPort.BytesToRead];
-            log.Debug("Bytes To Read: " + serialPort.BytesToRead.ToString() + Environment.NewLine);
+            // log.Debug("Bytes To Read: " + serialPort.BytesToRead.ToString() + Environment.NewLine);
 
             serialPort.Read(data, 0, data.Length);
 
@@ -36,7 +36,7 @@ namespace ScalesAutomation
 
         void processData()
         {
-            log.Debug("Process Data..." + System.Environment.NewLine);
+            // log.Debug("Process Data..." + System.Environment.NewLine);
 
             // Delete from receivedData Until a Start Character is found
             var queueCount = recievedData.Count;
