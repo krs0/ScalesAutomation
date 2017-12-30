@@ -1,8 +1,8 @@
 ﻿enum State
 {
-    stable = 0,
-    unstable = 1,
-    notValid = 3
+    stable = 48,
+    unstable = 49,
+    notValid = 51
 };
 
 enum Units
