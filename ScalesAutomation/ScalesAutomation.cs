@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
-using System.IO.Ports;
 using log4net;
 using System.Reflection;
 using System.Threading;
 using System.Collections.Generic;
-using System.Collections;
 using System.ComponentModel;
 using System.Data;
 using System.IO;
@@ -20,6 +18,7 @@ namespace ScalesAutomation
         private Thread writeThread;
         private Thread readThread;
         private String code;
+        private CsvHelper csvHelper;
 
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         
@@ -29,26 +28,28 @@ namespace ScalesAutomation
             public int weight;
         }
 
-        public SynchronizedCollection<measurement> Measurements = new SynchronizedCollection<measurement>();
+        public SynchronizedCollection<ScalesAutomation.measurement> Measurements = new SynchronizedCollection<ScalesAutomation.measurement>();
 
-        public DataTable dt = new DataTable();
+        public DataTable dataTable = new DataTable();
 
-        private BindingList<measurement> bindingList;
-        private BindingSource source;
+        // private BindingList<measurement> bindingList;
+        // private BindingSource source;
 
         public ScalesAutomation()
         {
             InitializeComponent();
 
-            dt.Columns.Add("#", typeof(int));
-            dt.Columns.Add("Weight", typeof(string));
+            dataTable.Columns.Add("#", typeof(int));
+            dataTable.Columns.Add("Weight", typeof(string));
 
-            //bindingList = new BindingList<measurement>(Measurements);
-            //source = new BindingSource(bindingList, null);
+            // bindingList = new BindingList<measurement>(Measurements);
+            // source = new BindingSource(bindingList, null);
             // dataGridViewMain.DataSource = bindingList;
-            dataGridViewMain.DataSource = dt;
-            //dataGridViewMain.DataBind();
+            // dataGridViewMain.DataBind();
+            dataGridViewMain.DataSource = dataTable;
 
+            csvHelper = new CsvHelper("D:\\a.csv");
+            csvHelper.CreateCsvFile(dataTable);
 
             timer.Tick += new EventHandler(timer_Tick); // Everytime timer ticks, timer_Tick will be called
             timer.Interval = (1000) * (2);              // Timer will tick evert 5 second
@@ -61,28 +62,26 @@ namespace ScalesAutomation
 
             if (Measurements.Count > 0)
             {
-                var nrOfRowsInDataTable = dt.Rows.Count;
+                var nrOfRowsInDataTable = dataTable.Rows.Count;
                 for (int i = nrOfRowsInDataTable, j = 0; i < nrOfRowsInDataTable + Measurements.Count; i++, j++)
                 {
-                    var row = dt.NewRow();
+                    var row = dataTable.NewRow();
                     row["#"] = i;
                     row["Weight"] = Measurements[j].weight;
-                    dt.Rows.Add(row);
+                    dataTable.Rows.Add(row);
 
-                    // Add to excel
-
+                    // Add row to excel
+                    csvHelper.WriteOneMeasurementToCsv(row, dataTable.Columns.Count);
 
                     log.Debug("Measurements Added: " + row["#"] + " - Weight: " + row["Weight"]);
                 }
             }
 
-            CreateCSVFile(ref dt, "D:\\a.csv");
-
             // bindingList = new BindingList<measurement>(Measurements);
             //dataGridViewMain.DataSource = bindingList;
             dataGridViewMain.Refresh();
             Measurements.Clear();
-            //dataGridViewMain.DataSource = dt;
+            //dataGridViewMain.DataSource = dataTable;
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -133,51 +132,6 @@ namespace ScalesAutomation
         private void txtCode_Validated(object sender, EventArgs e)
         {
             code = txtCode.Text;
-        }
-
-        public void CreateCSVFile(ref DataTable dt, string strFilePath)
-        {
-            try
-            {
-                // Create the CSV file to which grid data will be exported.
-                StreamWriter sw = new StreamWriter(strFilePath, false);
-                // First we will write the headers.
-                //DataTable dt = m_dsProducts.Tables[0];
-                int iColCount = dt.Columns.Count;
-                for (int i = 0; i < iColCount; i++)
-                {
-                    sw.Write(dt.Columns[i]);
-                    if (i < iColCount - 1)
-                    {
-                        sw.Write(",");
-                    }
-                }
-                sw.Write(sw.NewLine);
-
-                // Now write all the rows.
-
-                foreach (DataRow dr in dt.Rows)
-                {
-                    for (int i = 0; i < iColCount; i++)
-                    {
-                        if (!Convert.IsDBNull(dr[i]))
-                        {
-                            sw.Write(dr[i].ToString());
-                        }
-                        if (i < iColCount - 1)
-                        {
-                            sw.Write(",");
-                        }
-                    }
-
-                    sw.Write(sw.NewLine);
-                }
-                sw.Close();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
     }
 }

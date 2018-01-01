@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CsvHelper.cs" />
     <Compile Include="Definitions.cs" />
     <Compile Include="ScalesAutomation.cs">
       <SubType>Form</SubType>
