@@ -15,11 +15,11 @@ namespace ScalesAutomation
         private bool alreadyAddedToList;
         private int lastMeasurement;
 
-        public SynchronizedCollection<ScalesAutomation.measurement> Measurements;
+        public SynchronizedCollection<ScalesAutomation.Measurement> Measurements;
 
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public MySerialReader(SynchronizedCollection<ScalesAutomation.measurement> measurements)
+        public MySerialReader(SynchronizedCollection<ScalesAutomation.Measurement> measurements)
         {
             Measurements = measurements;
 
@@ -47,7 +47,7 @@ namespace ScalesAutomation
 
         void processData()
         {
-            ScalesAutomation.measurement oneMeasurement = new ScalesAutomation.measurement();
+            ScalesAutomation.Measurement oneMeasurement = new ScalesAutomation.Measurement();
             // Delete from receivedData Until a Start Character is found
             var queueCount = recievedData.Count;
             for (var i = 0; i < queueCount; i++)

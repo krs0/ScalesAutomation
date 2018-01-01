@@ -37,6 +37,7 @@
             this.scalesAutomationBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.scalesAutomationBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.measurementBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.chkEnableSimulation = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.measurementBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.scalesAutomationBindingSource)).BeginInit();
@@ -80,11 +81,25 @@
             this.dataGridViewMain.Size = new System.Drawing.Size(180, 435);
             this.dataGridViewMain.TabIndex = 3;
             // 
+            // chkEnableSimulation
+            // 
+            this.chkEnableSimulation.AutoSize = true;
+            this.chkEnableSimulation.Checked = true;
+            this.chkEnableSimulation.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkEnableSimulation.Location = new System.Drawing.Point(55, 499);
+            this.chkEnableSimulation.Name = "chkEnableSimulation";
+            this.chkEnableSimulation.Size = new System.Drawing.Size(110, 17);
+            this.chkEnableSimulation.TabIndex = 4;
+            this.chkEnableSimulation.Text = "Enable Simulation";
+            this.chkEnableSimulation.UseVisualStyleBackColor = true;
+            this.chkEnableSimulation.CheckedChanged += new System.EventHandler(this.chkEnableSimulation_CheckedChanged);
+            // 
             // ScalesAutomation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(474, 540);
+            this.Controls.Add(this.chkEnableSimulation);
             this.Controls.Add(this.dataGridViewMain);
             this.Controls.Add(this.txtCode);
             this.Controls.Add(this.btnStop);
@@ -111,6 +126,7 @@
         private System.Windows.Forms.BindingSource scalesAutomationBindingSource;
         private System.Windows.Forms.BindingSource scalesAutomationBindingSource1;
         private System.Windows.Forms.BindingSource measurementBindingSource1;
+        private System.Windows.Forms.CheckBox chkEnableSimulation;
     }
 }
 

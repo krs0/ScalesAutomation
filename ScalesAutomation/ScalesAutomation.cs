@@ -12,28 +12,27 @@ namespace ScalesAutomation
 {
     public partial class ScalesAutomation : Form
     {
-        private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private MySerialReader readPort;
-        private MySerialWriter writePort;
-        private Thread writeThread;
-        private Thread readThread;
-        private String code;
-        private CsvHelper csvHelper;
+        readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-        
-        public struct measurement
+        public struct Measurement
         {
             public bool isStable;
             public int weight;
         }
 
-        public SynchronizedCollection<ScalesAutomation.measurement> Measurements = new SynchronizedCollection<ScalesAutomation.measurement>();
+        public SynchronizedCollection<Measurement> Measurements;
 
-        public DataTable dataTable = new DataTable();
+        MySerialReader readPort;
+        MySerialWriter writePort;
+        Thread writeThread;
+        Thread readThread;
 
-        // private BindingList<measurement> bindingList;
-        // private BindingSource source;
+        String code;
+        bool simulationEnabled;
+        readonly DataTable dataTable = new DataTable();
+
+        readonly CsvHelper csvHelper;
+        readonly System.Windows.Forms.Timer timer;
 
         public ScalesAutomation()
         {
@@ -42,18 +41,21 @@ namespace ScalesAutomation
             dataTable.Columns.Add("#", typeof(int));
             dataTable.Columns.Add("Weight", typeof(string));
 
-            // bindingList = new BindingList<measurement>(Measurements);
-            // source = new BindingSource(bindingList, null);
-            // dataGridViewMain.DataSource = bindingList;
-            // dataGridViewMain.DataBind();
             dataGridViewMain.DataSource = dataTable;
+
+            simulationEnabled = chkEnableSimulation.Checked;
 
             csvHelper = new CsvHelper("D:\\a.csv");
             csvHelper.CreateCsvFile(dataTable);
 
-            timer.Tick += new EventHandler(timer_Tick); // Everytime timer ticks, timer_Tick will be called
-            timer.Interval = (1000) * (2);              // Timer will tick evert 5 second
-            timer.Enabled = true;                       // Enable the timer
+            Measurements = new SynchronizedCollection<ScalesAutomation.Measurement>();
+
+            timer = new System.Windows.Forms.Timer
+            {
+                Interval = (1000) * (2),
+                Enabled = true
+            };
+            timer.Tick += new EventHandler(timer_Tick);
             timer.Start();
         }
 
@@ -77,11 +79,9 @@ namespace ScalesAutomation
                 }
             }
 
-            // bindingList = new BindingList<measurement>(Measurements);
-            //dataGridViewMain.DataSource = bindingList;
             dataGridViewMain.Refresh();
             Measurements.Clear();
-            //dataGridViewMain.DataSource = dataTable;
+
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -89,25 +89,36 @@ namespace ScalesAutomation
             log.Debug(System.Environment.NewLine);
             log.Debug("Button OK Clicked" + Environment.NewLine);
 
-            if (readPort != null)
-                readPort.Dispose();
-
-            if (writePort != null)
-                writePort.Dispose();
-
-            if (writeThread != null)
-                writeThread.Abort();
-
-            if (readThread != null)
-                readThread.Abort();
-
-            writeThread = new Thread(new ThreadStart(WriteThread));
+            readPort?.Dispose();
+            readThread?.Abort();
             readThread = new Thread(new ThreadStart(ReadThread));
-
             readThread.Start();
 
             Thread.Sleep(100);
-            writeThread.Start();
+
+            if (simulationEnabled)
+            {
+                writePort?.Dispose();
+                writeThread?.Abort();
+                writeThread = new Thread(new ThreadStart(WriteThread));
+                writeThread.Start();
+            }
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            log.Debug(System.Environment.NewLine);
+            log.Debug("Button Stop Clicked" + Environment.NewLine);
+
+            readPort.Dispose();
+
+            if (simulationEnabled)
+                writePort.Dispose();
+        }
+
+        private void txtCode_Validated(object sender, EventArgs e)
+        {
+            code = txtCode.Text;
         }
 
         private void ReadThread()
@@ -120,18 +131,9 @@ namespace ScalesAutomation
             writePort = new MySerialWriter();
         }
 
-        private void btnStop_Click(object sender, EventArgs e)
+        private void chkEnableSimulation_CheckedChanged(object sender, EventArgs e)
         {
-            log.Debug(System.Environment.NewLine);
-            log.Debug("Button Stop Clicked" + Environment.NewLine);
-
-            readPort.Dispose();
-            writePort.Dispose();
-        }
-
-        private void txtCode_Validated(object sender, EventArgs e)
-        {
-            code = txtCode.Text;
+            simulationEnabled = chkEnableSimulation.Checked;
         }
     }
 }
