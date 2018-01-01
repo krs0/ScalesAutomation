@@ -56,7 +56,7 @@ namespace ScalesAutomation
             byte[] measurement = new byte[4];
             byte[] code = new byte[6] { 97, 98, 99, 100, 101, 102 }; //ASCII abcdef
 
-            measurement[0] = randomNumbers();
+            measurement[0] = prepareRandomPackage();
 
             // assign to buffer
             txBuffer[0] = 0x24; // $ = start
@@ -84,7 +84,7 @@ namespace ScalesAutomation
             byte[] txBuffer = new byte[8];
             byte[] measurement = new byte[5];
 
-            measurement[0] = randomNumbers();
+            measurement[0] = prepareRandomPackage();
 
             // assign to buffer
             txBuffer[0] = 0x24; // $ = start
@@ -107,7 +107,7 @@ namespace ScalesAutomation
             serialPort.Write(txBuffer, 0, txBuffer.Length);
         }
 
-        private byte randomNumbers()
+        private byte prepareRandomPackage()
         {
             byte initialMeasurement;
             Random rand = new Random();

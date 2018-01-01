@@ -12,21 +12,19 @@ namespace ScalesAutomation
     {
         private SerialPort serialPort;
         private Queue<byte> recievedData = new Queue<byte>();
+        private bool alreadyAddedToList;
+        private int lastMeasurement;
+
+        public SynchronizedCollection<ScalesAutomation.measurement> Measurements;
 
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private struct measurement
+        public MySerialReader(SynchronizedCollection<ScalesAutomation.measurement> measurements)
         {
-            public bool stable;
-            public int weight;
-        }
+            Measurements = measurements;
 
-        private List<measurement> measurements = new List<measurement>();
-
-        public MySerialReader()
-        {
             serialPort = new SerialPort("COM5", 4800, Parity.Even, 7, StopBits.Two);
-            Thread.Sleep(1000);
+            Thread.Sleep(100);
 
             if (!serialPort.IsOpen)
             {
@@ -49,7 +47,7 @@ namespace ScalesAutomation
 
         void processData()
         {
-            measurement oneMeasurement = new measurement();
+            ScalesAutomation.measurement oneMeasurement = new ScalesAutomation.measurement();
             // Delete from receivedData Until a Start Character is found
             var queueCount = recievedData.Count;
             for (var i = 0; i < queueCount; i++)
@@ -64,19 +62,47 @@ namespace ScalesAutomation
             if (recievedData.Count >= 8)
             {
                 var packet = Enumerable.Range(0, 8).Select(i => recievedData.Dequeue());
+
+
                 var packetArray = packet.ToArray();
-                measurements.Add(oneMeasurement);
 
                 var charArray = Array.ConvertAll(packetArray, element => (System.Text.Encoding.ASCII.GetChars(new[] { element })[0]));
                 var intArray = Array.ConvertAll(charArray, element => (int)char.GetNumericValue(element));
 
-
-                oneMeasurement.stable = (intArray[1] == 0 ? true : false);
+                oneMeasurement.isStable = (intArray[1] == 0 ? true : false);
                 oneMeasurement.weight = intArray[6] + intArray[5] * 10 + intArray[4] * 100 + intArray[3] * 1000 + intArray[2] * 10000;
 
                 log.Debug(packetArray + Environment.NewLine);
-                log.Debug("Stable: " + oneMeasurement.stable + " - Weight: " + oneMeasurement.weight + Environment.NewLine);
+                log.Debug("Stable: " + oneMeasurement.isStable + " - Weight: " + oneMeasurement.weight + Environment.NewLine);
+
+                // addMeasurement()
+                if (oneMeasurement.isStable)
+                {
+                    if (!alreadyAddedToList)
+                    {
+                        Measurements.Add(oneMeasurement);
+                        lastMeasurement = oneMeasurement.weight;
+                        alreadyAddedToList = true;
+                    }
+                    else
+                    {
+                        // TODO: Check for same value
+                        if (lastMeasurement != oneMeasurement.weight)
+                        {
+                            log.Error("Measurement added to list does not match current measurement!" + Environment.NewLine);
+                            Measurements.Add(oneMeasurement);
+                            lastMeasurement = oneMeasurement.weight;
+                            alreadyAddedToList = true;
+                        }
+                    }
+                }
+                else
+                {
+                    alreadyAddedToList = false;
+                }
+
                 recievedData.Clear();
+                log.Debug("Measurements in list: " + Measurements.Count + Environment.NewLine);
             }
         }
 
