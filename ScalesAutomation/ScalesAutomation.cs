@@ -4,12 +4,15 @@ using log4net;
 using System.Reflection;
 using System.Threading;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.IO;
 
 namespace ScalesAutomation
 {
+
+    enum PackageType
+    {
+        CutieCarton10Kg, GaleataPlastic10Kg, GaleataPlastic5Kg
+    }
     public partial class ScalesAutomation : Form
     {
         readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -27,7 +30,12 @@ namespace ScalesAutomation
         Thread writeThread;
         Thread readThread;
 
-        String code;
+        String Product { get; set; }
+        String Lot { get; set; }
+        String NominalWeight { get; set; }
+        PackageType Package { get; set; }
+        String PackageTare { get; set; }
+
         bool simulationEnabled;
         readonly DataTable dataTable = new DataTable();
 
@@ -38,10 +46,12 @@ namespace ScalesAutomation
         {
             InitializeComponent();
 
+            cbPackage.DataSource = Enum.GetValues(typeof(PackageType));
+
             dataTable.Columns.Add("#", typeof(int));
             dataTable.Columns.Add("Weight", typeof(string));
 
-            dataGridViewMain.DataSource = dataTable;
+            dataGridViewMeasurements.DataSource = dataTable;
 
             simulationEnabled = chkEnableSimulation.Checked;
 
@@ -79,7 +89,7 @@ namespace ScalesAutomation
                 }
             }
 
-            dataGridViewMain.Refresh();
+            dataGridViewMeasurements.Refresh();
             Measurements.Clear();
 
         }
@@ -116,11 +126,6 @@ namespace ScalesAutomation
                 writePort.Dispose();
         }
 
-        private void txtCode_Validated(object sender, EventArgs e)
-        {
-            code = txtCode.Text;
-        }
-
         private void ReadThread()
         {
             readPort = new MySerialReader(Measurements);
@@ -134,6 +139,26 @@ namespace ScalesAutomation
         private void chkEnableSimulation_CheckedChanged(object sender, EventArgs e)
         {
             simulationEnabled = chkEnableSimulation.Checked;
+        }
+
+        private void txtProduct_Validated(object sender, EventArgs e)
+        {
+            Product = txtProduct.Text;
+        }
+
+        private void txtLot_Validated(object sender, EventArgs e)
+        {
+            Lot = txtLot.Text;
+        }
+
+        private void txtNominalWeight_Validated(object sender, EventArgs e)
+        {
+            NominalWeight = txtNominalWeight.Text;
+        }
+
+        private void txtPackageTare_Validated(object sender, EventArgs e)
+        {
+            PackageTare = txtPackageTare.Text;
         }
     }
 }
