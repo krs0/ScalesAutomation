@@ -8,24 +8,35 @@ namespace ScalesAutomation
 {
     public class MySerialWriter : IDisposable
     {
+        private bool simulationEnabled;
+
         private SerialPort serialPort;
         private byte state = (byte)State.notValid;
         private int measurementStableCounter;
 
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public MySerialWriter()
+        public MySerialWriter(bool simulationEnabled)
         {
+            this.simulationEnabled = simulationEnabled;
+
             serialPort = new SerialPort("COM6", 4800, Parity.Even, 7, StopBits.Two);
             Thread.Sleep(1000);
 
             if (!serialPort.IsOpen)
                 serialPort.Open();
 
-            measurementStableCounter = 0;
-            StartTransmission();
+            enableCyclicTransmission();
+
+            if (simulationEnabled)
+            {
+                measurementStableCounter = 0;
+                startTransmission();
+            }
 
             serialPort.Close();
+            this.Dispose();
+
         }
 
         public void Dispose()
@@ -39,18 +50,18 @@ namespace ScalesAutomation
             }
         }
 
-        public void StartTransmission()
+        public void startTransmission()
         {
             for (var i = 0; i < 100; i++)
             {
-                byte[] txBuffer = PrepareNextPackageStandard();
+                byte[] txBuffer = prepareNextPackageStandard();
 
                 writeData(txBuffer);
                 Thread.Sleep(10);
             }
         }
 
-        private byte[] PrepareNextPackageNetAndCode()
+        private byte[] prepareNextPackageNetAndCode()
         {
             byte[] txBuffer = new byte[15];
             byte[] measurement = new byte[4];
@@ -79,7 +90,7 @@ namespace ScalesAutomation
 
         }
 
-        private byte[] PrepareNextPackageStandard()
+        private byte[] prepareNextPackageStandard()
         {
             byte[] txBuffer = new byte[8];
             byte[] measurement = new byte[5];
@@ -100,9 +111,22 @@ namespace ScalesAutomation
 
         }
 
+        private byte[] prepareCyclicTransmissionPackage()
+        {
+            byte[] txBuffer = new byte[3];
+
+            // assign to buffer
+            txBuffer[0] = 0x73;
+            txBuffer[1] = 0x78;
+            txBuffer[2] = 0x0D; // CR = end character
+
+            return txBuffer;
+
+        }
+
         public void writeData(byte[] txBuffer)
         {
-            log.Debug("Serial Transmission Started!" + Environment.NewLine);
+            log.Debug("Writing bytes: " + txBuffer + Environment.NewLine);
 
             serialPort.Write(txBuffer, 0, txBuffer.Length);
         }
@@ -142,6 +166,13 @@ namespace ScalesAutomation
             return initialMeasurement;
         }
 
+        void enableCyclicTransmission()
+        {
+            byte[] txBuffer = prepareCyclicTransmissionPackage();
+
+            writeData(txBuffer);
+            Thread.Sleep(10);
+        }
 
     }
 }

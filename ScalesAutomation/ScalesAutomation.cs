@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 
 namespace ScalesAutomation
 {
@@ -39,7 +40,7 @@ namespace ScalesAutomation
         bool simulationEnabled;
         readonly DataTable dataTable = new DataTable();
 
-        readonly CsvHelper csvHelper;
+        CsvHelper csvHelper;
         readonly System.Windows.Forms.Timer timer;
 
         public ScalesAutomation()
@@ -48,17 +49,8 @@ namespace ScalesAutomation
 
             cbPackage.DataSource = Enum.GetValues(typeof(PackageType));
 
-            dataTable.Columns.Add("#", typeof(int));
-            dataTable.Columns.Add("Weight", typeof(string));
-
-            dataGridViewMeasurements.DataSource = dataTable;
-
-            simulationEnabled = chkEnableSimulation.Checked;
-
-            csvHelper = new CsvHelper("D:\\a.csv");
-            csvHelper.CreateCsvFile(dataTable);
-
             Measurements = new SynchronizedCollection<ScalesAutomation.Measurement>();
+            csvHelper = new CsvHelper();
 
             timer = new System.Windows.Forms.Timer
             {
@@ -99,6 +91,19 @@ namespace ScalesAutomation
             log.Debug(System.Environment.NewLine);
             log.Debug("Button OK Clicked" + Environment.NewLine);
 
+            simulationEnabled = chkEnableSimulation.Checked;
+
+            dataTable.Columns.Add("#", typeof(int));
+            dataTable.Columns.Add("Weight", typeof(string));
+            dataGridViewMeasurements.DataSource = dataTable;
+
+            var filePath = "D:\\";
+            var productInfo = Product + "_" + Lot + "_" + NominalWeight + "_" + Package + "_" + PackageTare;
+
+            csvHelper = new CsvHelper();
+            csvHelper.PrepareCsvFile(dataTable, filePath, productInfo);
+
+
             readPort?.Dispose();
             readThread?.Abort();
             readThread = new Thread(new ThreadStart(ReadThread));
@@ -106,13 +111,11 @@ namespace ScalesAutomation
 
             Thread.Sleep(100);
 
-            if (simulationEnabled)
-            {
-                writePort?.Dispose();
-                writeThread?.Abort();
-                writeThread = new Thread(new ThreadStart(WriteThread));
-                writeThread.Start();
-            }
+            writePort?.Dispose();
+            writeThread?.Abort();
+            writeThread = new Thread(new ThreadStart(WriteThread));
+            writeThread.Start();
+
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -133,32 +136,37 @@ namespace ScalesAutomation
 
         private void WriteThread()
         {
-            writePort = new MySerialWriter();
+            writePort = new MySerialWriter(simulationEnabled);
         }
 
-        private void chkEnableSimulation_CheckedChanged(object sender, EventArgs e)
-        {
-            simulationEnabled = chkEnableSimulation.Checked;
-        }
+        #region "Events"
 
-        private void txtProduct_Validated(object sender, EventArgs e)
-        {
-            Product = txtProduct.Text;
-        }
+            private void chkEnableSimulation_CheckedChanged(object sender, EventArgs e)
+            {
+                simulationEnabled = chkEnableSimulation.Checked;
+            }
 
-        private void txtLot_Validated(object sender, EventArgs e)
-        {
-            Lot = txtLot.Text;
-        }
+            private void txtProduct_Validated(object sender, EventArgs e)
+            {
+                Product = txtProduct.Text;
+            }
 
-        private void txtNominalWeight_Validated(object sender, EventArgs e)
-        {
-            NominalWeight = txtNominalWeight.Text;
-        }
+            private void txtLot_Validated(object sender, EventArgs e)
+            {
+                Lot = txtLot.Text;
+            }
 
-        private void txtPackageTare_Validated(object sender, EventArgs e)
-        {
-            PackageTare = txtPackageTare.Text;
-        }
+            private void txtNominalWeight_Validated(object sender, EventArgs e)
+            {
+                NominalWeight = txtNominalWeight.Text;
+            }
+
+            private void txtPackageTare_Validated(object sender, EventArgs e)
+            {
+                PackageTare = txtPackageTare.Text;
+            }
+
+        #endregion
+
     }
 }

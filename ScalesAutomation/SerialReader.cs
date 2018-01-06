@@ -43,6 +43,7 @@ namespace ScalesAutomation
             data.ToList().ForEach(b => recievedData.Enqueue(b));
 
             processData();
+
         }
 
         void processData()

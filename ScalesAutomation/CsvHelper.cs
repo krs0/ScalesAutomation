@@ -6,11 +6,22 @@ namespace ScalesAutomation
 {
     public class CsvHelper
     {
-        public string CsvFilePath;
+        public string CsvFileFullPath;
 
-        public CsvHelper(string csvFilePath)
+        public CsvHelper(){}
+
+        public void PrepareCsvFile(DataTable dataTable, string filePath, string productInfo)
         {
-            CsvFilePath = csvFilePath;
+            var dirInfo = new DirectoryInfo(filePath);
+            var files = dirInfo.GetFiles("*" + productInfo + ".csv");
+
+            // if a file exists starting with same product info, reuse it
+            if (files.Length > 0)
+                CsvFileFullPath = files[0].FullName;
+            else
+                CsvFileFullPath = filePath + DateTime.Now.ToString("yyyy-MM-dd-hhmmss") + "_" + productInfo + ".csv";
+
+            CreateCsvFile(dataTable);
         }
 
         public void CreateCsvFile(DataTable dataTable)
@@ -18,7 +29,7 @@ namespace ScalesAutomation
             try
             {
                 // Create the CSV file to which grid data will be exported.
-                using (var sw = new StreamWriter(CsvFilePath, false))
+                using (var sw = new StreamWriter(CsvFileFullPath, false))
                 {
                     var iColCount = dataTable.Columns.Count;
                     for (var i = 0; i < iColCount; i++)
@@ -43,7 +54,7 @@ namespace ScalesAutomation
         {
             try
             {
-                using (var sw = new StreamWriter(CsvFilePath, true))
+                using (var sw = new StreamWriter(CsvFileFullPath, true))
                 {
                     for (int i = 0; i < iColCount; i++)
                     {
