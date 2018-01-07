@@ -5,25 +5,24 @@ using System.Reflection;
 using System.Threading;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 
 namespace ScalesAutomation
 {
-
+    // TODO: get this list from a config file
     enum PackageType
     {
         CutieCarton10Kg, GaleataPlastic10Kg, GaleataPlastic5Kg
     }
+
+    public struct Measurement
+    {
+        public bool isStable;
+        public int weight;
+    }
+
     public partial class ScalesAutomation : Form
     {
         readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        public struct Measurement
-        {
-            public bool isStable;
-            public int weight;
-        }
-
         public SynchronizedCollection<Measurement> Measurements;
 
         MySerialReader readPort;
@@ -48,8 +47,7 @@ namespace ScalesAutomation
             InitializeComponent();
 
             cbPackage.DataSource = Enum.GetValues(typeof(PackageType));
-
-            Measurements = new SynchronizedCollection<ScalesAutomation.Measurement>();
+            Measurements = new SynchronizedCollection<Measurement>();
             csvHelper = new CsvHelper();
 
             timer = new System.Windows.Forms.Timer
@@ -75,7 +73,7 @@ namespace ScalesAutomation
                     dataTable.Rows.Add(row);
 
                     // Add row to excel
-                    csvHelper.WriteOneMeasurementToCsv(row, dataTable.Columns.Count);
+                    csvHelper.WriteLine(row, dataTable.Columns.Count);
 
                     log.Debug("Measurements Added: " + row["#"] + " - Weight: " + row["Weight"]);
                 }
@@ -97,25 +95,28 @@ namespace ScalesAutomation
             dataTable.Columns.Add("Weight", typeof(string));
             dataGridViewMeasurements.DataSource = dataTable;
 
+            // TODO: Use here a network drive provided in a config file
             var filePath = "D:\\";
             var productInfo = Product + "_" + Lot + "_" + NominalWeight + "_" + Package + "_" + PackageTare;
 
             csvHelper = new CsvHelper();
-            csvHelper.PrepareCsvFile(dataTable, filePath, productInfo);
-
+            csvHelper.PrepareFile(dataTable, filePath, productInfo);
 
             readPort?.Dispose();
             readThread?.Abort();
             readThread = new Thread(new ThreadStart(ReadThread));
             readThread.Start();
 
+
             Thread.Sleep(100);
 
-            writePort?.Dispose();
-            writeThread?.Abort();
-            writeThread = new Thread(new ThreadStart(WriteThread));
-            writeThread.Start();
-
+            if (simulationEnabled)
+            {
+                writePort?.Dispose();
+                writeThread?.Abort();
+                writeThread = new Thread(new ThreadStart(WriteThread));
+                writeThread.Start();
+            }
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -136,12 +137,12 @@ namespace ScalesAutomation
 
         private void WriteThread()
         {
-            writePort = new MySerialWriter(simulationEnabled);
+            writePort = new MySerialWriter();
         }
 
         #region "Events"
 
-            private void chkEnableSimulation_CheckedChanged(object sender, EventArgs e)
+        private void chkEnableSimulation_CheckedChanged(object sender, EventArgs e)
             {
                 simulationEnabled = chkEnableSimulation.Checked;
             }

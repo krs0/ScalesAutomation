@@ -10,25 +10,25 @@ namespace ScalesAutomation
 {
     public class MySerialReader : IDisposable
     {
-        private SerialPort serialPort;
+        public SerialPort serialPort;
         private Queue<byte> recievedData = new Queue<byte>();
         private bool alreadyAddedToList;
         private int lastMeasurement;
 
-        public SynchronizedCollection<ScalesAutomation.Measurement> Measurements;
+        public SynchronizedCollection<Measurement> Measurements;
 
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public MySerialReader(SynchronizedCollection<ScalesAutomation.Measurement> measurements)
+        public MySerialReader(SynchronizedCollection<Measurement> measurements)
         {
             Measurements = measurements;
 
             serialPort = new SerialPort("COM5", 4800, Parity.Even, 7, StopBits.Two);
-            Thread.Sleep(100);
 
             if (!serialPort.IsOpen)
             {
                 serialPort.Open();
+                enableCyclicTransmission();
                 serialPort.DataReceived += serialPort_DataReceived;
             }
         }
@@ -36,7 +36,7 @@ namespace ScalesAutomation
         void serialPort_DataReceived(object s, SerialDataReceivedEventArgs e)
         {
             byte[] data = new byte[serialPort.BytesToRead];
-            // log.Debug("Bytes To Read: " + serialPort.BytesToRead.ToString() + Environment.NewLine);
+            log.Debug("Bytes To Read: " + serialPort.BytesToRead.ToString() + Environment.NewLine);
 
             serialPort.Read(data, 0, data.Length);
 
@@ -48,7 +48,7 @@ namespace ScalesAutomation
 
         void processData()
         {
-            ScalesAutomation.Measurement oneMeasurement = new ScalesAutomation.Measurement();
+            var oneMeasurement = new Measurement();
             // Delete from receivedData Until a Start Character is found
             var queueCount = recievedData.Count;
             for (var i = 0; i < queueCount; i++)
@@ -73,7 +73,7 @@ namespace ScalesAutomation
                 oneMeasurement.isStable = (intArray[1] == 0 ? true : false);
                 oneMeasurement.weight = intArray[6] + intArray[5] * 10 + intArray[4] * 100 + intArray[3] * 1000 + intArray[2] * 10000;
 
-                log.Debug(packetArray + Environment.NewLine);
+                log.Debug("Package Received: " + BitConverter.ToString(packetArray) + Environment.NewLine);
                 log.Debug("Stable: " + oneMeasurement.isStable + " - Weight: " + oneMeasurement.weight + Environment.NewLine);
 
                 // addMeasurement()
@@ -105,6 +105,28 @@ namespace ScalesAutomation
                 recievedData.Clear();
                 log.Debug("Measurements in list: " + Measurements.Count + Environment.NewLine);
             }
+        }
+
+        public void enableCyclicTransmission()
+        {
+            byte[] txBuffer = prepareCyclicTransmissionPackage();
+            log.Debug("Enabling Cyclic Transmission... " + BitConverter.ToString(txBuffer) + Environment.NewLine);
+
+            serialPort.Write(txBuffer, 0, txBuffer.Length);
+            Thread.Sleep(10);
+        }
+
+        private byte[] prepareCyclicTransmissionPackage()
+        {
+            byte[] txBuffer = new byte[3];
+
+            // assign to buffer
+            txBuffer[0] = 0x73;
+            txBuffer[1] = 0x78;
+            txBuffer[2] = 0x0D; // CR = end character
+
+            return txBuffer;
+
         }
 
         public void Dispose()
