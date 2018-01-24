@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{
 		Resources\Cantar ASCII.png = Resources\Cantar ASCII.png
 		Resources\Cantar HEX.png = Resources\Cantar HEX.png
 		Resources\English Manual Bilanciai.pdf = Resources\English Manual Bilanciai.pdf
+		Resources\transmission.txt = Resources\transmission.txt
 	EndProjectSection
 EndProject
 Global
