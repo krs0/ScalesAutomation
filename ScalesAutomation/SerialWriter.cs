@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using log4net;
@@ -24,7 +25,7 @@ namespace ScalesAutomation
                 serialPort.Open();
 
             measurementStableCounter = 0;
-            startTransmission();
+            startTransmissionFromFile();
 
             serialPort.Close();
             this.Dispose();
@@ -42,7 +43,19 @@ namespace ScalesAutomation
             }
         }
 
-        public void startTransmission()
+        private void startTransmissionFromFile()
+        {
+            byte[][] dataToTransmit = loadSimulatedDataFromFile();
+            int i = 0;
+
+            for (i = 0; i < dataToTransmit.Length; i++)
+            {
+                writeData(dataToTransmit[i]);
+                Thread.Sleep(10);
+            }
+        }
+
+        public void startTransmissionGeneratedRandom()
         {
             for (var i = 0; i < 100; i++)
             {
@@ -144,5 +157,35 @@ namespace ScalesAutomation
 
             return initialMeasurement;
         }
+
+        public byte[][] loadSimulatedDataFromFile()
+        {
+            string line;
+            string[] lineAsStringArray;
+            string filePath = @"D:\temp\krs\ScalesAutomation\Resources\transmission.txt";
+            int i = 0;
+
+
+            var lineCount = File.ReadLines(filePath).Count();
+            byte[][] byteArray2d = new byte[lineCount][];
+
+            log.Debug("Loading from file: " + Environment.NewLine);
+
+            System.IO.StreamReader file = new System.IO.StreamReader(filePath);
+            while ((line = file.ReadLine()) != null)
+            {
+                lineAsStringArray = line.Split('-');
+                byte[] lineAsByteArray = lineAsStringArray.Select(s => Convert.ToByte(s, 16)).ToArray();
+                byteArray2d[i] = new byte[lineAsByteArray.Length];
+                lineAsByteArray.CopyTo(byteArray2d[i], 0);
+                i++;
+            }
+
+            file.Close();
+
+            return byteArray2d;
+
+        }
+
     }
 }

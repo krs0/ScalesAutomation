@@ -13,6 +13,7 @@ namespace ScalesAutomation
         public SerialPort serialPort;
         private Queue<byte> recievedData = new Queue<byte>();
         private bool alreadyAddedToList;
+        private bool isFirstMeasurement = true;
         private int lastMeasurement;
 
         public SynchronizedCollection<Measurement> Measurements;
@@ -76,29 +77,36 @@ namespace ScalesAutomation
                 log.Debug("Package Received: " + BitConverter.ToString(packetArray) + Environment.NewLine);
                 log.Debug("Stable: " + oneMeasurement.isStable + " - Weight: " + oneMeasurement.weight + Environment.NewLine);
 
-                // addMeasurement()
+                // addMeasurement only if stable, only if not already added to list and
+                // only if not first measurement (scales bug)
                 if (oneMeasurement.isStable)
                 {
                     if (!alreadyAddedToList)
                     {
-                        Measurements.Add(oneMeasurement);
-                        lastMeasurement = oneMeasurement.weight;
-                        alreadyAddedToList = true;
-                    }
-                    else
-                    {
-                        // TODO: Check for same value
-                        if (lastMeasurement != oneMeasurement.weight)
+                        if (!isFirstMeasurement)
                         {
-                            log.Error("Measurement added to list does not match current measurement!" + Environment.NewLine);
                             Measurements.Add(oneMeasurement);
                             lastMeasurement = oneMeasurement.weight;
                             alreadyAddedToList = true;
+                        }
+                        else
+                        {
+                            isFirstMeasurement = false;
+                        }
+
+                    }
+                    else
+                    {
+                        if (lastMeasurement != oneMeasurement.weight)
+                        {
+                            log.Error("Measurement added to list does not match current measurement!" + Environment.NewLine);
+                            // Scales bug transmits as stable last unstable measurement
                         }
                     }
                 }
                 else
                 {
+                    isFirstMeasurement = true;
                     alreadyAddedToList = false;
                 }
 
