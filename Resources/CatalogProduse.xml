@@ -1,21 +1,33 @@
 <?xml version="1.0"?>
 <catalog>
    <Product>
-      <Name>GutS</Name>
-      <Package>Galeata10Kg</Package>
-      <PackageTare>100g</PackageTare>
-      <NetWeight>25Kg</NetWeight>
+      <Name>Gut 80 - Margarina Creme</Name>
+      <Package>Cutie</Package>
+      <PackageTare>0.42</PackageTare>
+      <NetWeight>20Kg</NetWeight>
    </Product>
       <Product>
-      <Name>Margarina</Name>
-      <Package>CutieCarton10Kg</Package>
-      <PackageTare>222g</PackageTare>
-      <NetWeight>4Kg</NetWeight>
+      <Name>Superio - Margarina Creme</Name>
+      <Package>Cutie</Package>
+      <PackageTare>0.42</PackageTare>
+      <NetWeight>20Kg</NetWeight>
    </Product>
    <Product>
-      <Name>GutW</Name>
-      <Package>Galeata5Kg</Package>
-      <PackageTare>100g</PackageTare>
-      <NetWeight>5Kg</NetWeight>
+      <Name>Rhapsody Vanilla</Name>
+      <Package>Galeata</Package>
+      <PackageTare>0.28</PackageTare>
+      <NetWeight>12Kg</NetWeight>
+   </Product>
+      <Product>
+      <Name>Rhapsody Caramel</Name>
+      <Package>Galeata</Package>
+      <PackageTare>0.28</PackageTare>
+      <NetWeight>12Kg</NetWeight>
+   </Product>
+      <Product>
+      <Name>Rhapsody Caramel</Name>
+      <Package>Galeata</Package>
+      <PackageTare>0.19</PackageTare>
+      <NetWeight>7Kg</NetWeight>
    </Product>
 </catalog>

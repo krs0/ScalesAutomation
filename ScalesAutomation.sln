@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScalesAutomation", "ScalesAutomation\ScalesAutomation.csproj", "{E8A96C8C-1490-4BE1-81DD-509D94409D38}"
 EndProject
@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{
 	ProjectSection(SolutionItems) = preProject
 		Resources\Cantar ASCII.png = Resources\Cantar ASCII.png
 		Resources\Cantar HEX.png = Resources\Cantar HEX.png
+		Resources\CatalogProduse.xml = Resources\CatalogProduse.xml
 		Resources\English Manual Bilanciai.pdf = Resources\English Manual Bilanciai.pdf
 		Resources\real transmission.txt = Resources\real transmission.txt
 		Resources\transmission.txt = Resources\transmission.txt
