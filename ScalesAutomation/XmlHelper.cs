@@ -1,34 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScalesAutomation
 {
     class XmlHelper
     {
-        struct Catalog
+        public struct Product
         {
-            String Name;
-            String Package;
-            String PackageTare;
-            String NetWeight;
-
+            public String Name;
+            public List<PackageDetails> PackageDetails;
         }
-        public Array catalog = new Array[10];
-        void Read(String filePath)
+
+        public struct PackageDetails
         {
-            var document = System.Xml.Linq.XDocument.Parse(filePath);
+            public String Type;
+            public String Tare;
+            public String NetWeight;
+        }
+
+        public List<Product> catalogue = new List<Product>();
+
+        public void Read(String filePath)
+        {
+            var document = System.Xml.Linq.XDocument.Load(filePath);
             var root = document.Root;
 
-            var elements = root.Elements("Catalog");
+            var elements = root.Elements("Product");
             foreach (var element in elements)
             {
-                String Name = element.Elements("Name").First().Value;
-                String Package = element.Elements("Package").First().Value;
-                String PackageTare = element.Elements("PackageTare").First().Value;
-                String NetWeight = element.Elements("NetWeight").First().Value;
+                var name = element.Elements("Name").First().Value;
+                var packageDetails = new PackageDetails()
+                {
+                    Type = element.Elements("Package").First().Value,
+                    Tare = element.Elements("PackageTare").First().Value,
+                    NetWeight = element.Elements("NetWeight").First().Value
+                };
+
+                Product? temp = catalogue.Find(x => x.Name == name);
+                if (temp?.Name != null)
+                {
+                    temp?.PackageDetails.Add(packageDetails);
+                }
+                else
+                {
+                    var entry = new Product
+                    {
+                        Name = name,
+                        PackageDetails = new List<PackageDetails> { packageDetails }
+                    };
+
+                    catalogue.Add(entry);
+                }
             }
         }
     }

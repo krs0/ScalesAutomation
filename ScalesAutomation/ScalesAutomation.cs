@@ -46,6 +46,9 @@ namespace ScalesAutomation
 
             InitializeComponentCustom();
 
+            var xmlHandler = new XmlHelper();
+            xmlHandler.Read(@"c:\Home\Krs\Work\Cantar\ScalesAutomation\ScalesAutomation\bin\Debug\CatalogProduse.xml");
+
             Measurements = new SynchronizedCollection<Measurement>();
             csvHelper = new CsvHelper();
 
