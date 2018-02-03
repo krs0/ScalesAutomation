@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<catalog>
+   <Product>
+      <Name>GutS</Name>
+      <Package>Galeata10Kg</Package>
+      <PackageTare>100g</PackageTare>
+      <NetWeight>25Kg</NetWeight>
+   </Product>
+      <Product>
+      <Name>Margarina</Name>
+      <Package>CutieCarton10Kg</Package>
+      <PackageTare>222g</PackageTare>
+      <NetWeight>4Kg</NetWeight>
+   </Product>
+   <Product>
+      <Name>GutW</Name>
+      <Package>Galeata5Kg</Package>
+      <PackageTare>100g</PackageTare>
+      <NetWeight>5Kg</NetWeight>
+   </Product>
+</catalog>

@@ -5,17 +5,9 @@ using System.Reflection;
 using System.Threading;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Linq;
 
 namespace ScalesAutomation
 {
-    // TODO: get this list from a config file
-    enum PackageType
-    {
-        CutieCarton10Kg, GaleataPlastic10Kg, GaleataPlastic5Kg
-    }
-
     public struct Measurement
     {
         public bool isStable;
@@ -24,31 +16,36 @@ namespace ScalesAutomation
 
     public partial class ScalesAutomation : Form
     {
-        readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public SynchronizedCollection<Measurement> Measurements;
+
+        System.Windows.Forms.Timer timer;
+        DataTable dataTable = new DataTable();
+        readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         MySerialReader readPort;
         MySerialWriter writePort;
         Thread writeThread;
         Thread readThread;
 
+        bool simulationEnabled;
+        CsvHelper csvHelper;
+
+        #region Properties
+
         String Product { get; set; }
         String Lot { get; set; }
         String NominalWeight { get; set; }
-        PackageType Package { get; set; }
+        String Package { get; set; }
         String PackageTare { get; set; }
 
-        bool simulationEnabled;
-        readonly DataTable dataTable = new DataTable();
-
-        CsvHelper csvHelper;
-        readonly System.Windows.Forms.Timer timer;
+        #endregion
 
         public ScalesAutomation()
         {
             InitializeComponent();
 
-            cbPackage.DataSource = Enum.GetValues(typeof(PackageType));
+            InitializeComponentCustom();
+
             Measurements = new SynchronizedCollection<Measurement>();
             csvHelper = new CsvHelper();
 
@@ -59,6 +56,32 @@ namespace ScalesAutomation
             };
             timer.Tick += new EventHandler(timer_Tick);
             timer.Start();
+        }
+
+        private void InitializeComponentCustom()
+        {
+            // TODO: There should be no spaces because it will be used to make file name
+            cbPackage.Items.AddRange(new object[] {
+                "CutieCarton10Kg",
+                "GaleataPlastic10Kg",
+                "GaleataPlastic5Kg"});
+        }
+
+        void ReadThread()
+        {
+            readPort = new MySerialReader(Measurements);
+        }
+
+        void WriteThread()
+        {
+            writePort = new MySerialWriter();
+        }
+
+        #region "Events"
+
+        void ScalesAutomation_Load(object sender, EventArgs e)
+        {
+            btnPause.Enabled = false;
         }
 
         void timer_Tick(object sender, EventArgs e)
@@ -86,7 +109,7 @@ namespace ScalesAutomation
 
         }
 
-        private void btnStart_Click(object sender, EventArgs e)
+        void btnStart_Click(object sender, EventArgs e)
         {
             btnPause.Enabled = false;
 
@@ -110,7 +133,7 @@ namespace ScalesAutomation
             readThread?.Abort();
             readThread = new Thread(new ThreadStart(ReadThread));
             readThread.Start();
-            
+
             Thread.Sleep(100);
 
             if (simulationEnabled)
@@ -121,12 +144,12 @@ namespace ScalesAutomation
                 writeThread.Start();
             }
 
-            // btnPause.Enabled = true;
+            btnPause.Enabled = true;
             btnStart.Enabled = false;
 
         }
 
-        private void btnPause_Click(object sender, EventArgs e)
+        void btnPause_Click(object sender, EventArgs e)
         {
             log.Debug(System.Environment.NewLine);
             log.Debug("Button Stop Clicked" + Environment.NewLine);
@@ -140,51 +163,51 @@ namespace ScalesAutomation
             }
 
             // btnStart.Enabled = true;
-            btnPause.Enabled = true;
+            btnPause.Enabled = false;
         }
 
-        private void ReadThread()
+        void chkEnableSimulation_CheckedChanged(object sender, EventArgs e)
         {
-            readPort = new MySerialReader(Measurements);
+            simulationEnabled = chkEnableSimulation.Checked;
         }
 
-        private void WriteThread()
+        #region "Events For Input Controls"
+
+        void txtLot_Validated(object sender, EventArgs e)
         {
-            writePort = new MySerialWriter();
+            Lot = txtLot.Text;
         }
 
-        #region "Events"
+        void txtNominalWeight_Validated(object sender, EventArgs e)
+        {
+            NominalWeight = txtNominalWeight.Text;
+        }
 
-        private void chkEnableSimulation_CheckedChanged(object sender, EventArgs e)
-            {
-                simulationEnabled = chkEnableSimulation.Checked;
-            }
-
-            private void txtProduct_Validated(object sender, EventArgs e)
-            {
-                Product = txtProduct.Text;
-            }
-
-            private void txtLot_Validated(object sender, EventArgs e)
-            {
-                Lot = txtLot.Text;
-            }
-
-            private void txtNominalWeight_Validated(object sender, EventArgs e)
-            {
-                NominalWeight = txtNominalWeight.Text;
-            }
-
-            private void txtPackageTare_Validated(object sender, EventArgs e)
-            {
-                PackageTare = txtPackageTare.Text;
-            }
+        void txtPackageTare_Validated(object sender, EventArgs e)
+        {
+            PackageTare = txtPackageTare.Text;
+        }
 
         #endregion
 
-        private void ScalesAutomation_Load(object sender, EventArgs e)
+        #endregion
+
+        private void cbPackage_SelectedIndexChanged(object sender, EventArgs e)
         {
-            btnPause.Enabled = false;
+            Package = cbPackage.Text;
+            PackageTare = "10g";
+            NominalWeight = "20Kg";
+
+            txtPackageTare.Text = PackageTare;
+            txtNominalWeight.Text = NominalWeight;
+            
+        }
+
+        private void cbProduct_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            cbPackage.SelectedIndex = -1;
+            txtPackageTare.Text = "";
+            txtNominalWeight.Text = "";
         }
     }
 }
