@@ -162,7 +162,7 @@ namespace ScalesAutomation
         {
             string line;
             string[] lineAsStringArray;
-            string filePath = @"D:\temp\krs\ScalesAutomation\Resources\transmission.txt";
+            string filePath = "transmission.txt";
             int i = 0;
 
 

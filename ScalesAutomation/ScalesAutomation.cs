@@ -88,6 +88,8 @@ namespace ScalesAutomation
 
         private void btnStart_Click(object sender, EventArgs e)
         {
+            btnPause.Enabled = false;
+
             log.Debug(System.Environment.NewLine);
             log.Debug("Button OK Clicked" + Environment.NewLine);
 
@@ -108,8 +110,7 @@ namespace ScalesAutomation
             readThread?.Abort();
             readThread = new Thread(new ThreadStart(ReadThread));
             readThread.Start();
-
-
+            
             Thread.Sleep(100);
 
             if (simulationEnabled)
@@ -119,9 +120,13 @@ namespace ScalesAutomation
                 writeThread = new Thread(new ThreadStart(WriteThread));
                 writeThread.Start();
             }
+
+            // btnPause.Enabled = true;
+            btnStart.Enabled = false;
+
         }
 
-        private void btnStop_Click(object sender, EventArgs e)
+        private void btnPause_Click(object sender, EventArgs e)
         {
             log.Debug(System.Environment.NewLine);
             log.Debug("Button Stop Clicked" + Environment.NewLine);
@@ -129,7 +134,13 @@ namespace ScalesAutomation
             readPort.Dispose();
 
             if (simulationEnabled)
-                writePort.Dispose();
+            {
+                writePort?.Dispose();
+                writeThread?.Abort();
+            }
+
+            // btnStart.Enabled = true;
+            btnPause.Enabled = true;
         }
 
         private void ReadThread()
@@ -171,5 +182,9 @@ namespace ScalesAutomation
 
         #endregion
 
+        private void ScalesAutomation_Load(object sender, EventArgs e)
+        {
+            btnPause.Enabled = false;
+        }
     }
 }
