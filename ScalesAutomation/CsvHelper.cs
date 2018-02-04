@@ -63,6 +63,8 @@ namespace ScalesAutomation
                             sw.Write(",");
                         }
                     }
+
+                    sw.Write(",abc,def,g");
                     sw.Write(sw.NewLine);
                     sw.Close();
                 }

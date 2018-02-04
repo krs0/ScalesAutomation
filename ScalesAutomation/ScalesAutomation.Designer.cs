@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnPause = new System.Windows.Forms.Button();
             this.dataGridViewMeasurements = new System.Windows.Forms.DataGridView();
@@ -57,7 +59,7 @@
             // btnStart
             // 
             this.btnStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStart.Location = new System.Drawing.Point(99, 293);
+            this.btnStart.Location = new System.Drawing.Point(87, 381);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(150, 50);
             this.btnStart.TabIndex = 0;
@@ -67,8 +69,9 @@
             // 
             // btnPause
             // 
+            this.btnPause.Enabled = false;
             this.btnPause.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPause.Location = new System.Drawing.Point(282, 293);
+            this.btnPause.Location = new System.Drawing.Point(270, 381);
             this.btnPause.Name = "btnPause";
             this.btnPause.Size = new System.Drawing.Size(150, 50);
             this.btnPause.TabIndex = 1;
@@ -78,10 +81,32 @@
             // 
             // dataGridViewMeasurements
             // 
+            this.dataGridViewMeasurements.AllowUserToAddRows = false;
+            this.dataGridViewMeasurements.AllowUserToDeleteRows = false;
+            this.dataGridViewMeasurements.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.RoyalBlue;
+            dataGridViewCellStyle1.NullValue = null;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewMeasurements.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewMeasurements.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewMeasurements.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridViewMeasurements.Location = new System.Drawing.Point(501, 24);
             this.dataGridViewMeasurements.Name = "dataGridViewMeasurements";
-            this.dataGridViewMeasurements.Size = new System.Drawing.Size(267, 426);
+            this.dataGridViewMeasurements.ReadOnly = true;
+            this.dataGridViewMeasurements.RowTemplate.Height = 25;
+            this.dataGridViewMeasurements.Size = new System.Drawing.Size(200, 508);
             this.dataGridViewMeasurements.TabIndex = 3;
             // 
             // chkEnableSimulation
@@ -89,7 +114,7 @@
             this.chkEnableSimulation.AutoSize = true;
             this.chkEnableSimulation.Checked = true;
             this.chkEnableSimulation.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkEnableSimulation.Location = new System.Drawing.Point(28, 435);
+            this.chkEnableSimulation.Location = new System.Drawing.Point(27, 515);
             this.chkEnableSimulation.Name = "chkEnableSimulation";
             this.chkEnableSimulation.Size = new System.Drawing.Size(110, 17);
             this.chkEnableSimulation.TabIndex = 4;
@@ -214,7 +239,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(802, 465);
+            this.ClientSize = new System.Drawing.Size(734, 561);
             this.Controls.Add(this.cbProduct);
             this.Controls.Add(this.lblPackageTare);
             this.Controls.Add(this.lblPackage);

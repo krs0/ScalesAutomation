@@ -48,7 +48,6 @@ namespace ScalesAutomation
             InitializeComponent();
 
             XmlHandler.Read(@"c:\Home\Krs\Work\Cantar\ScalesAutomation\ScalesAutomation\bin\Debug\CatalogProduse.xml");
-
             InitializeGuiFromXml();
 
             Measurements = new SynchronizedCollection<Measurement>();
@@ -89,7 +88,16 @@ namespace ScalesAutomation
 
         void ScalesAutomation_Load(object sender, EventArgs e)
         {
-            btnPause.Enabled = false;
+            dataTable.Columns.Add("#", typeof(int));
+            dataTable.Columns.Add("Weight", typeof(string));
+            dataGridViewMeasurements.DataSource = dataTable;
+
+            dataGridViewMeasurements.Columns["#"].Width = 50;
+            dataGridViewMeasurements.Columns["Weight"].Width = 100;
+
+            // Set Columns not sortable
+            foreach (DataGridViewColumn column in dataGridViewMeasurements.Columns)
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
         }
 
         void timer_Tick(object sender, EventArgs e)
@@ -112,6 +120,9 @@ namespace ScalesAutomation
                 }
             }
 
+            if (dataGridViewMeasurements.RowCount > 0)
+                dataGridViewMeasurements.FirstDisplayedScrollingRowIndex = dataGridViewMeasurements.RowCount - 1;
+
             dataGridViewMeasurements.Refresh();
             Measurements.Clear();
 
@@ -126,13 +137,10 @@ namespace ScalesAutomation
 
             simulationEnabled = chkEnableSimulation.Checked;
 
-            dataTable.Columns.Add("#", typeof(int));
-            dataTable.Columns.Add("Weight", typeof(string));
-            dataGridViewMeasurements.DataSource = dataTable;
-
             // TODO: Use here a network drive provided in a config file
             var filePath = "D:\\";
-            var productInfo = Product + "_" + Lot + "_" + NominalWeight + "_" + PackageType + "_" + PackageTare;
+            var productInfo = Lot + "_" + Product + "_" + PackageDetails.Type;
+            productInfo = productInfo.Replace(" ", "");
 
             csvHelper = new CsvHelper();
             csvHelper.PrepareFile(dataTable, filePath, productInfo);
@@ -196,10 +204,6 @@ namespace ScalesAutomation
             PackageTare = txtPackageTare.Text;
         }
 
-        #endregion
-
-        #endregion
-
         private void cbPackage_SelectedIndexChanged(object sender, EventArgs e)
         {
             // TODO: Separate type and netweight by _
@@ -226,5 +230,11 @@ namespace ScalesAutomation
             txtPackageTare.Text = "";
             txtNominalWeight.Text = "";
         }
+
+        #endregion
+
+        #endregion
+
+
     }
 }
