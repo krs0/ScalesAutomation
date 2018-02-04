@@ -2,32 +2,32 @@
 <catalog>
    <Product>
       <Name>Gut 80 - Margarina Creme</Name>
-      <Package>Cutie</Package>
-      <PackageTare>0.42</PackageTare>
+      <Package>Cutie_20Kg</Package>
+      <PackageTare>0.42Kg</PackageTare>
       <NetWeight>20Kg</NetWeight>
    </Product>
       <Product>
       <Name>Superio - Margarina Creme</Name>
-      <Package>Cutie</Package>
-      <PackageTare>0.42</PackageTare>
+      <Package>Cutie_20Kg</Package>
+      <PackageTare>0.42Kg</PackageTare>
       <NetWeight>20Kg</NetWeight>
    </Product>
    <Product>
       <Name>Rhapsody Vanilla</Name>
-      <Package>Galeata</Package>
-      <PackageTare>0.28</PackageTare>
+      <Package>Galeata_12Kg</Package>
+      <PackageTare>0.28Kg</PackageTare>
       <NetWeight>12Kg</NetWeight>
    </Product>
       <Product>
       <Name>Rhapsody Caramel</Name>
-      <Package>Galeata</Package>
-      <PackageTare>0.28</PackageTare>
+      <Package>Galeata_12Kg</Package>
+      <PackageTare>0.28Kg</PackageTare>
       <NetWeight>12Kg</NetWeight>
    </Product>
       <Product>
       <Name>Rhapsody Caramel</Name>
-      <Package>Galeata</Package>
-      <PackageTare>0.19</PackageTare>
+      <Package>Galeata_7Kg</Package>
+      <PackageTare>0.19Kg</PackageTare>
       <NetWeight>7Kg</NetWeight>
    </Product>
 </catalog>

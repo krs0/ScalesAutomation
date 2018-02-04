@@ -108,6 +108,7 @@
             // 
             // txtNominalWeight
             // 
+            this.txtNominalWeight.Enabled = false;
             this.txtNominalWeight.Font = new System.Drawing.Font("Georgia", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNominalWeight.Location = new System.Drawing.Point(184, 192);
             this.txtNominalWeight.Name = "txtNominalWeight";
@@ -117,6 +118,7 @@
             // 
             // txtPackageTare
             // 
+            this.txtPackageTare.Enabled = false;
             this.txtPackageTare.Font = new System.Drawing.Font("Georgia", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPackageTare.Location = new System.Drawing.Point(184, 150);
             this.txtPackageTare.Name = "txtPackageTare";
@@ -201,12 +203,6 @@
             this.cbProduct.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbProduct.Font = new System.Drawing.Font("Georgia", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbProduct.FormattingEnabled = true;
-            this.cbProduct.Items.AddRange(new object[] {
-            "GUT_S",
-            "GUT_W",
-            "Ciocolata Alba",
-            "Inghetata",
-            "Margarina"});
             this.cbProduct.Location = new System.Drawing.Point(184, 66);
             this.cbProduct.Margin = new System.Windows.Forms.Padding(2);
             this.cbProduct.Name = "cbProduct";

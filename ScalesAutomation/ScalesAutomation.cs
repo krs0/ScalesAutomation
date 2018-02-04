@@ -17,6 +17,7 @@ namespace ScalesAutomation
     public partial class ScalesAutomation : Form
     {
         public SynchronizedCollection<Measurement> Measurements;
+        XmlHelper XmlHandler = new XmlHelper();
 
         System.Windows.Forms.Timer timer;
         DataTable dataTable = new DataTable();
@@ -32,10 +33,12 @@ namespace ScalesAutomation
 
         #region Properties
 
+        Product ProductDetails { get; set; }
+        PackageDetails PackageDetails { get; set; }
         String Product { get; set; }
         String Lot { get; set; }
         String NominalWeight { get; set; }
-        String Package { get; set; }
+        String PackageType { get; set; }
         String PackageTare { get; set; }
 
         #endregion
@@ -44,10 +47,9 @@ namespace ScalesAutomation
         {
             InitializeComponent();
 
-            InitializeComponentCustom();
+            XmlHandler.Read(@"c:\Home\Krs\Work\Cantar\ScalesAutomation\ScalesAutomation\bin\Debug\CatalogProduse.xml");
 
-            var xmlHandler = new XmlHelper();
-            xmlHandler.Read(@"c:\Home\Krs\Work\Cantar\ScalesAutomation\ScalesAutomation\bin\Debug\CatalogProduse.xml");
+            InitializeGuiFromXml();
 
             Measurements = new SynchronizedCollection<Measurement>();
             csvHelper = new CsvHelper();
@@ -61,13 +63,16 @@ namespace ScalesAutomation
             timer.Start();
         }
 
-        private void InitializeComponentCustom()
+        private void InitializeGuiFromXml()
         {
             // TODO: There should be no spaces because it will be used to make file name
-            cbPackage.Items.AddRange(new object[] {
-                "CutieCarton10Kg",
-                "GaleataPlastic10Kg",
-                "GaleataPlastic5Kg"});
+            foreach (var product in XmlHandler.Catalogue)
+            {
+                cbProduct.Items.Add(product.Name);
+
+                // Keep for reference. Adds an array to a cb.
+                //cbPackage.Items.AddRange(new object[] {"CutieCarton10Kg", "GaleataPlastic5Kg"});
+            }
         }
 
         void ReadThread()
@@ -127,7 +132,7 @@ namespace ScalesAutomation
 
             // TODO: Use here a network drive provided in a config file
             var filePath = "D:\\";
-            var productInfo = Product + "_" + Lot + "_" + NominalWeight + "_" + Package + "_" + PackageTare;
+            var productInfo = Product + "_" + Lot + "_" + NominalWeight + "_" + PackageType + "_" + PackageTare;
 
             csvHelper = new CsvHelper();
             csvHelper.PrepareFile(dataTable, filePath, productInfo);
@@ -197,17 +202,26 @@ namespace ScalesAutomation
 
         private void cbPackage_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Package = cbPackage.Text;
-            PackageTare = "10g";
-            NominalWeight = "20Kg";
+            // TODO: Separate type and netweight by _
+            PackageType = cbPackage.Text;
 
-            txtPackageTare.Text = PackageTare;
-            txtNominalWeight.Text = NominalWeight;
-            
+            PackageDetails = ProductDetails.PackageDetails.Find(x => x.Type == PackageType);
+
+            txtPackageTare.Text = PackageDetails.Tare;
+            txtNominalWeight.Text = PackageDetails.NetWeight;
         }
 
         private void cbProduct_SelectedIndexChanged(object sender, EventArgs e)
         {
+            Product = cbProduct.Text;
+            ProductDetails = XmlHandler.Catalogue.Find(x => x.Name == Product);
+
+            cbPackage.Items.Clear();
+            foreach (var package in ProductDetails.PackageDetails)
+            {
+                cbPackage.Items.Add(package.Type);
+            }
+
             cbPackage.SelectedIndex = -1;
             txtPackageTare.Text = "";
             txtNominalWeight.Text = "";
