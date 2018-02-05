@@ -146,9 +146,12 @@ namespace ScalesAutomation
             csvHelper.PrepareFile(dataTable, filePath, productInfo);
 
             readPort?.Dispose();
-            readThread?.Abort();
-            readThread = new Thread(new ThreadStart(ReadThread));
-            readThread.Start();
+            readPort = new MySerialReader(Measurements);
+
+            // Code for Start Reading in a new Thread
+            //readThread?.Abort();
+            //readThread = new Thread(new ThreadStart(ReadThread));
+            //readThread.Start();
 
             Thread.Sleep(100);
 
@@ -167,8 +170,7 @@ namespace ScalesAutomation
 
         void btnPause_Click(object sender, EventArgs e)
         {
-            log.Debug(System.Environment.NewLine);
-            log.Debug("Button Stop Clicked" + Environment.NewLine);
+            log.Debug(System.Environment.NewLine + "Button Stop Clicked" + Environment.NewLine);
 
             readPort.Dispose();
 
@@ -178,8 +180,10 @@ namespace ScalesAutomation
                 writeThread?.Abort();
             }
 
-            // btnStart.Enabled = true;
             btnPause.Enabled = false;
+            Thread.Sleep(100);
+            btnStart.Enabled = true;
+
         }
 
         void chkEnableSimulation_CheckedChanged(object sender, EventArgs e)
