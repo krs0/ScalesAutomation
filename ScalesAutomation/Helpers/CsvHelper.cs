@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.IO;
-using System.Windows.Forms.VisualStyles;
 
 namespace ScalesAutomation
 {
@@ -11,11 +10,15 @@ namespace ScalesAutomation
 
         private bool appendToExistingFile;
 
-        public void PrepareFile(DataTable dataTable, string filePath, string productInfo)
+        public void PrepareFile(string filePath, LotInfo lotInfo, DataTable dataTable)
         {
+            var productInfo = lotInfo.Lot + "_" + lotInfo.ProductName + "_" + lotInfo.Package.Type;
+            productInfo = productInfo.Replace(" ", ""); // No spaces in file names
+
             CsvFileFullPath = DetermineFullFilePath(filePath, productInfo);
+
             if (!appendToExistingFile)
-                CreateFile(dataTable);
+                CreateFile(lotInfo, dataTable);
         }
 
         public void WriteLine(DataRow row, int iColCount)
@@ -47,7 +50,7 @@ namespace ScalesAutomation
             }
         }
 
-        private void CreateFile(DataTable dataTable)
+        private void CreateFile(LotInfo lotInfo, DataTable dataTable)
         {
             try
             {
@@ -64,7 +67,7 @@ namespace ScalesAutomation
                         }
                     }
 
-                    sw.Write(",abc,def,g");
+                    sw.Write("," + lotInfo.Lot + "," + lotInfo.ProductName + "," + lotInfo.Package.Type + "," + lotInfo.Package.NetWeight + "," + lotInfo.Package.Tare);
                     sw.Write(sw.NewLine);
                     sw.Close();
                 }
@@ -81,7 +84,7 @@ namespace ScalesAutomation
             var dirInfo = new DirectoryInfo(filePath);
             var files = dirInfo.GetFiles("*" + productInfo + ".csv");
 
-            // if a file exists starting with same product info, reuse it
+            // if a file exists starting with same product info (LOT!!!), reuse it
             if (files.Length > 0)
             {
                 fileFullPath = files[0].FullName;
@@ -89,7 +92,7 @@ namespace ScalesAutomation
             }
             else
             {
-                fileFullPath = filePath + DateTime.Now.ToString("yyyy-MM-dd-hhmmss") + "_" + productInfo + ".csv";
+                fileFullPath = Path.Combine(filePath, DateTime.Now.ToString("yyyy-MM-dd-hhmmss") + "_" + productInfo + ".csv");
                 appendToExistingFile = false;
             }
 

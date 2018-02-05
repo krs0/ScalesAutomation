@@ -5,18 +5,15 @@ using System.Reflection;
 using System.Threading;
 using System.Collections.Generic;
 using System.Data;
+using ScalesAutomation.Properties;
+using System.IO;
 
 namespace ScalesAutomation
 {
-    public struct Measurement
-    {
-        public bool isStable;
-        public int weight;
-    }
-
     public partial class ScalesAutomation : Form
     {
         public SynchronizedCollection<Measurement> Measurements;
+
         XmlHelper XmlHandler = new XmlHelper();
 
         System.Windows.Forms.Timer timer;
@@ -33,13 +30,9 @@ namespace ScalesAutomation
 
         #region Properties
 
-        Product ProductDetails { get; set; }
-        PackageDetails PackageDetails { get; set; }
-        String Product { get; set; }
-        String Lot { get; set; }
-        String NominalWeight { get; set; }
-        String PackageType { get; set; }
-        String PackageTare { get; set; }
+        LotInfo LotInfo;
+        Product ProductDefinition { get; set; }
+        Package PackageDefinition { get; set; }
 
         #endregion
 
@@ -47,7 +40,7 @@ namespace ScalesAutomation
         {
             InitializeComponent();
 
-            XmlHandler.Read(@"c:\Home\Krs\Work\Cantar\ScalesAutomation\ScalesAutomation\bin\Debug\CatalogProduse.xml");
+            XmlHandler.ReadCatalogue(Path.Combine(AssemblyPath, @Settings.Default.CatalogFilePath));
             InitializeGuiFromXml();
 
             Measurements = new SynchronizedCollection<Measurement>();
@@ -60,6 +53,16 @@ namespace ScalesAutomation
             };
             timer.Tick += new EventHandler(timer_Tick);
             timer.Start();
+        }
+        public static string AssemblyPath
+        {
+            get
+            {
+                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                UriBuilder uri = new UriBuilder(codeBase);
+                string path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(path);
+            }
         }
 
         private void InitializeGuiFromXml()
@@ -137,13 +140,9 @@ namespace ScalesAutomation
 
             simulationEnabled = chkEnableSimulation.Checked;
 
-            // TODO: Use here a network drive provided in a config file
-            var filePath = "D:\\";
-            var productInfo = Lot + "_" + Product + "_" + PackageDetails.Type;
-            productInfo = productInfo.Replace(" ", "");
-
+            var filePath = Path.Combine(AssemblyPath, Settings.Default.CSVOutputPath);
             csvHelper = new CsvHelper();
-            csvHelper.PrepareFile(dataTable, filePath, productInfo);
+            csvHelper.PrepareFile(filePath, LotInfo, dataTable);
 
             readPort?.Dispose();
             readPort = new MySerialReader(Measurements);
@@ -195,37 +194,19 @@ namespace ScalesAutomation
 
         void txtLot_Validated(object sender, EventArgs e)
         {
-            Lot = txtLot.Text;
-        }
-
-        void txtNominalWeight_Validated(object sender, EventArgs e)
-        {
-            NominalWeight = txtNominalWeight.Text;
-        }
-
-        void txtPackageTare_Validated(object sender, EventArgs e)
-        {
-            PackageTare = txtPackageTare.Text;
-        }
-
-        private void cbPackage_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // TODO: Separate type and netweight by _
-            PackageType = cbPackage.Text;
-
-            PackageDetails = ProductDetails.PackageDetails.Find(x => x.Type == PackageType);
-
-            txtPackageTare.Text = PackageDetails.Tare;
-            txtNominalWeight.Text = PackageDetails.NetWeight;
+            LotInfo = new LotInfo
+            {
+                Lot = txtLot.Text
+            };
         }
 
         private void cbProduct_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Product = cbProduct.Text;
-            ProductDetails = XmlHandler.Catalogue.Find(x => x.Name == Product);
+            LotInfo.ProductName = cbProduct.Text;
+            ProductDefinition = XmlHandler.Catalogue.Find(x => x.Name == LotInfo.ProductName);
 
             cbPackage.Items.Clear();
-            foreach (var package in ProductDetails.PackageDetails)
+            foreach (var package in ProductDefinition.PackageDetails)
             {
                 cbPackage.Items.Add(package.Type);
             }
@@ -233,6 +214,29 @@ namespace ScalesAutomation
             cbPackage.SelectedIndex = -1;
             txtPackageTare.Text = "";
             txtNominalWeight.Text = "";
+        }
+
+        private void cbPackage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // TODO: Separate type and netweight by _
+            LotInfo.Package.Type = cbPackage.Text;
+
+            PackageDefinition = ProductDefinition.PackageDetails.Find(x => x.Type == LotInfo.Package.Type);
+            LotInfo.Package.Tare = PackageDefinition.Tare;
+            LotInfo.Package.NetWeight = PackageDefinition.NetWeight;
+
+            txtPackageTare.Text = LotInfo.Package.Tare;
+            txtNominalWeight.Text = LotInfo.Package.NetWeight;
+        }
+
+        void txtNominalWeight_Validated(object sender, EventArgs e)
+        {
+            LotInfo.Package.NetWeight = txtNominalWeight.Text;
+        }
+
+        void txtPackageTare_Validated(object sender, EventArgs e)
+        {
+            LotInfo.Package.Tare = txtPackageTare.Text;
         }
 
         #endregion

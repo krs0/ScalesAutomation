@@ -5,17 +5,18 @@ using System.Linq;
 using log4net;
 using System.Reflection;
 using System.Threading;
+using ScalesAutomation.Properties;
 
 namespace ScalesAutomation
 {
     public class MySerialWriter : IDisposable
     {
-        private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private SerialPort serialPort;
+        readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        SerialPort serialPort;
 
         public MySerialWriter()
         {
-            serialPort = new SerialPort("COM6", 4800, Parity.Even, 7, StopBits.Two);
+            serialPort = new SerialPort(Settings.Default.WriteCOMPort, 4800, Parity.Even, 7, StopBits.Two);
             Thread.Sleep(1000);
 
             if (!serialPort.IsOpen)

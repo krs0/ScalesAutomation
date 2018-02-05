@@ -5,28 +5,29 @@ using System.IO.Ports;
 using log4net;
 using System.Reflection;
 using System.Threading;
+using ScalesAutomation.Properties;
 
 namespace ScalesAutomation
 {
     public class MySerialReader : IDisposable
     {
-        public SerialPort serialPort;
-        private bool busy;
-
-        private Queue<byte> recievedData = new Queue<byte>();
-        private bool alreadyAddedToList;
-        private bool isFirstMeasurement = true;
-        private int lastMeasurement;
-
         public SynchronizedCollection<Measurement> Measurements;
+        public SerialPort serialPort;
 
-        private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        Queue<byte> recievedData = new Queue<byte>();
+        bool alreadyAddedToList;
+        bool isFirstMeasurement = true;
+        int lastMeasurement;
+        bool busy;
 
         public MySerialReader(SynchronizedCollection<Measurement> measurements)
         {
             Measurements = measurements;
 
-            serialPort = new SerialPort("COM5", 4800, Parity.Even, 7, StopBits.Two);
+            serialPort = new SerialPort(Settings.Default.ReadCOMPort, 4800, Parity.Even, 7, StopBits.Two);
+            
 
             if (!serialPort.IsOpen)
             {
