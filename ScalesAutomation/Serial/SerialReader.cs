@@ -11,6 +11,8 @@ namespace ScalesAutomation
     public class MySerialReader : IDisposable
     {
         public SerialPort serialPort;
+        private bool busy;
+
         private Queue<byte> recievedData = new Queue<byte>();
         private bool alreadyAddedToList;
         private bool isFirstMeasurement = true;
@@ -36,6 +38,8 @@ namespace ScalesAutomation
 
         void serialPort_DataReceived(object s, SerialDataReceivedEventArgs e)
         {
+            busy = true;
+
             byte[] data = new byte[serialPort.BytesToRead];
             log.Debug("Bytes To Read: " + serialPort.BytesToRead.ToString() + Environment.NewLine);
 
@@ -44,6 +48,8 @@ namespace ScalesAutomation
             data.ToList().ForEach(b => recievedData.Enqueue(b));
 
             processData();
+
+            busy = false;
 
         }
 
@@ -139,12 +145,27 @@ namespace ScalesAutomation
 
         public void Dispose()
         {
-            if (serialPort != null)
-            {
-                if (serialPort.IsOpen)
-                    serialPort.Close();
+            var timeout = 500;
 
-                serialPort.Dispose();
+            while (timeout > 0)
+            {
+                if (!busy)
+                {
+                    if (serialPort != null)
+                    {
+                        if (serialPort.IsOpen)
+                            serialPort.Close();
+
+                        serialPort.Dispose();
+                    }
+
+                    break;
+                }
+                else
+                {
+                    Thread.Sleep(100);
+                    timeout -= 100;
+                }
             }
         }
     }
