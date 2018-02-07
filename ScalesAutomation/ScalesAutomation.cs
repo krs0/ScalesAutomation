@@ -135,8 +135,7 @@ namespace ScalesAutomation
         {
             btnPause.Enabled = false;
 
-            log.Debug(System.Environment.NewLine);
-            log.Debug("Button OK Clicked" + Environment.NewLine);
+            log.Debug(System.Environment.NewLine + "Button Start Clicked" + Environment.NewLine);
 
             simulationEnabled = chkEnableSimulation.Checked;
 
@@ -162,26 +161,43 @@ namespace ScalesAutomation
                 writeThread.Start();
             }
 
-            btnPause.Enabled = true;
             btnStart.Enabled = false;
+            btnPause.Enabled = true;
+            btnStopLot.Enabled = true;
 
+            DisableInputControls();
+            
         }
 
         void btnPause_Click(object sender, EventArgs e)
         {
-            log.Debug(System.Environment.NewLine + "Button Stop Clicked" + Environment.NewLine);
-
-            readPort.Dispose();
-
-            if (simulationEnabled)
-            {
-                writePort?.Dispose();
-                writeThread?.Abort();
-            }
+            log.Debug(System.Environment.NewLine + "Button Pause Clicked" + Environment.NewLine);
 
             btnPause.Enabled = false;
-            Thread.Sleep(100);
             btnStart.Enabled = true;
+            btnStopLot.Enabled = true;
+
+            CloseSerialCommunication();
+
+        }
+    
+        private void btnStopLot_Click(object sender, EventArgs e)
+        {
+            log.Debug(Environment.NewLine + "Button Stop Clicked" + Environment.NewLine);
+
+            btnStart.Enabled = true;
+            btnPause.Enabled = false;
+            btnStopLot.Enabled = false;
+
+            CloseSerialCommunication();
+
+            LotInfo = new LotInfo();
+            InitializeInputControls();
+            EnableInputControls();
+
+            // TODO: send file over network
+            // create a backup localy aswell
+            // if no network save locally and send later
 
         }
 
@@ -202,6 +218,8 @@ namespace ScalesAutomation
 
         private void cbProduct_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (cbProduct.SelectedIndex == -1) return;
+
             LotInfo.ProductName = cbProduct.Text;
             ProductDefinition = XmlHandler.Catalogue.Find(x => x.Name == LotInfo.ProductName);
 
@@ -218,6 +236,8 @@ namespace ScalesAutomation
 
         private void cbPackage_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (cbPackage.SelectedIndex == -1) return;
+
             // TODO: Separate type and netweight by _
             LotInfo.Package.Type = cbPackage.Text;
 
@@ -243,6 +263,46 @@ namespace ScalesAutomation
 
         #endregion
 
+        #region Methods
 
+        void EnableInputControls()
+        {
+            txtLot.Enabled = true;
+            cbProduct.Enabled = true;
+            cbPackage.Enabled = true;
+            txtNominalWeight.Enabled = false;
+            txtPackageTare.Enabled = false;
+        }
+
+        void DisableInputControls()
+        {
+            txtLot.Enabled = false;
+            cbProduct.Enabled = false;
+            cbPackage.Enabled = false;
+            txtNominalWeight.Enabled = false;
+            txtPackageTare.Enabled = false;
+        }
+
+        void InitializeInputControls()
+        {
+            txtLot.Text = "";
+            cbProduct.SelectedIndex = -1;
+            cbPackage.SelectedIndex = -1;
+            txtNominalWeight.Text = "";
+            txtPackageTare.Text = "";
+        }
+
+        void CloseSerialCommunication()
+        {
+            readPort.Dispose();
+
+            if (simulationEnabled)
+            {
+                writePort?.Dispose();
+                writeThread?.Abort();
+            }
+        }
+
+        #endregion  
     }
 }

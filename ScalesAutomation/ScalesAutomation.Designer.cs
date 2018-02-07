@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnPause = new System.Windows.Forms.Button();
             this.dataGridViewMeasurements = new System.Windows.Forms.DataGridView();
@@ -49,6 +49,7 @@
             this.lblPackage = new System.Windows.Forms.Label();
             this.lblPackageTare = new System.Windows.Forms.Label();
             this.cbProduct = new System.Windows.Forms.ComboBox();
+            this.btnStopLot = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMeasurements)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.measurementBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.scalesAutomationBindingSource)).BeginInit();
@@ -59,7 +60,7 @@
             // btnStart
             // 
             this.btnStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStart.Location = new System.Drawing.Point(87, 381);
+            this.btnStart.Location = new System.Drawing.Point(87, 283);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(150, 50);
             this.btnStart.TabIndex = 0;
@@ -71,7 +72,7 @@
             // 
             this.btnPause.Enabled = false;
             this.btnPause.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPause.Location = new System.Drawing.Point(270, 381);
+            this.btnPause.Location = new System.Drawing.Point(270, 283);
             this.btnPause.Name = "btnPause";
             this.btnPause.Size = new System.Drawing.Size(150, 50);
             this.btnPause.TabIndex = 1;
@@ -84,24 +85,24 @@
             this.dataGridViewMeasurements.AllowUserToAddRows = false;
             this.dataGridViewMeasurements.AllowUserToDeleteRows = false;
             this.dataGridViewMeasurements.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.RoyalBlue;
-            dataGridViewCellStyle1.NullValue = null;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewMeasurements.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.RoyalBlue;
+            dataGridViewCellStyle5.NullValue = null;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewMeasurements.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridViewMeasurements.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewMeasurements.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewMeasurements.DefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridViewMeasurements.Location = new System.Drawing.Point(501, 24);
             this.dataGridViewMeasurements.Name = "dataGridViewMeasurements";
             this.dataGridViewMeasurements.ReadOnly = true;
@@ -235,11 +236,24 @@
             this.cbProduct.TabIndex = 14;
             this.cbProduct.SelectedIndexChanged += new System.EventHandler(this.cbProduct_SelectedIndexChanged);
             // 
+            // btnStopLot
+            // 
+            this.btnStopLot.Enabled = false;
+            this.btnStopLot.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStopLot.Location = new System.Drawing.Point(184, 436);
+            this.btnStopLot.Name = "btnStopLot";
+            this.btnStopLot.Size = new System.Drawing.Size(150, 50);
+            this.btnStopLot.TabIndex = 15;
+            this.btnStopLot.Text = "Stop Lot";
+            this.btnStopLot.UseVisualStyleBackColor = true;
+            this.btnStopLot.Click += new System.EventHandler(this.btnStopLot_Click);
+            // 
             // ScalesAutomation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(734, 561);
+            this.Controls.Add(this.btnStopLot);
             this.Controls.Add(this.cbProduct);
             this.Controls.Add(this.lblPackageTare);
             this.Controls.Add(this.lblPackage);
@@ -287,6 +301,7 @@
         private System.Windows.Forms.Label lblPackage;
         private System.Windows.Forms.Label lblPackageTare;
         private System.Windows.Forms.ComboBox cbProduct;
+        private System.Windows.Forms.Button btnStopLot;
     }
 }
 

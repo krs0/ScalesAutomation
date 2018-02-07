@@ -30,7 +30,7 @@ namespace ScalesAutomation
         public List<Package> PackageDetails;
     }
 
-    enum State
+    enum MeasurementState
     {
         stable = 48,
         unstable = 49,
@@ -41,4 +41,5 @@ namespace ScalesAutomation
     {
         kg = 45
     };
+
 }
