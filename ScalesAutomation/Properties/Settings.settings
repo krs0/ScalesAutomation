@@ -14,5 +14,11 @@
     <Setting Name="CSVOutputPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">csv</Value>
     </Setting>
+    <Setting Name="CSVBackupPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">c:\Home\Krs\Work\Cantar\ScalesAutomation\CSVBackup\</Value>
+    </Setting>
+    <Setting Name="CSVServerFolderPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">c:\Home\Krs\Work\Cantar\ScalesAutomation\CSVServer\</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

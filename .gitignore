@@ -240,3 +240,5 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/CSVServer/2018-02-07-060953_aaa_Gut80-MargarinaCreme_Cutie_20Kg.csv
+/CSVBackup

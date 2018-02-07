@@ -14,11 +14,11 @@ namespace ScalesAutomation
     {
         public SynchronizedCollection<Measurement> Measurements;
 
+        readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         XmlHelper XmlHandler = new XmlHelper();
 
         System.Windows.Forms.Timer timer;
         DataTable dataTable = new DataTable();
-        readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         MySerialReader readPort;
         MySerialWriter writePort;
@@ -48,12 +48,13 @@ namespace ScalesAutomation
 
             timer = new System.Windows.Forms.Timer
             {
-                Interval = (1000) * (2),
+                Interval = 500,
                 Enabled = true
             };
             timer.Tick += new EventHandler(timer_Tick);
             timer.Start();
         }
+
         public static string AssemblyPath
         {
             get
@@ -67,7 +68,6 @@ namespace ScalesAutomation
 
         private void InitializeGuiFromXml()
         {
-            // TODO: There should be no spaces because it will be used to make file name
             foreach (var product in XmlHandler.Catalogue)
             {
                 cbProduct.Items.Add(product.Name);
@@ -93,10 +93,12 @@ namespace ScalesAutomation
         {
             dataTable.Columns.Add("#", typeof(int));
             dataTable.Columns.Add("Weight", typeof(string));
+            dataTable.Columns.Add("TimeStamp", typeof(string));
             dataGridViewMeasurements.DataSource = dataTable;
 
             dataGridViewMeasurements.Columns["#"].Width = 50;
             dataGridViewMeasurements.Columns["Weight"].Width = 100;
+            dataGridViewMeasurements.Columns["TimeStamp"].Width = 100;
 
             // Set Columns not sortable
             foreach (DataGridViewColumn column in dataGridViewMeasurements.Columns)
@@ -114,12 +116,13 @@ namespace ScalesAutomation
                     var row = dataTable.NewRow();
                     row["#"] = i;
                     row["Weight"] = Measurements[j].weight;
+                    row["TimeStamp"] = DateTime.Now.ToString("HHmmss");
                     dataTable.Rows.Add(row);
 
                     // Add row to excel
                     csvHelper.WriteLine(row, dataTable.Columns.Count);
 
-                    log.Debug("Measurements Added: " + row["#"] + " - Weight: " + row["Weight"]);
+                    log.Debug("Measurements Added: " + row["#"] + " - Weight: " + row["Weight"] + " - at: " + row["TimeStamp"]);
                 }
             }
 
@@ -133,9 +136,11 @@ namespace ScalesAutomation
 
         void btnStart_Click(object sender, EventArgs e)
         {
+            if (!CheckInputControls()) return;
+
             btnPause.Enabled = false;
 
-            log.Debug(System.Environment.NewLine + "Button Start Clicked" + Environment.NewLine);
+            log.Debug(Environment.NewLine + "Button Start Clicked" + Environment.NewLine);
 
             simulationEnabled = chkEnableSimulation.Checked;
 
@@ -166,12 +171,12 @@ namespace ScalesAutomation
             btnStopLot.Enabled = true;
 
             DisableInputControls();
-            
+
         }
 
         void btnPause_Click(object sender, EventArgs e)
         {
-            log.Debug(System.Environment.NewLine + "Button Pause Clicked" + Environment.NewLine);
+            log.Debug(Environment.NewLine + "Button Pause Clicked" + Environment.NewLine);
 
             btnPause.Enabled = false;
             btnStart.Enabled = true;
@@ -195,10 +200,12 @@ namespace ScalesAutomation
             InitializeInputControls();
             EnableInputControls();
 
-            // TODO: send file over network
-            // create a backup localy aswell
-            // if no network save locally and send later
-
+              csvHelper.BackupCurrentCsv();
+            // test if folder exists
+            if (csvHelper.IsServerFolderReachable())
+            {
+                csvHelper.CopyCurrentCsvToServer(Settings.Default.CSVServerFolderPath);
+            }
         }
 
         void chkEnableSimulation_CheckedChanged(object sender, EventArgs e)
@@ -264,6 +271,21 @@ namespace ScalesAutomation
         #endregion
 
         #region Methods
+
+        private bool CheckInputControls()
+        {
+            bool inputsAreValid = true;
+
+            if ((txtLot.Text == "") || (cbProduct.SelectedIndex == -1) || (cbPackage.SelectedIndex == -1) || (txtPackageTare.Text == "") || (txtNominalWeight.Text == ""))
+            {
+                log.Debug("Invalid Lot configuration detected!" + Environment.NewLine);
+                MessageBox.Show("Invalid Lot configuration detected. Please make sure all fields are filled and that they have the rigt values",
+                    "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                inputsAreValid = false;
+            }
+
+            return inputsAreValid;
+        }
 
         void EnableInputControls()
         {

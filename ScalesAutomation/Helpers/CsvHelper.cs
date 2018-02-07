@@ -1,21 +1,29 @@
-﻿using System;
+﻿using ScalesAutomation.Properties;
+using System;
 using System.Data;
 using System.IO;
+using log4net;
+using System.Reflection;
 
 namespace ScalesAutomation
 {
     public class CsvHelper
     {
         public string CsvFileFullPath;
+        public string CsvFolderPath;
+        public string CsvFileFullName;
 
+        readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private bool appendToExistingFile;
 
-        public void PrepareFile(string filePath, LotInfo lotInfo, DataTable dataTable)
+        #region Public Methods
+
+        public void PrepareFile(string folderPath, LotInfo lotInfo, DataTable dataTable)
         {
             var productInfo = lotInfo.Lot + "_" + lotInfo.ProductName + "_" + lotInfo.Package.Type;
             productInfo = productInfo.Replace(" ", ""); // No spaces in file names
 
-            CsvFileFullPath = DetermineFullFilePath(filePath, productInfo);
+            CalculatePaths(folderPath, productInfo);
 
             if (!appendToExistingFile)
                 CreateFile(lotInfo, dataTable);
@@ -46,7 +54,67 @@ namespace ScalesAutomation
             }
             catch (Exception ex)
             {
-                throw ex;
+                log.Error("Cannot write measurement to csv file... " + CsvFileFullPath + ex.Message + Environment.NewLine);
+                throw;
+            }
+        }
+
+        public void CopyCurrentCsvToServer(string serverFolderPath)
+        {
+            try
+            {
+                string destinationFilePath = Path.Combine(serverFolderPath, CsvFileFullName);
+
+                File.Copy(CsvFileFullPath, destinationFilePath, true);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Cannot copy file to server:" + CsvFileFullName + " From " + CsvFileFullPath + " to " + serverFolderPath + ex.Message + Environment.NewLine);
+                throw;
+            }
+        }
+
+        public void BackupCurrentCsv()
+        {
+            FileCopy(CsvFolderPath, Settings.Default.CSVBackupPath, CsvFileFullName);
+        }
+
+        public bool IsServerFolderReachable()
+        {
+            return DirectoryExists(CsvFolderPath);
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void CalculatePaths(string folderPath, string productInfo)
+        {
+            try
+            {
+                CsvFolderPath = folderPath;
+
+                var dirInfo = new DirectoryInfo(CsvFolderPath);
+                var files = dirInfo.GetFiles("*" + productInfo + ".csv");
+
+                // if a file exists starting with same product info (LOT!!!), reuse it
+                if (files.Length > 0)
+                {
+                    CsvFileFullName = files[0].Name + files[0].Extension;
+                    CsvFileFullPath = files[0].FullName;
+                    appendToExistingFile = true;
+                }
+                else
+                {
+                    CsvFileFullName = DateTime.Now.ToString("yyyy-MM-dd-hhmmss") + "_" + productInfo + ".csv";
+                    CsvFileFullPath = Path.Combine(CsvFolderPath, CsvFileFullName);
+                    appendToExistingFile = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Cannot calculate CSV file Path... " + CsvFileFullPath + ex.Message + Environment.NewLine);
+                throw;
             }
         }
 
@@ -74,30 +142,46 @@ namespace ScalesAutomation
             }
             catch (Exception ex)
             {
-                throw ex;
+                log.Error("Error creating CSV File... " + CsvFileFullPath + ex.Message + Environment.NewLine);
+                throw;
             }
         }
 
-        private string DetermineFullFilePath(string filePath, string productInfo)
+        private void FileCopy(string sourceFolderPath, string destinationFolderPath, string fileName)
         {
-            string fileFullPath;
-            var dirInfo = new DirectoryInfo(filePath);
-            var files = dirInfo.GetFiles("*" + productInfo + ".csv");
-
-            // if a file exists starting with same product info (LOT!!!), reuse it
-            if (files.Length > 0)
+            try
             {
-                fileFullPath = files[0].FullName;
-                appendToExistingFile = true;
-            }
-            else
-            {
-                fileFullPath = Path.Combine(filePath, DateTime.Now.ToString("yyyy-MM-dd-hhmmss") + "_" + productInfo + ".csv");
-                appendToExistingFile = false;
-            }
+                string sourceFilePath = Path.Combine(sourceFolderPath, fileName);
+                string destinationFilePath = Path.Combine(destinationFolderPath, fileName);
 
-            return fileFullPath;
+                File.Copy(sourceFilePath, destinationFilePath, true);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Cannot copy file:" + fileName + " From " + sourceFolderPath + " to " + destinationFolderPath + ex.Message + Environment.NewLine);
+                throw;
+            }
         }
+
+        private bool DirectoryExists(string folderPath)
+        {
+            bool exists = false;
+
+            try
+            {
+                if (Directory.Exists(folderPath))
+                    exists = true;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Folder does not exist:" + folderPath + ex.Message + Environment.NewLine);
+                throw;
+            }
+
+            return exists;
+        }
+
+        #endregion
 
     }
 }

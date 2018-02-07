@@ -70,5 +70,29 @@ namespace ScalesAutomation.Properties {
                 this["CSVOutputPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Home\\Krs\\Work\\Cantar\\ScalesAutomation\\CSVBackup\\")]
+        public string CSVBackupPath {
+            get {
+                return ((string)(this["CSVBackupPath"]));
+            }
+            set {
+                this["CSVBackupPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Home\\Krs\\Work\\Cantar\\ScalesAutomation\\CSVServer\\")]
+        public string CSVServerFolderPath {
+            get {
+                return ((string)(this["CSVServerFolderPath"]));
+            }
+            set {
+                this["CSVServerFolderPath"] = value;
+            }
+        }
     }
 }
