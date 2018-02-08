@@ -12,13 +12,19 @@
       <Value Profile="(Default)">CatalogProduse.xml</Value>
     </Setting>
     <Setting Name="CSVOutputPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">csv</Value>
+      <Value Profile="(Default)">CSVOutput\</Value>
     </Setting>
     <Setting Name="CSVBackupPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">c:\Home\Krs\Work\Cantar\ScalesAutomation\CSVBackup\</Value>
+      <Value Profile="(Default)">CSVBackup\</Value>
     </Setting>
     <Setting Name="CSVServerFolderPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">c:\Home\Krs\Work\Cantar\ScalesAutomation\CSVServer\</Value>
+      <Value Profile="(Default)">CSVServer\</Value>
+    </Setting>
+    <Setting Name="SerialTransmissionSimulationPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SerialTransmissionSimulation.txt</Value>
+    </Setting>
+    <Setting Name="SimulationEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

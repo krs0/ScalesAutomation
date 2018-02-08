@@ -61,7 +61,7 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("csv")]
+        [global::System.Configuration.DefaultSettingValueAttribute("CSVOutput\\")]
         public string CSVOutputPath {
             get {
                 return ((string)(this["CSVOutputPath"]));
@@ -73,7 +73,7 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Home\\Krs\\Work\\Cantar\\ScalesAutomation\\CSVBackup\\")]
+        [global::System.Configuration.DefaultSettingValueAttribute("CSVBackup\\")]
         public string CSVBackupPath {
             get {
                 return ((string)(this["CSVBackupPath"]));
@@ -85,13 +85,37 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Home\\Krs\\Work\\Cantar\\ScalesAutomation\\CSVServer\\")]
+        [global::System.Configuration.DefaultSettingValueAttribute("CSVServer\\")]
         public string CSVServerFolderPath {
             get {
                 return ((string)(this["CSVServerFolderPath"]));
             }
             set {
                 this["CSVServerFolderPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SerialTransmissionSimulation.txt")]
+        public string SerialTransmissionSimulationPath {
+            get {
+                return ((string)(this["SerialTransmissionSimulationPath"]));
+            }
+            set {
+                this["SerialTransmissionSimulationPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SimulationEnabled {
+            get {
+                return ((bool)(this["SimulationEnabled"]));
+            }
+            set {
+                this["SimulationEnabled"] = value;
             }
         }
     }

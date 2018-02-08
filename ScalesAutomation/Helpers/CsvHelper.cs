@@ -100,7 +100,7 @@ namespace ScalesAutomation
                 // if a file exists starting with same product info (LOT!!!), reuse it
                 if (files.Length > 0)
                 {
-                    CsvFileFullName = files[0].Name + files[0].Extension;
+                    CsvFileFullName = files[0].Name;
                     CsvFileFullPath = files[0].FullName;
                     appendToExistingFile = true;
                 }

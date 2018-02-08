@@ -56,16 +56,15 @@ namespace ScalesAutomation
         {
             string line;
             string[] lineAsStringArray;
-            string filePath = "transmission.txt";
             int i = 0;
 
 
-            var lineCount = File.ReadLines(filePath).Count();
+            var lineCount = File.ReadLines(Settings.Default.SerialTransmissionSimulationPath).Count();
             byte[][] byteArray2d = new byte[lineCount][];
 
             log.Debug("Loading from file: " + Environment.NewLine);
 
-            System.IO.StreamReader file = new System.IO.StreamReader(filePath);
+            var file = new StreamReader(Settings.Default.SerialTransmissionSimulationPath);
             while ((line = file.ReadLine()) != null)
             {
                 lineAsStringArray = line.Split('-');

@@ -39,18 +39,26 @@ namespace ScalesAutomation
 
         void serialPort_DataReceived(object s, SerialDataReceivedEventArgs e)
         {
-            busy = true;
+            try
+            {
+                if (!serialPort.IsOpen) return;
 
-            byte[] data = new byte[serialPort.BytesToRead];
-            log.Debug("Bytes To Read: " + serialPort.BytesToRead.ToString() + Environment.NewLine);
+                busy = true;
 
-            serialPort.Read(data, 0, data.Length);
+                byte[] data = new byte[serialPort.BytesToRead];
+                log.Debug("Bytes To Read: " + serialPort.BytesToRead.ToString() + Environment.NewLine);
 
-            data.ToList().ForEach(b => recievedData.Enqueue(b));
+                serialPort.Read(data, 0, data.Length);
 
-            processData();
+                data.ToList().ForEach(b => recievedData.Enqueue(b));
 
-            busy = false;
+                processData();
+
+                busy = false;
+            }
+            catch (Exception ex)
+            {
+            }
 
         }
 
@@ -154,6 +162,8 @@ namespace ScalesAutomation
                 {
                     if (serialPort != null)
                     {
+                        serialPort.DataReceived -= serialPort_DataReceived;
+
                         if (serialPort.IsOpen)
                             serialPort.Close();
 
@@ -167,6 +177,16 @@ namespace ScalesAutomation
                     Thread.Sleep(100);
                     timeout -= 100;
                 }
+            }
+
+            if (serialPort != null)
+            {
+                serialPort.DataReceived -= serialPort_DataReceived;
+
+                if (serialPort.IsOpen)
+                    serialPort.Close();
+
+                serialPort.Dispose();
             }
         }
     }

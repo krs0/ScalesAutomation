@@ -14,6 +14,8 @@ namespace ScalesAutomation
     {
         public SynchronizedCollection<Measurement> Measurements;
 
+        bool stopPressed;
+
         readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         XmlHelper XmlHandler = new XmlHelper();
 
@@ -108,6 +110,8 @@ namespace ScalesAutomation
         void timer_Tick(object sender, EventArgs e)
         {
 
+            if (stopPressed) return;
+
             if (Measurements.Count > 0)
             {
                 var nrOfRowsInDataTable = dataTable.Rows.Count;
@@ -194,18 +198,17 @@ namespace ScalesAutomation
             btnPause.Enabled = false;
             btnStopLot.Enabled = false;
 
+            stopPressed = true;
+
             CloseSerialCommunication();
 
             LotInfo = new LotInfo();
             InitializeInputControls();
             EnableInputControls();
 
-              csvHelper.BackupCurrentCsv();
-            // test if folder exists
+            csvHelper.BackupCurrentCsv();
             if (csvHelper.IsServerFolderReachable())
-            {
                 csvHelper.CopyCurrentCsvToServer(Settings.Default.CSVServerFolderPath);
-            }
         }
 
         void chkEnableSimulation_CheckedChanged(object sender, EventArgs e)
@@ -307,6 +310,8 @@ namespace ScalesAutomation
 
         void InitializeInputControls()
         {
+            dataTable.Rows.Clear();
+            dataGridViewMeasurements.Refresh();
             txtLot.Text = "";
             cbProduct.SelectedIndex = -1;
             cbPackage.SelectedIndex = -1;
