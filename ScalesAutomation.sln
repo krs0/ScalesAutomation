@@ -7,12 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScalesAutomation", "ScalesA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{C1A43D78-EBCE-4585-BF93-DD9957827578}"
 	ProjectSection(SolutionItems) = preProject
-		Resources\Cantar ASCII.png = Resources\Cantar ASCII.png
-		Resources\Cantar HEX.png = Resources\Cantar HEX.png
+		Resources\Bilanciai EV2001 English Manual.pdf = Resources\Bilanciai EV2001 English Manual.pdf
 		Resources\CatalogProduse.xml = Resources\CatalogProduse.xml
-		Resources\English Manual Bilanciai.pdf = Resources\English Manual Bilanciai.pdf
-		Resources\real transmission.txt = Resources\real transmission.txt
-		Resources\transmission.txt = Resources\transmission.txt
+		Resources\Recorded Transmission.txt = Resources\Recorded Transmission.txt
+		Resources\SerialTransmissionSimulation.txt = Resources\SerialTransmissionSimulation.txt
 	EndProjectSection
 EndProject
 Global

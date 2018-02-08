@@ -29,8 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScalesAutomation));
             this.btnStart = new System.Windows.Forms.Button();
             this.btnPause = new System.Windows.Forms.Button();
             this.dataGridViewMeasurements = new System.Windows.Forms.DataGridView();
@@ -38,7 +39,6 @@
             this.scalesAutomationBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.scalesAutomationBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.measurementBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.chkEnableSimulation = new System.Windows.Forms.CheckBox();
             this.txtLot = new System.Windows.Forms.TextBox();
             this.txtNominalWeight = new System.Windows.Forms.TextBox();
             this.txtPackageTare = new System.Windows.Forms.TextBox();
@@ -63,7 +63,7 @@
             this.btnStart.Location = new System.Drawing.Point(87, 283);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(150, 50);
-            this.btnStart.TabIndex = 0;
+            this.btnStart.TabIndex = 6;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
@@ -75,7 +75,7 @@
             this.btnPause.Location = new System.Drawing.Point(270, 283);
             this.btnPause.Name = "btnPause";
             this.btnPause.Size = new System.Drawing.Size(150, 50);
-            this.btnPause.TabIndex = 1;
+            this.btnPause.TabIndex = 7;
             this.btnPause.Text = "Pause";
             this.btnPause.UseVisualStyleBackColor = true;
             this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
@@ -85,43 +85,31 @@
             this.dataGridViewMeasurements.AllowUserToAddRows = false;
             this.dataGridViewMeasurements.AllowUserToDeleteRows = false;
             this.dataGridViewMeasurements.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.RoyalBlue;
-            dataGridViewCellStyle5.NullValue = null;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewMeasurements.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.RoyalBlue;
+            dataGridViewCellStyle1.NullValue = null;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewMeasurements.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewMeasurements.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewMeasurements.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewMeasurements.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridViewMeasurements.Location = new System.Drawing.Point(501, 24);
             this.dataGridViewMeasurements.Name = "dataGridViewMeasurements";
             this.dataGridViewMeasurements.ReadOnly = true;
             this.dataGridViewMeasurements.RowTemplate.Height = 25;
-            this.dataGridViewMeasurements.Size = new System.Drawing.Size(200, 508);
+            this.dataGridViewMeasurements.Size = new System.Drawing.Size(307, 508);
             this.dataGridViewMeasurements.TabIndex = 3;
-            // 
-            // chkEnableSimulation
-            // 
-            this.chkEnableSimulation.AutoSize = true;
-            this.chkEnableSimulation.Checked = true;
-            this.chkEnableSimulation.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkEnableSimulation.Location = new System.Drawing.Point(27, 515);
-            this.chkEnableSimulation.Name = "chkEnableSimulation";
-            this.chkEnableSimulation.Size = new System.Drawing.Size(110, 17);
-            this.chkEnableSimulation.TabIndex = 4;
-            this.chkEnableSimulation.Text = "Enable Simulation";
-            this.chkEnableSimulation.UseVisualStyleBackColor = true;
-            this.chkEnableSimulation.CheckedChanged += new System.EventHandler(this.chkEnableSimulation_CheckedChanged);
+            this.dataGridViewMeasurements.TabStop = false;
             // 
             // txtLot
             // 
@@ -129,7 +117,7 @@
             this.txtLot.Location = new System.Drawing.Point(184, 24);
             this.txtLot.Name = "txtLot";
             this.txtLot.Size = new System.Drawing.Size(288, 26);
-            this.txtLot.TabIndex = 5;
+            this.txtLot.TabIndex = 1;
             this.txtLot.Validated += new System.EventHandler(this.txtLot_Validated);
             // 
             // txtNominalWeight
@@ -139,7 +127,7 @@
             this.txtNominalWeight.Location = new System.Drawing.Point(184, 192);
             this.txtNominalWeight.Name = "txtNominalWeight";
             this.txtNominalWeight.Size = new System.Drawing.Size(288, 26);
-            this.txtNominalWeight.TabIndex = 6;
+            this.txtNominalWeight.TabIndex = 5;
             this.txtNominalWeight.Validated += new System.EventHandler(this.txtNominalWeight_Validated);
             // 
             // txtPackageTare
@@ -149,7 +137,7 @@
             this.txtPackageTare.Location = new System.Drawing.Point(184, 150);
             this.txtPackageTare.Name = "txtPackageTare";
             this.txtPackageTare.Size = new System.Drawing.Size(288, 26);
-            this.txtPackageTare.TabIndex = 7;
+            this.txtPackageTare.TabIndex = 4;
             this.txtPackageTare.Validated += new System.EventHandler(this.txtPackageTare_Validated);
             // 
             // cbPackage
@@ -161,7 +149,7 @@
             this.cbPackage.Margin = new System.Windows.Forms.Padding(2);
             this.cbPackage.Name = "cbPackage";
             this.cbPackage.Size = new System.Drawing.Size(288, 26);
-            this.cbPackage.TabIndex = 8;
+            this.cbPackage.TabIndex = 3;
             this.cbPackage.SelectedIndexChanged += new System.EventHandler(this.cbPackage_SelectedIndexChanged);
             // 
             // lblProduct
@@ -185,7 +173,7 @@
             this.lblLot.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblLot.Name = "lblLot";
             this.lblLot.Size = new System.Drawing.Size(42, 18);
-            this.lblLot.TabIndex = 10;
+            this.lblLot.TabIndex = 14;
             this.lblLot.Text = "Lot:";
             // 
             // lblNominalWeight
@@ -233,7 +221,7 @@
             this.cbProduct.Margin = new System.Windows.Forms.Padding(2);
             this.cbProduct.Name = "cbProduct";
             this.cbProduct.Size = new System.Drawing.Size(288, 26);
-            this.cbProduct.TabIndex = 14;
+            this.cbProduct.TabIndex = 2;
             this.cbProduct.SelectedIndexChanged += new System.EventHandler(this.cbProduct_SelectedIndexChanged);
             // 
             // btnStopLot
@@ -243,7 +231,7 @@
             this.btnStopLot.Location = new System.Drawing.Point(184, 436);
             this.btnStopLot.Name = "btnStopLot";
             this.btnStopLot.Size = new System.Drawing.Size(150, 50);
-            this.btnStopLot.TabIndex = 15;
+            this.btnStopLot.TabIndex = 8;
             this.btnStopLot.Text = "Stop Lot";
             this.btnStopLot.UseVisualStyleBackColor = true;
             this.btnStopLot.Click += new System.EventHandler(this.btnStopLot_Click);
@@ -252,7 +240,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(734, 561);
+            this.ClientSize = new System.Drawing.Size(845, 561);
             this.Controls.Add(this.btnStopLot);
             this.Controls.Add(this.cbProduct);
             this.Controls.Add(this.lblPackageTare);
@@ -264,10 +252,10 @@
             this.Controls.Add(this.txtPackageTare);
             this.Controls.Add(this.txtNominalWeight);
             this.Controls.Add(this.txtLot);
-            this.Controls.Add(this.chkEnableSimulation);
             this.Controls.Add(this.dataGridViewMeasurements);
             this.Controls.Add(this.btnPause);
             this.Controls.Add(this.btnStart);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ScalesAutomation";
             this.Text = "Automatizare Cantar Bilanciai";
             this.Load += new System.EventHandler(this.ScalesAutomation_Load);
@@ -290,7 +278,6 @@
         private System.Windows.Forms.BindingSource scalesAutomationBindingSource;
         private System.Windows.Forms.BindingSource scalesAutomationBindingSource1;
         private System.Windows.Forms.BindingSource measurementBindingSource1;
-        private System.Windows.Forms.CheckBox chkEnableSimulation;
         private System.Windows.Forms.TextBox txtLot;
         private System.Windows.Forms.TextBox txtNominalWeight;
         private System.Windows.Forms.TextBox txtPackageTare;

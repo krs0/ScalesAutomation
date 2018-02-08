@@ -42,6 +42,8 @@ namespace ScalesAutomation
         {
             InitializeComponent();
 
+            simulationEnabled = Settings.Default.SimulationEnabled;
+
             XmlHandler.ReadCatalogue(Path.Combine(AssemblyPath, @Settings.Default.CatalogFilePath));
             InitializeGuiFromXml();
 
@@ -120,7 +122,7 @@ namespace ScalesAutomation
                     var row = dataTable.NewRow();
                     row["#"] = i;
                     row["Weight"] = Measurements[j].weight;
-                    row["TimeStamp"] = DateTime.Now.ToString("HHmmss");
+                    row["TimeStamp"] = DateTime.Now.ToString("HH:mm:ss");
                     dataTable.Rows.Add(row);
 
                     // Add row to excel
@@ -145,8 +147,6 @@ namespace ScalesAutomation
             btnPause.Enabled = false;
 
             log.Debug(Environment.NewLine + "Button Start Clicked" + Environment.NewLine);
-
-            simulationEnabled = chkEnableSimulation.Checked;
 
             var filePath = Path.Combine(AssemblyPath, Settings.Default.CSVOutputPath);
             csvHelper = new CsvHelper();
@@ -209,11 +209,6 @@ namespace ScalesAutomation
             csvHelper.BackupCurrentCsv();
             if (csvHelper.IsServerFolderReachable())
                 csvHelper.CopyCurrentCsvToServer(Settings.Default.CSVServerFolderPath);
-        }
-
-        void chkEnableSimulation_CheckedChanged(object sender, EventArgs e)
-        {
-            simulationEnabled = chkEnableSimulation.Checked;
         }
 
         #region "Events For Input Controls"
