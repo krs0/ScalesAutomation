@@ -39,26 +39,31 @@ namespace ScalesAutomation
 
         void serialPort_DataReceived(object s, SerialDataReceivedEventArgs e)
         {
-            try
+            Thread myThread = new System.Threading.Thread(delegate ()
             {
-                if (!serialPort.IsOpen) return;
+                try
+                {
+                    if (!serialPort.IsOpen) return;
 
-                busy = true;
+                    busy = true;
 
-                byte[] data = new byte[serialPort.BytesToRead];
-                log.Debug("Bytes To Read: " + serialPort.BytesToRead.ToString() + Environment.NewLine);
+                    byte[] data = new byte[serialPort.BytesToRead];
+                    log.Debug("Bytes To Read: " + serialPort.BytesToRead.ToString() + Environment.NewLine);
 
-                serialPort.Read(data, 0, data.Length);
+                    serialPort.Read(data, 0, data.Length);
 
-                data.ToList().ForEach(b => recievedData.Enqueue(b));
+                    data.ToList().ForEach(b => recievedData.Enqueue(b));
 
-                processData();
+                    processData();
 
-                busy = false;
-            }
-            catch (Exception ex)
-            {
-            }
+                    busy = false;
+                }
+                catch (Exception ex)
+                {
+                }
+            });
+
+            myThread.Start();
 
         }
 
@@ -154,7 +159,8 @@ namespace ScalesAutomation
 
         public void Dispose()
         {
-            var timeout = 500;
+            var timeout = 100;
+            var finalized = false;
 
             while (timeout > 0)
             {
@@ -168,25 +174,30 @@ namespace ScalesAutomation
                             serialPort.Close();
 
                         serialPort.Dispose();
+
+                        finalized = true;
                     }
 
                     break;
                 }
                 else
                 {
-                    Thread.Sleep(100);
-                    timeout -= 100;
+                    Thread.Sleep(10);
+                    timeout -= 10;
                 }
             }
 
-            if (serialPort != null)
+            if (!finalized)
             {
-                serialPort.DataReceived -= serialPort_DataReceived;
+                if (serialPort != null)
+                {
+                    serialPort.DataReceived -= serialPort_DataReceived;
 
-                if (serialPort.IsOpen)
-                    serialPort.Close();
+                    if (serialPort.IsOpen)
+                        serialPort.Close();
 
-                serialPort.Dispose();
+                    serialPort.Dispose();
+                }
             }
         }
     }
