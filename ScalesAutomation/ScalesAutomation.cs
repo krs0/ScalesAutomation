@@ -48,7 +48,6 @@ namespace ScalesAutomation
             InitializeGuiFromXml();
 
             Measurements = new SynchronizedCollection<Measurement>();
-            csvHelper = new CsvHelper();
 
             timer = new System.Windows.Forms.Timer
             {
@@ -209,6 +208,8 @@ namespace ScalesAutomation
             csvHelper.BackupCurrentCsv();
             if (csvHelper.IsServerFolderReachable())
                 csvHelper.CopyCurrentCsvToServer(Settings.Default.CSVServerFolderPath);
+
+            stopPressed = false;
         }
 
         #region "Events For Input Controls"

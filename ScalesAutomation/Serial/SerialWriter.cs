@@ -17,14 +17,13 @@ namespace ScalesAutomation
         public MySerialWriter()
         {
             serialPort = new SerialPort(Settings.Default.WriteCOMPort, 4800, Parity.Even, 7, StopBits.Two);
-            Thread.Sleep(1000);
+            Thread.Sleep(100);
 
             if (!serialPort.IsOpen)
                 serialPort.Open();
 
             startTransmissionFromFile();
 
-            serialPort.Close();
             this.Dispose();
 
         }

@@ -26,8 +26,67 @@ namespace ScalesAutomation
         {
             Measurements = measurements;
 
+            InitializeTransmission();
+        }
+
+        public void enableCyclicTransmission()
+        {
+            byte[] txBuffer = prepareCyclicTransmissionPackage();
+            log.Debug("Enabling Cyclic Transmission... " + BitConverter.ToString(txBuffer) + Environment.NewLine);
+
+            serialPort.Write(txBuffer, 0, txBuffer.Length);
+            Thread.Sleep(10);
+        }
+
+        public void Dispose()
+        {
+            var timeout = 100;
+            var finalized = false;
+
+            while (timeout > 0)
+            {
+                if (!busy)
+                {
+                    if (serialPort != null)
+                    {
+                        serialPort.DataReceived -= serialPort_DataReceived;
+
+                        if (serialPort.IsOpen)
+                            serialPort.Close();
+
+                        serialPort.Dispose();
+
+                        finalized = true;
+                    }
+
+                    break;
+                }
+                else
+                {
+                    Thread.Sleep(10);
+                    timeout -= 10;
+                }
+            }
+
+            if (!finalized)
+            {
+                if (serialPort != null)
+                {
+                    serialPort.DataReceived -= serialPort_DataReceived;
+
+                    if (serialPort.IsOpen)
+                        serialPort.Close();
+
+                    serialPort.Dispose();
+                }
+            }
+        }
+
+        #region Private Methods
+
+        void InitializeTransmission()
+        {
             serialPort = new SerialPort(Settings.Default.ReadCOMPort, 4800, Parity.Even, 7, StopBits.Two);
-            
 
             if (!serialPort.IsOpen)
             {
@@ -60,6 +119,7 @@ namespace ScalesAutomation
                 }
                 catch (Exception ex)
                 {
+                    log.Debug("DataReceived: " + Environment.NewLine);
                 }
             });
 
@@ -135,15 +195,6 @@ namespace ScalesAutomation
             }
         }
 
-        public void enableCyclicTransmission()
-        {
-            byte[] txBuffer = prepareCyclicTransmissionPackage();
-            log.Debug("Enabling Cyclic Transmission... " + BitConverter.ToString(txBuffer) + Environment.NewLine);
-
-            serialPort.Write(txBuffer, 0, txBuffer.Length);
-            Thread.Sleep(10);
-        }
-
         private byte[] prepareCyclicTransmissionPackage()
         {
             byte[] txBuffer = new byte[3];
@@ -157,48 +208,7 @@ namespace ScalesAutomation
 
         }
 
-        public void Dispose()
-        {
-            var timeout = 100;
-            var finalized = false;
+        #endregion
 
-            while (timeout > 0)
-            {
-                if (!busy)
-                {
-                    if (serialPort != null)
-                    {
-                        serialPort.DataReceived -= serialPort_DataReceived;
-
-                        if (serialPort.IsOpen)
-                            serialPort.Close();
-
-                        serialPort.Dispose();
-
-                        finalized = true;
-                    }
-
-                    break;
-                }
-                else
-                {
-                    Thread.Sleep(10);
-                    timeout -= 10;
-                }
-            }
-
-            if (!finalized)
-            {
-                if (serialPort != null)
-                {
-                    serialPort.DataReceived -= serialPort_DataReceived;
-
-                    if (serialPort.IsOpen)
-                        serialPort.Close();
-
-                    serialPort.Dispose();
-                }
-            }
-        }
     }
 }
