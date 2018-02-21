@@ -25,10 +25,12 @@ namespace ScalesAutomation
         MySerialReader readPort;
         MySerialWriter writePort;
         Thread writeThread;
-        Thread readThread;
 
         bool simulationEnabled;
         CsvHelper csvHelper;
+
+        int measurementTollerance;
+        int netWeight;
 
         #region Properties
 
@@ -49,13 +51,8 @@ namespace ScalesAutomation
 
             Measurements = new SynchronizedCollection<Measurement>();
 
-            timer = new System.Windows.Forms.Timer
-            {
-                Interval = 500,
-                Enabled = true
-            };
-            timer.Tick += new EventHandler(timer_Tick);
-            timer.Start();
+            CreateTimer();
+
         }
 
         public static string AssemblyPath
@@ -67,27 +64,6 @@ namespace ScalesAutomation
                 string path = Uri.UnescapeDataString(uri.Path);
                 return Path.GetDirectoryName(path);
             }
-        }
-
-        private void InitializeGuiFromXml()
-        {
-            foreach (var product in XmlHandler.Catalogue)
-            {
-                cbProduct.Items.Add(product.Name);
-
-                // Keep for reference. Adds an array to a cb.
-                //cbPackage.Items.AddRange(new object[] {"CutieCarton10Kg", "GaleataPlastic5Kg"});
-            }
-        }
-
-        void ReadThread()
-        {
-            readPort = new MySerialReader(Measurements);
-        }
-
-        void WriteThread()
-        {
-            writePort = new MySerialWriter();
         }
 
         #region "Events"
@@ -110,38 +86,113 @@ namespace ScalesAutomation
 
         void timer_Tick(object sender, EventArgs e)
         {
+            List<Measurement> validMeasurements = new List<Measurement>();
+            int measurementStartPosition;
+            int measurementEndPosition = 0;
+            bool endOfMeasurementFound = false;
 
-            if (stopPressed) return;
+            if (stopPressed) return; // Do not process any more measurements
 
             if (Measurements.Count > 0)
             {
-                var nrOfRowsInDataTable = dataTable.Rows.Count;
-                for (int i = nrOfRowsInDataTable, j = 0; i < nrOfRowsInDataTable + Measurements.Count; i++, j++)
+                // Keep only one measurement between 2 consecutive "0"s
+                // - A valid measurement will be the last Stable measurement before a Stable "0"
+                // - Glitches should be filtered out in code above this function                 
+
+                // If no start detected insert one artificially
+                if (!(Measurements[0].weight == 0))
                 {
-                    var row = dataTable.NewRow();
-                    row["#"] = i;
-                    row["Weight"] = Measurements[j].weight;
-                    row["TimeStamp"] = DateTime.Now.ToString("HH:mm:ss");
-                    dataTable.Rows.Add(row);
-
-                    // Add row to excel
-                    csvHelper.WriteLine(row, dataTable.Columns.Count);
-
-                    log.Debug("Measurements Added: " + row["#"] + " - Weight: " + row["Weight"] + " - at: " + row["TimeStamp"]);
+                    var item = new Measurement
+                    {
+                        weight = 0,
+                        isStable = true
+                    };
+                    Measurements.Insert(0, item);
                 }
+
+                // Identify Start and end of measurement positions
+                while (Measurements.Count > 1) // Start supposed at [0]
+                {
+                    measurementStartPosition = 0;
+
+                    // Look for next "0"
+                    for (int i = 1; i < Measurements.Count; i++)
+                    {
+                        // Ignore all duplicate trailing "0"
+                        if ((i == measurementStartPosition + 1) && (Measurements[i].weight == 0))
+                        {
+                            measurementStartPosition = i;
+                        }
+                        else
+                        {
+                            if (Measurements[i].weight == 0) // if end of measurement found
+                            {
+                                endOfMeasurementFound = true;
+                                measurementEndPosition = i - 1;
+                                break;
+                            }
+                        }
+                    }
+
+                    // If next "0" found, save last stable measurement and discard everything else
+                    if (endOfMeasurementFound)
+                    {
+                        var measurement = Measurements[measurementEndPosition];
+                        // Sanity Check at the end with expected value
+                        if (measurement.weight > (netWeight - measurementTollerance) || 
+                            measurement.weight < (netWeight + measurementTollerance))
+                        {
+                            validMeasurements.Add(measurement);
+                        }
+                        else
+                            log.Error("Measurement not within tollerance: " + measurement.weight);
+
+                        // clear Measuremetns array for the processed measurements
+                        for (int i = 0; i <= measurementEndPosition; i++)
+                            Measurements.RemoveAt(i);
+
+                        endOfMeasurementFound = false;
+                    }
+                }
+
+                // Add all valid measurements to DataTable and excel
+                AddToDataTableAndExcel(validMeasurements);
             }
 
             if (dataGridViewMeasurements.RowCount > 0)
                 dataGridViewMeasurements.FirstDisplayedScrollingRowIndex = dataGridViewMeasurements.RowCount - 1;
 
             dataGridViewMeasurements.Refresh();
-            Measurements.Clear();
 
         }
+
+        private void AddToDataTableAndExcel(List<Measurement> validMeasurements)
+        {
+            var nrOfRowsInDataTable = dataTable.Rows.Count;
+            for (int i = nrOfRowsInDataTable, j = 0; i < nrOfRowsInDataTable + validMeasurements.Count; i++, j++)
+            {
+                var row = dataTable.NewRow();
+                row["#"] = i;
+                row["Weight"] = validMeasurements[j].weight;
+                row["TimeStamp"] = DateTime.Now.ToString("HH:mm:ss");
+                dataTable.Rows.Add(row);
+
+                // Add row to excel
+                csvHelper.WriteLine(row, dataTable.Columns.Count);
+
+                log.Debug("Measurements Added: " + row["#"] + " - Weight: " + row["Weight"] + " - at: " + row["TimeStamp"]);
+            }
+        }
+
+        #region Button Events
 
         void btnStart_Click(object sender, EventArgs e)
         {
             if (!CheckInputControls()) return;
+
+            // Calculate Net Weight and Tollerance
+            Int32.TryParse(LotInfo.Package.NetWeight, out netWeight);
+            measurementTollerance = (netWeight * Settings.Default.MeasurementTollerance) / 100;
 
             btnPause.Enabled = false;
 
@@ -188,7 +239,7 @@ namespace ScalesAutomation
             CloseSerialCommunication();
 
         }
-    
+
         private void btnStopLot_Click(object sender, EventArgs e)
         {
             log.Debug(Environment.NewLine + "Button Stop Clicked" + Environment.NewLine);
@@ -211,6 +262,8 @@ namespace ScalesAutomation
 
             stopPressed = false;
         }
+
+        #endregion
 
         #region "Events For Input Controls"
 
@@ -269,7 +322,7 @@ namespace ScalesAutomation
 
         #endregion
 
-        #region Methods
+        #region Private Methods
 
         private bool CheckInputControls()
         {
@@ -324,6 +377,35 @@ namespace ScalesAutomation
                 writePort?.Dispose();
                 writeThread?.Abort();
             }
+        }
+
+        void InitializeGuiFromXml()
+        {
+            foreach (var product in XmlHandler.Catalogue)
+            {
+                cbProduct.Items.Add(product.Name);
+            }
+        }
+
+        void ReadThread()
+        {
+            readPort = new MySerialReader(Measurements);
+        }
+
+        void WriteThread()
+        {
+            writePort = new MySerialWriter();
+        }
+
+        private void CreateTimer()
+        {
+            timer = new System.Windows.Forms.Timer
+            {
+                Interval = 500,
+                Enabled = true
+            };
+            timer.Tick += new EventHandler(timer_Tick);
+            timer.Start();
         }
 
         #endregion  

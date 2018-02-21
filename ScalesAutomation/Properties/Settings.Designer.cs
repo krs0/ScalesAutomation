@@ -118,5 +118,17 @@ namespace ScalesAutomation.Properties {
                 this["SimulationEnabled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int MeasurementTollerance {
+            get {
+                return ((int)(this["MeasurementTollerance"]));
+            }
+            set {
+                this["MeasurementTollerance"] = value;
+            }
+        }
     }
 }

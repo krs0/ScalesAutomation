@@ -8,6 +8,7 @@ namespace ScalesAutomation
     {
         public bool isStable;
         public int weight;
+        public DateTime timeStamp;
     }
 
     public struct LotInfo

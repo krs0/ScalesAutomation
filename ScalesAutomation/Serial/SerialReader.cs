@@ -16,22 +16,29 @@ namespace ScalesAutomation
 
         readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        System.Windows.Forms.Timer timer;
+
+        SynchronizedCollection<Measurement> rawMeasurements;
         Queue<byte> recievedData = new Queue<byte>();
         bool alreadyAddedToList;
         bool isFirstMeasurement = true;
         int lastMeasurement;
         bool busy;
 
+        #region Public Methods
+
         public MySerialReader(SynchronizedCollection<Measurement> measurements)
         {
             Measurements = measurements;
+            rawMeasurements = new SynchronizedCollection<Measurement>();
 
             InitializeTransmission();
+
         }
 
-        public void enableCyclicTransmission()
+        public void EnableCyclicTransmission()
         {
-            byte[] txBuffer = prepareCyclicTransmissionPackage();
+            byte[] txBuffer = PrepareCyclicTransmissionPackage();
             log.Debug("Enabling Cyclic Transmission... " + BitConverter.ToString(txBuffer) + Environment.NewLine);
 
             serialPort.Write(txBuffer, 0, txBuffer.Length);
@@ -82,18 +89,13 @@ namespace ScalesAutomation
             }
         }
 
-        #region Private Methods
+        #endregion
 
-        void InitializeTransmission()
+        #region Events
+
+        void timer_Tick(object sender, EventArgs e)
         {
-            serialPort = new SerialPort(Settings.Default.ReadCOMPort, 4800, Parity.Even, 7, StopBits.Two);
-
-            if (!serialPort.IsOpen)
-            {
-                serialPort.Open();
-                enableCyclicTransmission();
-                serialPort.DataReceived += serialPort_DataReceived;
-            }
+            take data from rawMeasurements and add it to Measurements List
         }
 
         void serialPort_DataReceived(object s, SerialDataReceivedEventArgs e)
@@ -113,13 +115,15 @@ namespace ScalesAutomation
 
                     data.ToList().ForEach(b => recievedData.Enqueue(b));
 
-                    processData();
+                    DiscardAllBytesUntilStart();
+
+                    AddToRawMeasurements();
 
                     busy = false;
                 }
                 catch (Exception ex)
                 {
-                    log.Debug("DataReceived: " + Environment.NewLine);
+                    log.Debug("DataReceived: " + ex.Message + Environment.NewLine);
                 }
             });
 
@@ -127,75 +131,23 @@ namespace ScalesAutomation
 
         }
 
-        void processData()
+        #endregion
+
+        #region Private Methods
+
+        void InitializeTransmission()
         {
-            var oneMeasurement = new Measurement();
-            // Delete from receivedData Until a Start Character is found
-            var queueCount = recievedData.Count;
-            for (var i = 0; i < queueCount; i++)
+            serialPort = new SerialPort(Settings.Default.ReadCOMPort, 4800, Parity.Even, 7, StopBits.Two);
+
+            if (!serialPort.IsOpen)
             {
-                if (recievedData.ElementAt(0) != 0x24)
-                    recievedData.Dequeue();
-                else
-                    break;
-            }
-            
-            // Determine if we have a "packet" in the queue
-            if (recievedData.Count >= 8)
-            {
-                var packet = Enumerable.Range(0, 8).Select(i => recievedData.Dequeue());
-
-
-                var packetArray = packet.ToArray();
-
-                var charArray = Array.ConvertAll(packetArray, element => (System.Text.Encoding.ASCII.GetChars(new[] { element })[0]));
-                var intArray = Array.ConvertAll(charArray, element => (int)char.GetNumericValue(element));
-
-                oneMeasurement.isStable = (intArray[1] == 0 ? true : false);
-                oneMeasurement.weight = intArray[6] + intArray[5] * 10 + intArray[4] * 100 + intArray[3] * 1000 + intArray[2] * 10000;
-
-                log.Debug("Package Received: " + BitConverter.ToString(packetArray) + Environment.NewLine);
-                log.Debug("Stable: " + oneMeasurement.isStable + " - Weight: " + oneMeasurement.weight + Environment.NewLine);
-
-                // addMeasurement only if stable, only if not already added to list and
-                // only if not first measurement (scales bug)
-                if (oneMeasurement.isStable)
-                {
-                    if (!alreadyAddedToList)
-                    {
-                        if (!isFirstMeasurement)
-                        {
-                            Measurements.Add(oneMeasurement);
-                            lastMeasurement = oneMeasurement.weight;
-                            alreadyAddedToList = true;
-                        }
-                        else
-                        {
-                            isFirstMeasurement = false;
-                        }
-
-                    }
-                    else
-                    {
-                        if (lastMeasurement != oneMeasurement.weight)
-                        {
-                            log.Error("Measurement added to list does not match current measurement!" + Environment.NewLine);
-                            // Scales bug transmits as stable last unstable measurement
-                        }
-                    }
-                }
-                else
-                {
-                    isFirstMeasurement = true;
-                    alreadyAddedToList = false;
-                }
-
-                recievedData.Clear();
-                log.Debug("Measurements in list: " + Measurements.Count + Environment.NewLine);
+                serialPort.Open();
+                EnableCyclicTransmission();
+                serialPort.DataReceived += serialPort_DataReceived;
             }
         }
 
-        private byte[] prepareCyclicTransmissionPackage()
+        private byte[] PrepareCyclicTransmissionPackage()
         {
             byte[] txBuffer = new byte[3];
 
@@ -206,6 +158,105 @@ namespace ScalesAutomation
 
             return txBuffer;
 
+        }
+
+        void AddToRawMeasurements()
+        {
+            var measurement = new Measurement();
+
+            // Determine if we have a "package" in the queue
+            if (recievedData.Count >= 8)
+            {
+                var package = Enumerable.Range(0, 8).Select(i => recievedData.Dequeue());
+                var packageAsIntArray = TransformByteEnumerationToIntArray(package);
+
+                measurement.isStable = (packageAsIntArray[1] == 0 ? true : false);
+                measurement.weight = packageAsIntArray[6] + packageAsIntArray[5] * 10 + packageAsIntArray[4] * 100 + packageAsIntArray[3] * 1000 + packageAsIntArray[2] * 10000;
+                measurement.timeStamp = DateTime.Now;
+
+                log.Debug("Package Received: " + string.Join(" ", packageAsIntArray) + Environment.NewLine);
+                log.Debug("Stable: " + measurement.isStable + " - Weight: " + measurement.weight + Environment.NewLine);
+
+                rawMeasurements.Add(measurement);
+            }
+        }
+
+                // addMeasurement only if stable, only if not already added to list and
+                // only if not first measurement (scales bug)
+        //        if (measurement.isStable)
+        //        {
+        //            if (!alreadyAddedToList)
+        //            {
+        //                if (!isFirstMeasurement)
+        //                {
+        //                    measurement = Transform20gInZero(measurement);
+        //                    Measurements.Add(measurement);
+        //                    lastMeasurement = measurement.weight;
+        //                    alreadyAddedToList = true;
+        //                }
+        //                else
+        //                {
+        //                    isFirstMeasurement = false;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (lastMeasurement != measurement.weight)
+        //                {
+        //                    log.Error("Measurement added to list does not match current measurement!" + Environment.NewLine);
+        //                    // Scales bug transmits as stable last unstable measurement
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            isFirstMeasurement = true;
+        //            alreadyAddedToList = false;
+        //        }
+
+        //        recievedData.Clear();
+        //        log.Debug("Measurements in list: " + Measurements.Count + Environment.NewLine);
+        //    }
+        //}
+
+        private void DiscardAllBytesUntilStart()
+        {
+            var queueCount = recievedData.Count;
+            for (var i = 0; i < queueCount; i++)
+            {
+                if (recievedData.ElementAt(0) != 0x24)
+                    recievedData.Dequeue();
+                else
+                    break;
+            }
+        }
+
+        private static int[] TransformByteEnumerationToIntArray(IEnumerable<byte> package)
+        {
+            var packageAsByteArray = package.ToArray();
+            var packageAsCharArray = Array.ConvertAll(packageAsByteArray, element => (System.Text.Encoding.ASCII.GetChars(new[] { element })[0]));
+            var packageAsIntArray = Array.ConvertAll(packageAsCharArray, element => (int)char.GetNumericValue(element));
+
+            return packageAsIntArray;
+
+        }
+
+        private static Measurement Transform20gInZero(Measurement oneMeasurement)
+        {
+            if (oneMeasurement.weight == 20)
+                oneMeasurement.weight = 0;
+            return oneMeasurement;
+        }
+
+        private void CreateTimer()
+        {
+            timer = new System.Windows.Forms.Timer
+            {
+                Interval = 500,
+                Enabled = true
+            };
+            timer.Tick += new EventHandler(timer_Tick);
+            timer.Start();
         }
 
         #endregion
