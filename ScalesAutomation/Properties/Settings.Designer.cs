@@ -121,13 +121,13 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5")]
-        public int MeasurementTollerance {
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int ConsecutiveStableMeasurements {
             get {
-                return ((int)(this["MeasurementTollerance"]));
+                return ((int)(this["ConsecutiveStableMeasurements"]));
             }
             set {
-                this["MeasurementTollerance"] = value;
+                this["ConsecutiveStableMeasurements"] = value;
             }
         }
     }

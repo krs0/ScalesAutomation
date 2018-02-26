@@ -93,7 +93,7 @@ namespace ScalesAutomation
 
             if (stopPressed) return; // Do not process any more measurements
 
-            if (Measurements.Count > 0)
+            if (Measurements.Count > 1)
             {
                 // Keep only one measurement between 2 consecutive "0"s
                 // - A valid measurement will be the last Stable measurement before a Stable "0"
@@ -139,7 +139,7 @@ namespace ScalesAutomation
                     {
                         var measurement = Measurements[measurementEndPosition];
                         // Sanity Check at the end with expected value
-                        if (measurement.weight > (netWeight - measurementTollerance) || 
+                        if (measurement.weight > (netWeight - measurementTollerance) ||
                             measurement.weight < (netWeight + measurementTollerance))
                         {
                             validMeasurements.Add(measurement);
@@ -149,14 +149,17 @@ namespace ScalesAutomation
 
                         // clear Measuremetns array for the processed measurements
                         for (int i = 0; i <= measurementEndPosition; i++)
-                            Measurements.RemoveAt(i);
+                            Measurements.RemoveAt(0);
 
                         endOfMeasurementFound = false;
                     }
+                    else
+                        break;
                 }
 
                 // Add all valid measurements to DataTable and excel
-                AddToDataTableAndExcel(validMeasurements);
+                if (validMeasurements.Count > 0)
+                    AddToDataTableAndExcel(validMeasurements);
             }
 
             if (dataGridViewMeasurements.RowCount > 0)
@@ -164,24 +167,6 @@ namespace ScalesAutomation
 
             dataGridViewMeasurements.Refresh();
 
-        }
-
-        private void AddToDataTableAndExcel(List<Measurement> validMeasurements)
-        {
-            var nrOfRowsInDataTable = dataTable.Rows.Count;
-            for (int i = nrOfRowsInDataTable, j = 0; i < nrOfRowsInDataTable + validMeasurements.Count; i++, j++)
-            {
-                var row = dataTable.NewRow();
-                row["#"] = i;
-                row["Weight"] = validMeasurements[j].weight;
-                row["TimeStamp"] = DateTime.Now.ToString("HH:mm:ss");
-                dataTable.Rows.Add(row);
-
-                // Add row to excel
-                csvHelper.WriteLine(row, dataTable.Columns.Count);
-
-                log.Debug("Measurements Added: " + row["#"] + " - Weight: " + row["Weight"] + " - at: " + row["TimeStamp"]);
-            }
         }
 
         #region Button Events
@@ -192,7 +177,7 @@ namespace ScalesAutomation
 
             // Calculate Net Weight and Tollerance
             Int32.TryParse(LotInfo.Package.NetWeight, out netWeight);
-            measurementTollerance = (netWeight * Settings.Default.MeasurementTollerance) / 100;
+            measurementTollerance = (netWeight * Settings.Default.ConsecutiveStableMeasurements) / 100;
 
             btnPause.Enabled = false;
 
@@ -323,6 +308,24 @@ namespace ScalesAutomation
         #endregion
 
         #region Private Methods
+
+        private void AddToDataTableAndExcel(List<Measurement> validMeasurements)
+        {
+            var nrOfRowsInDataTable = dataTable.Rows.Count;
+            for (int i = nrOfRowsInDataTable, j = 0; i < nrOfRowsInDataTable + validMeasurements.Count; i++, j++)
+            {
+                var row = dataTable.NewRow();
+                row["#"] = i;
+                row["Weight"] = validMeasurements[j].weight;
+                row["TimeStamp"] = DateTime.Now.ToString("HH:mm:ss");
+                dataTable.Rows.Add(row);
+
+                // Add row to excel
+                csvHelper.WriteLine(row, dataTable.Columns.Count);
+
+                log.Debug("Measurements Added: " + row["#"] + " - Weight: " + row["Weight"] + " - at: " + row["TimeStamp"]);
+            }
+        }
 
         private bool CheckInputControls()
         {

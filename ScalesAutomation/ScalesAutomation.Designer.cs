@@ -132,7 +132,6 @@
             // 
             // txtPackageTare
             // 
-            this.txtPackageTare.Enabled = false;
             this.txtPackageTare.Font = new System.Drawing.Font("Georgia", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPackageTare.Location = new System.Drawing.Point(184, 150);
             this.txtPackageTare.Name = "txtPackageTare";

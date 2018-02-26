@@ -20,10 +20,9 @@ namespace ScalesAutomation
 
         SynchronizedCollection<Measurement> rawMeasurements;
         Queue<byte> recievedData = new Queue<byte>();
-        bool alreadyAddedToList;
-        bool isFirstMeasurement = true;
-        int lastMeasurement;
+        int requiredConsecutiveStableMeasurements;
         bool busy;
+        Measurement lastAddedMeasurement;
 
         #region Public Methods
 
@@ -31,18 +30,13 @@ namespace ScalesAutomation
         {
             Measurements = measurements;
             rawMeasurements = new SynchronizedCollection<Measurement>();
+            lastAddedMeasurement.weight = -1;
+
+            requiredConsecutiveStableMeasurements = Settings.Default.ConsecutiveStableMeasurements;
+
+            CreateTimer();
 
             InitializeTransmission();
-
-        }
-
-        public void EnableCyclicTransmission()
-        {
-            byte[] txBuffer = PrepareCyclicTransmissionPackage();
-            log.Debug("Enabling Cyclic Transmission... " + BitConverter.ToString(txBuffer) + Environment.NewLine);
-
-            serialPort.Write(txBuffer, 0, txBuffer.Length);
-            Thread.Sleep(10);
         }
 
         public void Dispose()
@@ -95,8 +89,64 @@ namespace ScalesAutomation
 
         void timer_Tick(object sender, EventArgs e)
         {
-            take data from rawMeasurements and add it to Measurements List
-        }
+            int stableCounter = 0; // how many times in a row same weight measurement was stable
+            int previousMeasurementWeight = -1;
+            Measurement currentMeasurement;
+            
+            /////////////////////////////////////////////////////////////////
+            // take data from rawMeasurements and add it to Measurements List
+
+            // add only stable
+            // remove glitches
+            // delete from rawMeasurements after adding? or keep track of last item added
+            // add a global for currently added measurement so not to add 2 times
+
+            if (rawMeasurements.Count > 0)
+            {
+                // keep in mid that we could already have added this measurement in the previous timer tick.
+                if (lastAddedMeasurement.weight != -1)
+                {
+                    currentMeasurement = lastAddedMeasurement;
+                    stableCounter = 5; // do not add this measurement again
+                }
+                else
+                    currentMeasurement = rawMeasurements[0];
+
+                for (int i = 0; i < rawMeasurements.Count; i++)
+                {
+                    previousMeasurementWeight = currentMeasurement.weight; // cannot use i-1 because we deleted that. Cannot save elsewhere because of multiple branches
+                    currentMeasurement = rawMeasurements[i];
+                    rawMeasurements.RemoveAt(i--);
+
+                    // find first stable
+                    if (!currentMeasurement.isStable)
+                    {
+                        // reset everything here and continue
+                        stableCounter = 0;
+                        lastAddedMeasurement.weight = -1;
+                        continue;
+                    }
+
+                    if (previousMeasurementWeight == currentMeasurement.weight)
+                    {
+                        //previousMeasurement = currentMeasurement.weight;
+                        stableCounter++;
+
+                        if (stableCounter == requiredConsecutiveStableMeasurements)
+                        {
+                            Measurements.Add(currentMeasurement);
+                            lastAddedMeasurement = currentMeasurement;
+                        }
+                    }
+                    else
+                    {
+                        stableCounter = 0;
+                        lastAddedMeasurement.weight = -1;
+                        continue;
+                    }
+                }
+            }
+         }
 
         void serialPort_DataReceived(object s, SerialDataReceivedEventArgs e)
         {
@@ -147,7 +197,16 @@ namespace ScalesAutomation
             }
         }
 
-        private byte[] PrepareCyclicTransmissionPackage()
+        void EnableCyclicTransmission()
+        {
+            byte[] txBuffer = PrepareCyclicTransmissionPackage();
+            log.Debug("Enabling Cyclic Transmission... " + BitConverter.ToString(txBuffer) + Environment.NewLine);
+
+            serialPort.Write(txBuffer, 0, txBuffer.Length);
+            Thread.Sleep(10);
+        }
+
+        byte[] PrepareCyclicTransmissionPackage()
         {
             byte[] txBuffer = new byte[3];
 
@@ -181,45 +240,7 @@ namespace ScalesAutomation
             }
         }
 
-                // addMeasurement only if stable, only if not already added to list and
-                // only if not first measurement (scales bug)
-        //        if (measurement.isStable)
-        //        {
-        //            if (!alreadyAddedToList)
-        //            {
-        //                if (!isFirstMeasurement)
-        //                {
-        //                    measurement = Transform20gInZero(measurement);
-        //                    Measurements.Add(measurement);
-        //                    lastMeasurement = measurement.weight;
-        //                    alreadyAddedToList = true;
-        //                }
-        //                else
-        //                {
-        //                    isFirstMeasurement = false;
-        //                }
-        //            }
-        //            else
-        //            {
-        //                if (lastMeasurement != measurement.weight)
-        //                {
-        //                    log.Error("Measurement added to list does not match current measurement!" + Environment.NewLine);
-        //                    // Scales bug transmits as stable last unstable measurement
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            isFirstMeasurement = true;
-        //            alreadyAddedToList = false;
-        //        }
-
-        //        recievedData.Clear();
-        //        log.Debug("Measurements in list: " + Measurements.Count + Environment.NewLine);
-        //    }
-        //}
-
-        private void DiscardAllBytesUntilStart()
+        void DiscardAllBytesUntilStart()
         {
             var queueCount = recievedData.Count;
             for (var i = 0; i < queueCount; i++)
@@ -231,7 +252,7 @@ namespace ScalesAutomation
             }
         }
 
-        private static int[] TransformByteEnumerationToIntArray(IEnumerable<byte> package)
+        static int[] TransformByteEnumerationToIntArray(IEnumerable<byte> package)
         {
             var packageAsByteArray = package.ToArray();
             var packageAsCharArray = Array.ConvertAll(packageAsByteArray, element => (System.Text.Encoding.ASCII.GetChars(new[] { element })[0]));
@@ -241,18 +262,18 @@ namespace ScalesAutomation
 
         }
 
-        private static Measurement Transform20gInZero(Measurement oneMeasurement)
+        static Measurement Transform20gInZero(Measurement oneMeasurement)
         {
             if (oneMeasurement.weight == 20)
                 oneMeasurement.weight = 0;
             return oneMeasurement;
         }
 
-        private void CreateTimer()
+        void CreateTimer()
         {
             timer = new System.Windows.Forms.Timer
             {
-                Interval = 500,
+                Interval = 300,
                 Enabled = true
             };
             timer.Tick += new EventHandler(timer_Tick);
