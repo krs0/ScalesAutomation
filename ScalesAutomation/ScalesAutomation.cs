@@ -97,7 +97,7 @@ namespace ScalesAutomation
             {
                 // Keep only one measurement between 2 consecutive "0"s
                 // - A valid measurement will be the last Stable measurement before a Stable "0"
-                // - Glitches should be filtered out in code above this function                 
+                // - Glitches should be filtered out in code above this function  
 
                 // If no start detected insert one artificially
                 if (!(Measurements[0].weight == 0))
@@ -181,7 +181,7 @@ namespace ScalesAutomation
 
             btnPause.Enabled = false;
 
-            log.Debug(Environment.NewLine + "Button Start Clicked" + Environment.NewLine);
+            log.Info(Environment.NewLine + "Button Start Clicked" + Environment.NewLine);
 
             var filePath = Path.Combine(AssemblyPath, Settings.Default.CSVOutputPath);
             csvHelper = new CsvHelper();
@@ -215,7 +215,7 @@ namespace ScalesAutomation
 
         void btnPause_Click(object sender, EventArgs e)
         {
-            log.Debug(Environment.NewLine + "Button Pause Clicked" + Environment.NewLine);
+            log.Info(Environment.NewLine + "Button Pause Clicked" + Environment.NewLine);
 
             btnPause.Enabled = false;
             btnStart.Enabled = true;
@@ -227,7 +227,7 @@ namespace ScalesAutomation
 
         private void btnStopLot_Click(object sender, EventArgs e)
         {
-            log.Debug(Environment.NewLine + "Button Stop Clicked" + Environment.NewLine);
+            log.Info(Environment.NewLine + "Button Stop Clicked" + Environment.NewLine);
 
             btnStart.Enabled = true;
             btnPause.Enabled = false;

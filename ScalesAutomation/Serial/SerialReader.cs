@@ -173,7 +173,7 @@ namespace ScalesAutomation
                 }
                 catch (Exception ex)
                 {
-                    log.Debug("DataReceived: " + ex.Message + Environment.NewLine);
+                    log.Error("DataReceived: " + ex.Message + Environment.NewLine);
                 }
             });
 
@@ -222,19 +222,23 @@ namespace ScalesAutomation
         void AddToRawMeasurements()
         {
             var measurement = new Measurement();
+            byte[] packageAsByteArray = new byte[] { };
 
             // Determine if we have a "package" in the queue
             if (recievedData.Count >= 8)
             {
                 var package = Enumerable.Range(0, 8).Select(i => recievedData.Dequeue());
-                var packageAsIntArray = TransformByteEnumerationToIntArray(package);
+                var packageAsIntArray = TransformByteEnumerationToIntArray(package, ref packageAsByteArray);
 
                 measurement.isStable = (packageAsIntArray[1] == 0 ? true : false);
                 measurement.weight = packageAsIntArray[6] + packageAsIntArray[5] * 10 + packageAsIntArray[4] * 100 + packageAsIntArray[3] * 1000 + packageAsIntArray[2] * 10000;
                 measurement.timeStamp = DateTime.Now;
 
-                log.Debug("Package Received: " + string.Join(" ", packageAsIntArray) + Environment.NewLine);
-                log.Debug("Stable: " + measurement.isStable + " - Weight: " + measurement.weight + Environment.NewLine);
+                log.Debug("Package Received: " + BitConverter.ToString(packageAsByteArray) + "  Stable: " + measurement.isStable + " - Weight: " + measurement.weight + Environment.NewLine);
+
+                // 20g is also 0
+                if (measurement.weight == 20)
+                    measurement.weight = 0;
 
                 rawMeasurements.Add(measurement);
             }
@@ -252,9 +256,9 @@ namespace ScalesAutomation
             }
         }
 
-        static int[] TransformByteEnumerationToIntArray(IEnumerable<byte> package)
+        static int[] TransformByteEnumerationToIntArray(IEnumerable<byte> package, ref byte[] packageAsByteArray)
         {
-            var packageAsByteArray = package.ToArray();
+            packageAsByteArray = package.ToArray();
             var packageAsCharArray = Array.ConvertAll(packageAsByteArray, element => (System.Text.Encoding.ASCII.GetChars(new[] { element })[0]));
             var packageAsIntArray = Array.ConvertAll(packageAsCharArray, element => (int)char.GetNumericValue(element));
 

@@ -81,7 +81,7 @@ namespace ScalesAutomation
 
         public void writeData(byte[] txBuffer)
         {
-            log.Debug("Writing bytes: " + BitConverter.ToString(txBuffer) + Environment.NewLine);
+            // log.Debug("Writing bytes: " + BitConverter.ToString(txBuffer) + Environment.NewLine);
 
             serialPort.Write(txBuffer, 0, txBuffer.Length);
         }
