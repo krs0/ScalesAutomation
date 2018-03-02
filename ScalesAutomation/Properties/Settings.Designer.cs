@@ -130,5 +130,17 @@ namespace ScalesAutomation.Properties {
                 this["ConsecutiveStableMeasurements"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.1")]
+        public double MeasurementTollerace {
+            get {
+                return ((double)(this["MeasurementTollerace"]));
+            }
+            set {
+                this["MeasurementTollerace"] = value;
+            }
+        }
     }
 }

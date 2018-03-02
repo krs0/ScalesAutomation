@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using ScalesAutomation.Properties;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace ScalesAutomation
 {
@@ -29,8 +30,8 @@ namespace ScalesAutomation
         bool simulationEnabled;
         CsvHelper csvHelper;
 
-        int measurementTollerance;
-        int netWeight;
+        double measurementTollerance;
+        double netWeight;
 
         #region Properties
 
@@ -139,7 +140,7 @@ namespace ScalesAutomation
                     {
                         var measurement = Measurements[measurementEndPosition];
                         // Sanity Check at the end with expected value
-                        if (measurement.weight > (netWeight - measurementTollerance) ||
+                        if (measurement.weight > (netWeight - measurementTollerance) &&
                             measurement.weight < (netWeight + measurementTollerance))
                         {
                             validMeasurements.Add(measurement);
@@ -176,8 +177,13 @@ namespace ScalesAutomation
             if (!CheckInputControls()) return;
 
             // Calculate Net Weight and Tollerance
-            Int32.TryParse(LotInfo.Package.NetWeight, out netWeight);
-            measurementTollerance = (netWeight * Settings.Default.ConsecutiveStableMeasurements) / 100;
+            Double.TryParse(Regex.Replace(LotInfo.Package.NetWeight.Replace(".", ","), "Kg", "", RegexOptions.IgnoreCase), out netWeight);
+            if (LotInfo.Package.NetWeight.IndexOf("Kg", StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                netWeight *= 1000;
+            }
+            
+            measurementTollerance = (netWeight * Settings.Default.MeasurementTollerace) / 100;
 
             btnPause.Enabled = false;
 
