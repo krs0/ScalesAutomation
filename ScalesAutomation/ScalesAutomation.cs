@@ -87,6 +87,8 @@ namespace ScalesAutomation
 
         void timer_Tick(object sender, EventArgs e)
         {
+            //this.BeginInvoke((MethodInvoker)(delegate (){
+
             List<Measurement> validMeasurements = new List<Measurement>();
             int measurementStartPosition;
             int measurementEndPosition = 0;
@@ -158,6 +160,9 @@ namespace ScalesAutomation
                         break;
                 }
 
+                if (stopPressed)
+                    return; // Do not process any more measurements. Stop could be pressed in midde of loop
+
                 // Add all valid measurements to DataTable and excel
                 if (validMeasurements.Count > 0)
                     AddToDataTableAndExcel(validMeasurements);
@@ -167,13 +172,16 @@ namespace ScalesAutomation
                 dataGridViewMeasurements.FirstDisplayedScrollingRowIndex = dataGridViewMeasurements.RowCount - 1;
 
             dataGridViewMeasurements.Refresh();
-
+               
+            // }));
         }
 
         #region Button Events
 
         void btnStart_Click(object sender, EventArgs e)
         {
+            stopPressed = false;
+
             if (!CheckInputControls()) return;
 
             // Calculate Net Weight and Tollerance
@@ -245,6 +253,8 @@ namespace ScalesAutomation
 
             CloseSerialCommunication();
 
+            Thread.Sleep(500);
+
             LotInfo = new LotInfo();
             InitializeInputControls();
             EnableInputControls();
@@ -253,7 +263,6 @@ namespace ScalesAutomation
             if (csvHelper.IsServerFolderReachable())
                 csvHelper.CopyCurrentCsvToServer(Settings.Default.CSVServerFolderPath);
 
-            stopPressed = false;
         }
 
         #endregion
