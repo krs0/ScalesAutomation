@@ -26,8 +26,8 @@ namespace ScalesAutomation
                     var packageDetails = new Package()
                     {
                         Type = element.Elements("Package").First().Value,
-                        Tare = element.Elements("PackageTare").First().Value,
-                        NetWeight = element.Elements("NetWeight").First().Value
+                        Tare = element.Elements("PackageTare").First().Value.Replace(".", ","),
+                        NetWeight = element.Elements("NetWeight").First().Value.Replace(".", ",")
                     };
 
                     Product? temp = Catalogue.Find(x => x.Name == name);

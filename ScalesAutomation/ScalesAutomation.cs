@@ -177,7 +177,7 @@ namespace ScalesAutomation
             if (!CheckInputControls()) return;
 
             // Calculate Net Weight and Tollerance
-            Double.TryParse(Regex.Replace(LotInfo.Package.NetWeight.Replace(".", ","), "Kg", "", RegexOptions.IgnoreCase), out netWeight);
+            Double.TryParse(Regex.Replace(LotInfo.Package.NetWeight, "Kg", "", RegexOptions.IgnoreCase), out netWeight);
             if (LotInfo.Package.NetWeight.IndexOf("Kg", StringComparison.InvariantCultureIgnoreCase) > -1)
             {
                 netWeight *= 1000;
