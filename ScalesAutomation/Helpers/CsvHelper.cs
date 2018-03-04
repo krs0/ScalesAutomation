@@ -44,7 +44,7 @@ namespace ScalesAutomation
 
                         if (i < iColCount - 1)
                         {
-                            sw.Write(",");
+                            sw.Write(";");
                         }
                     }
 
@@ -131,11 +131,11 @@ namespace ScalesAutomation
                         sw.Write(dataTable.Columns[i]);
                         if (i < iColCount - 1)
                         {
-                            sw.Write(",");
+                            sw.Write(";");
                         }
                     }
 
-                    sw.Write("," + lotInfo.Lot + "," + lotInfo.ProductName + "," + lotInfo.Package.Type + "," + lotInfo.Package.NetWeight + "," + lotInfo.Package.Tare + "," + lotInfo.Date);
+                    sw.Write(";" + lotInfo.Lot + ";" + lotInfo.ProductName + ";" + lotInfo.Package.Type + ";" + lotInfo.Package.NetWeight + ";" + lotInfo.Package.Tare + ";" + lotInfo.Date);
                     sw.Write(sw.NewLine);
                     sw.Close();
                 }
