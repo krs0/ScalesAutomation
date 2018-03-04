@@ -321,7 +321,7 @@ namespace ScalesAutomation
             for (int i = nrOfRowsInDataTable, j = 0; i < nrOfRowsInDataTable + validMeasurements.Count; i++, j++)
             {
                 var row = dataTable.NewRow();
-                row["#"] = i;
+                row["#"] = i+1;
                 row["Weight"] = validMeasurements[j].weight;
                 row["TimeStamp"] = DateTime.Now.ToString("HH:mm:ss");
                 dataTable.Rows.Add(row);
