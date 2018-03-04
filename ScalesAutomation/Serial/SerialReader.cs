@@ -23,6 +23,7 @@ namespace ScalesAutomation
         int requiredConsecutiveStableMeasurements;
         bool busy;
         Measurement lastAddedMeasurement;
+        int stableCounter = 0; // how many times in a row same weight measurement was stable
 
         #region Public Methods
 
@@ -89,7 +90,6 @@ namespace ScalesAutomation
 
         void timer_Tick(object sender, EventArgs e)
         {
-            int stableCounter = 0; // how many times in a row same weight measurement was stable
             int previousMeasurementWeight = -1;
             Measurement currentMeasurement;
             
@@ -107,7 +107,6 @@ namespace ScalesAutomation
                 if (lastAddedMeasurement.weight != -1)
                 {
                     currentMeasurement = lastAddedMeasurement;
-                    stableCounter = 5; // do not add this measurement again
                 }
                 else
                     currentMeasurement = rawMeasurements[0];
@@ -129,7 +128,6 @@ namespace ScalesAutomation
 
                     if (previousMeasurementWeight == currentMeasurement.weight)
                     {
-                        //previousMeasurement = currentMeasurement.weight;
                         stableCounter++;
 
                         if (stableCounter == requiredConsecutiveStableMeasurements)

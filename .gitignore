@@ -256,3 +256,7 @@ ModelManifest.xml
 /Distribution/CSVServer
 /Distribution/CSVOutput
 /Distribution/CSVBackup
+/Distribution/SerialTransmissionSimulation - Working 3.txt
+/Distribution/SerialTransmissionSimulation - Working 2.txt
+/Distribution/SerialTransmissionSimulation - Not Working because of unstable.txt
+/Distribution/SerialTransmissionSimulation - Can skip the second 20480 measurement minimalistic.txt
