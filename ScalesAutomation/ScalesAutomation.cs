@@ -185,6 +185,8 @@ namespace ScalesAutomation
             
             measurementTollerance = (netWeight * Settings.Default.MeasurementTollerace) / 100;
 
+            LotInfo.Date = DateTime.Now.ToString("yyyy-MM-dd");
+
             btnPause.Enabled = false;
 
             log.Info(Environment.NewLine + "Button Start Clicked" + Environment.NewLine);

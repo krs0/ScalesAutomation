@@ -135,7 +135,7 @@ namespace ScalesAutomation
                         }
                     }
 
-                    sw.Write("," + lotInfo.Lot + "," + lotInfo.ProductName + "," + lotInfo.Package.Type + "," + lotInfo.Package.NetWeight + "," + lotInfo.Package.Tare);
+                    sw.Write("," + lotInfo.Lot + "," + lotInfo.ProductName + "," + lotInfo.Package.Type + "," + lotInfo.Package.NetWeight + "," + lotInfo.Package.Tare + "," + lotInfo.Date);
                     sw.Write(sw.NewLine);
                     sw.Close();
                 }
