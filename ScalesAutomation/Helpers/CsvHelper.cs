@@ -125,17 +125,20 @@ namespace ScalesAutomation
                 // Create the CSV file to which grid data will be exported.
                 using (var sw = new StreamWriter(CsvFileFullPath, false))
                 {
-                    var iColCount = dataTable.Columns.Count;
-                    for (var i = 0; i < iColCount; i++)
-                    {
-                        sw.Write(dataTable.Columns[i]);
-                        if (i < iColCount - 1)
-                        {
-                            sw.Write(";");
-                        }
-                    }
+                    // Old code for writing column names
+                    //var iColCount = dataTable.Columns.Count;
+                    //for (var i = 0; i < iColCount; i++)
+                    //{
+                    //    sw.Write(dataTable.Columns[i]);
+                    //    if (i < iColCount - 1)
+                    //    {
+                    //        sw.Write(";");
+                    //    }
+                    //}
 
-                    sw.Write(";" + lotInfo.Lot + ";" + lotInfo.ProductName + ";" + lotInfo.Package.Type + ";" + lotInfo.Package.NetWeight + ";" + lotInfo.Package.Tare + ";" + lotInfo.Date);
+
+
+                    sw.Write("#;Cantitatea Cantarita [Cc];Ora;" + lotInfo.Lot + ";" + lotInfo.ProductName + ";" + lotInfo.Package.Type + ";" + lotInfo.Package.NetWeight + ";" + lotInfo.Package.Tare + ";" + lotInfo.Date);
                     sw.Write(sw.NewLine);
                     sw.Close();
                 }
