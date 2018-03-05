@@ -157,7 +157,7 @@ namespace ScalesAutomation
                     busy = true;
 
                     byte[] data = new byte[serialPort.BytesToRead];
-                    log.Debug("Bytes To Read: " + serialPort.BytesToRead.ToString() + Environment.NewLine);
+                    // log.Debug("Bytes To Read: " + serialPort.BytesToRead.ToString() + Environment.NewLine);
 
                     serialPort.Read(data, 0, data.Length);
 
