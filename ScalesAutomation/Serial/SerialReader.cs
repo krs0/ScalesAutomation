@@ -31,7 +31,7 @@ namespace ScalesAutomation
         {
             Measurements = measurements;
             rawMeasurements = new SynchronizedCollection<Measurement>();
-            lastAddedMeasurement.weight = -1;
+            lastAddedMeasurement.TotalWeight = -1;
 
             requiredConsecutiveStableMeasurements = Settings.Default.ConsecutiveStableMeasurements;
 
@@ -90,7 +90,7 @@ namespace ScalesAutomation
 
         void timer_Tick(object sender, EventArgs e)
         {
-            int previousMeasurementWeight = -1;
+            int previousMeasurementTotalWeight = -1;
             Measurement currentMeasurement;
             
             /////////////////////////////////////////////////////////////////
@@ -104,7 +104,7 @@ namespace ScalesAutomation
             if (rawMeasurements.Count > 0)
             {
                 // keep in mid that we could already have added this measurement in the previous timer tick.
-                if (lastAddedMeasurement.weight != -1)
+                if (lastAddedMeasurement.TotalWeight != -1)
                 {
                     currentMeasurement = lastAddedMeasurement;
                 }
@@ -113,20 +113,20 @@ namespace ScalesAutomation
 
                 for (int i = 0; i < rawMeasurements.Count; i++)
                 {
-                    previousMeasurementWeight = currentMeasurement.weight; // cannot use i-1 because we deleted that. Cannot save elsewhere because of multiple branches
+                    previousMeasurementTotalWeight = currentMeasurement.TotalWeight; // cannot use i-1 because we deleted that. Cannot save elsewhere because of multiple branches
                     currentMeasurement = rawMeasurements[i];
                     rawMeasurements.RemoveAt(i--);
 
                     // find first stable
-                    if (!currentMeasurement.isStable)
+                    if (!currentMeasurement.IsStable)
                     {
                         // reset everything here and continue
                         stableCounter = 0;
-                        lastAddedMeasurement.weight = -1;
+                        lastAddedMeasurement.TotalWeight = -1;
                         continue;
                     }
 
-                    if (previousMeasurementWeight == currentMeasurement.weight)
+                    if (previousMeasurementTotalWeight == currentMeasurement.TotalWeight)
                     {
                         stableCounter++;
 
@@ -139,7 +139,7 @@ namespace ScalesAutomation
                     else
                     {
                         stableCounter = 0;
-                        lastAddedMeasurement.weight = -1;
+                        lastAddedMeasurement.TotalWeight = -1;
                         continue;
                     }
                 }
@@ -200,6 +200,8 @@ namespace ScalesAutomation
             byte[] txBuffer = PrepareCyclicTransmissionPackage();
             log.Debug("Enabling Cyclic Transmission... " + BitConverter.ToString(txBuffer) + Environment.NewLine);
 
+            var s = serialPort.IsOpen;
+
             serialPort.Write(txBuffer, 0, txBuffer.Length);
             Thread.Sleep(10);
         }
@@ -228,15 +230,15 @@ namespace ScalesAutomation
                 var package = Enumerable.Range(0, 8).Select(i => recievedData.Dequeue());
                 var packageAsIntArray = TransformByteEnumerationToIntArray(package, ref packageAsByteArray);
 
-                measurement.isStable = (packageAsIntArray[1] == 0 ? true : false);
-                measurement.weight = packageAsIntArray[6] + packageAsIntArray[5] * 10 + packageAsIntArray[4] * 100 + packageAsIntArray[3] * 1000 + packageAsIntArray[2] * 10000;
-                measurement.timeStamp = DateTime.Now;
+                measurement.IsStable = (packageAsIntArray[1] == 0 ? true : false);
+                measurement.TotalWeight = packageAsIntArray[6] + packageAsIntArray[5] * 10 + packageAsIntArray[4] * 100 + packageAsIntArray[3] * 1000 + packageAsIntArray[2] * 10000;
+                measurement.TimeStamp = DateTime.Now;
 
-                log.Debug("Package Received: " + BitConverter.ToString(packageAsByteArray) + "  Stable: " + measurement.isStable + " - Weight: " + measurement.weight + Environment.NewLine);
+                log.Debug("Package Received: " + BitConverter.ToString(packageAsByteArray) + "  Stable: " + measurement.IsStable + " - Weight: " + measurement.TotalWeight + Environment.NewLine);
 
                 // 20g is also 0
-                if (measurement.weight == 20)
-                    measurement.weight = 0;
+                if (measurement.TotalWeight == 20)
+                    measurement.TotalWeight = 0;
 
                 rawMeasurements.Add(measurement);
             }
@@ -266,8 +268,8 @@ namespace ScalesAutomation
 
         static Measurement Transform20gInZero(Measurement oneMeasurement)
         {
-            if (oneMeasurement.weight == 20)
-                oneMeasurement.weight = 0;
+            if (oneMeasurement.TotalWeight == 20)
+                oneMeasurement.TotalWeight = 0;
             return oneMeasurement;
         }
 

@@ -136,7 +136,8 @@ namespace ScalesAutomation
                     //    }
                     //}
 
-                    sw.Write("#;Cantitatea Cantarita [Cc];Ora;" + lotInfo.Lot + ";" + lotInfo.ProductName + ";" + lotInfo.Package.Type + ";" + lotInfo.Package.NetWeight + ";" + lotInfo.Package.Tare + ";" + lotInfo.Date);
+                    sw.Write("#;Cantitatea Cantarita [Cc];Ora;" + lotInfo.Lot + ";" + lotInfo.ProductName + ";" + lotInfo.Package.Type + ";" +
+                        lotInfo.Package.NetWeight.ToString() + "Kg" + ";" + lotInfo.Package.Tare.ToString() + "Kg" + ";" + lotInfo.Date);
                     sw.Write(sw.NewLine);
                     sw.Close();
                 }

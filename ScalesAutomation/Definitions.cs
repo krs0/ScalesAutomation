@@ -6,9 +6,9 @@ namespace ScalesAutomation
 
     public struct Measurement
     {
-        public bool isStable;
-        public int weight;
-        public DateTime timeStamp;
+        public bool IsStable;
+        public int TotalWeight;
+        public DateTime TimeStamp;
     }
 
     public struct LotInfo
@@ -22,9 +22,11 @@ namespace ScalesAutomation
     public struct Package
     {
         public String Type;
-        public String Tare;
-        public String NetWeight;
+        public Double Tare;
+        public Double NetWeight;
+        public Double TotalWeight; // = NetWeight + Tare
     }
+
 
     public struct Product
     {

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace ScalesAutomation
 {
@@ -23,28 +24,21 @@ namespace ScalesAutomation
                 foreach (var element in elements)
                 {
                     var name = element.Elements("Name").First().Value;
-                    var packageDetails = new Package()
-                    {
-                        Type = element.Elements("Package").First().Value,
-                        Tare = element.Elements("PackageTare").First().Value.Replace(".", ","),
-                        NetWeight = element.Elements("NetWeight").First().Value.Replace(".", ",")
-                    };
+                    var packageDetails = new Package();
 
-                    Product? temp = Catalogue.Find(x => x.Name == name);
-                    if (temp?.Name != null)
-                    {
-                        temp?.PackageDetails.Add(packageDetails);
-                    }
-                    else
-                    {
-                        var entry = new Product
-                        {
-                            Name = name,
-                            PackageDetails = new List<Package> { packageDetails }
-                        };
+                    packageDetails.Type = element.Elements("Package").First().Value;
 
-                        Catalogue.Add(entry);
-                    }
+                    var strNetWeight = element.Elements("NetWeight").First().Value.Replace(",", ".");
+                    strNetWeight = Regex.Replace(strNetWeight, "Kg", "", RegexOptions.IgnoreCase);
+                    Double.TryParse(strNetWeight, out packageDetails.NetWeight);
+
+                    var strTare = element.Elements("PackageTare").First().Value.Replace(",", ".");
+                    strTare = Regex.Replace(strTare, "Kg", "", RegexOptions.IgnoreCase);
+                    Double.TryParse(strTare, out packageDetails.Tare);
+
+                    packageDetails.TotalWeight = packageDetails.NetWeight + packageDetails.Tare;
+
+                    AddToCatalogueOrUpdateIfExisting(name, packageDetails);
                 }
             }
             catch (Exception ex)
@@ -53,5 +47,23 @@ namespace ScalesAutomation
             }
         }
 
+        private void AddToCatalogueOrUpdateIfExisting(string name, Package packageDetails)
+        {
+            Product? temp = Catalogue.Find(x => x.Name == name);
+            if (temp?.Name != null)
+            {
+                temp?.PackageDetails.Add(packageDetails);
+            }
+            else
+            {
+                var entry = new Product
+                {
+                    Name = name,
+                    PackageDetails = new List<Package> { packageDetails }
+                };
+
+                Catalogue.Add(entry);
+            }
+        }
     }
 }

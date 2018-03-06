@@ -118,7 +118,8 @@
             this.txtLot.Name = "txtLot";
             this.txtLot.Size = new System.Drawing.Size(288, 26);
             this.txtLot.TabIndex = 1;
-            this.txtLot.Validated += new System.EventHandler(this.txtLot_Validated);
+            this.txtLot.TextChanged += new System.EventHandler(this.txtLot_Validated);
+            this.txtLot.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtLot_KeyPress);
             // 
             // txtNominalWeight
             // 
@@ -128,7 +129,6 @@
             this.txtNominalWeight.Name = "txtNominalWeight";
             this.txtNominalWeight.Size = new System.Drawing.Size(288, 26);
             this.txtNominalWeight.TabIndex = 5;
-            this.txtNominalWeight.Validated += new System.EventHandler(this.txtNominalWeight_Validated);
             // 
             // txtPackageTare
             // 
@@ -137,6 +137,7 @@
             this.txtPackageTare.Name = "txtPackageTare";
             this.txtPackageTare.Size = new System.Drawing.Size(288, 26);
             this.txtPackageTare.TabIndex = 4;
+            this.txtPackageTare.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPackageTare_KeyPress);
             this.txtPackageTare.Validated += new System.EventHandler(this.txtPackageTare_Validated);
             // 
             // cbPackage
@@ -183,9 +184,9 @@
             this.lblNominalWeight.Location = new System.Drawing.Point(24, 196);
             this.lblNominalWeight.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblNominalWeight.Name = "lblNominalWeight";
-            this.lblNominalWeight.Size = new System.Drawing.Size(143, 18);
+            this.lblNominalWeight.Size = new System.Drawing.Size(116, 18);
             this.lblNominalWeight.TabIndex = 11;
-            this.lblNominalWeight.Text = "Masa Nominala:";
+            this.lblNominalWeight.Text = "Masa Totala:";
             // 
             // lblPackage
             // 

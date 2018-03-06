@@ -103,12 +103,12 @@ namespace ScalesAutomation
                 // - Glitches should be filtered out in code above this function  
 
                 // If no start detected insert one artificially
-                if (!(Measurements[0].weight == 0))
+                if (!(Measurements[0].TotalWeight == 0))
                 {
                     var item = new Measurement
                     {
-                        weight = 0,
-                        isStable = true
+                        TotalWeight = 0,
+                        IsStable = true
                     };
                     Measurements.Insert(0, item);
                 }
@@ -122,13 +122,13 @@ namespace ScalesAutomation
                     for (int i = 1; i < Measurements.Count; i++)
                     {
                         // Ignore all duplicate trailing "0"
-                        if ((i == measurementStartPosition + 1) && (Measurements[i].weight == 0))
+                        if ((i == measurementStartPosition + 1) && (Measurements[i].TotalWeight == 0))
                         {
                             measurementStartPosition = i;
                         }
                         else
                         {
-                            if (Measurements[i].weight == 0) // if end of measurement found
+                            if (Measurements[i].TotalWeight == 0) // if end of measurement found
                             {
                                 endOfMeasurementFound = true;
                                 measurementEndPosition = i - 1;
@@ -142,13 +142,13 @@ namespace ScalesAutomation
                     {
                         var measurement = Measurements[measurementEndPosition];
                         // Sanity Check at the end with expected value
-                        if (measurement.weight > (netWeight - measurementTollerance) &&
-                            measurement.weight < (netWeight + measurementTollerance))
+                        if (measurement.TotalWeight > (netWeight - measurementTollerance) &&
+                            measurement.TotalWeight < (netWeight + measurementTollerance))
                         {
                             validMeasurements.Add(measurement);
                         }
                         else
-                            log.Error("Measurement not within tollerance: " + measurement.weight);
+                            log.Error("Measurement not within tollerance: " + measurement.TotalWeight);
 
                         // clear Measuremetns array for the processed measurements
                         for (int i = 0; i <= measurementEndPosition; i++)
@@ -184,13 +184,8 @@ namespace ScalesAutomation
 
             if (!CheckInputControls()) return;
 
-            // Calculate Net Weight and Tollerance
-            Double.TryParse(Regex.Replace(LotInfo.Package.NetWeight, "Kg", "", RegexOptions.IgnoreCase), out netWeight);
-            if (LotInfo.Package.NetWeight.IndexOf("Kg", StringComparison.InvariantCultureIgnoreCase) > -1)
-            {
-                netWeight *= 1000;
-            }
-            
+            // Calculate Tollerance
+            netWeight = LotInfo.Package.NetWeight * 1000;
             measurementTollerance = (netWeight * Settings.Default.MeasurementTollerace) / 100;
 
             LotInfo.Date = DateTime.Now.ToString("yyyy-MM-dd");
@@ -241,7 +236,7 @@ namespace ScalesAutomation
 
         }
 
-        private void btnStopLot_Click(object sender, EventArgs e)
+        void btnStopLot_Click(object sender, EventArgs e)
         {
             log.Info(Environment.NewLine + "Button Stop Clicked" + Environment.NewLine);
 
@@ -277,7 +272,13 @@ namespace ScalesAutomation
             };
         }
 
-        private void cbProduct_SelectedIndexChanged(object sender, EventArgs e)
+        void txtLot_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == 13)
+                this.SelectNextControl(this.ActiveControl, true, true, true, true);
+        }
+
+        void cbProduct_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbProduct.SelectedIndex == -1) return;
 
@@ -295,7 +296,7 @@ namespace ScalesAutomation
             txtNominalWeight.Text = "";
         }
 
-        private void cbPackage_SelectedIndexChanged(object sender, EventArgs e)
+        void cbPackage_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbPackage.SelectedIndex == -1) return;
 
@@ -305,19 +306,30 @@ namespace ScalesAutomation
             PackageDefinition = ProductDefinition.PackageDetails.Find(x => x.Type == LotInfo.Package.Type);
             LotInfo.Package.Tare = PackageDefinition.Tare;
             LotInfo.Package.NetWeight = PackageDefinition.NetWeight;
+            LotInfo.Package.TotalWeight = PackageDefinition.TotalWeight;
 
-            txtPackageTare.Text = LotInfo.Package.Tare;
-            txtNominalWeight.Text = LotInfo.Package.NetWeight;
-        }
-
-        void txtNominalWeight_Validated(object sender, EventArgs e)
-        {
-            LotInfo.Package.NetWeight = txtNominalWeight.Text;
+            txtPackageTare.Text = LotInfo.Package.Tare.ToString() + "Kg";
+            txtNominalWeight.Text = LotInfo.Package.TotalWeight.ToString() + "Kg";
         }
 
         void txtPackageTare_Validated(object sender, EventArgs e)
         {
-            LotInfo.Package.Tare = txtPackageTare.Text;
+            if (txtPackageTare.Text.IndexOf("Kg", StringComparison.InvariantCultureIgnoreCase) == -1)
+            {
+                MessageBox.Show("Tara trebuie sa fie urmata de unitatea de masura. Ex: 20.5Kg" + Environment.NewLine + "Doar Kg sunt suportate ca unitate de masura!");
+                return;
+            }
+
+            Double.TryParse(Regex.Replace(txtPackageTare.Text, "Kg", "", RegexOptions.IgnoreCase), out LotInfo.Package.Tare);
+            LotInfo.Package.TotalWeight = LotInfo.Package.NetWeight + LotInfo.Package.Tare;
+            txtNominalWeight.Text = LotInfo.Package.TotalWeight.ToString() + "Kg";
+
+        }
+
+        void txtPackageTare_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == 13)
+                this.SelectNextControl(this.ActiveControl, true, true, true, true);
         }
 
         #endregion
@@ -326,14 +338,14 @@ namespace ScalesAutomation
 
         #region Private Methods
 
-        private void AddToDataTableAndExcel(List<Measurement> validMeasurements)
+        void AddToDataTableAndExcel(List<Measurement> validMeasurements)
         {
             var nrOfRowsInDataTable = dataTable.Rows.Count;
             for (int i = nrOfRowsInDataTable, j = 0; i < nrOfRowsInDataTable + validMeasurements.Count; i++, j++)
             {
                 var row = dataTable.NewRow();
                 row["#"] = i+1;
-                row["Weight"] = validMeasurements[j].weight;
+                row["Weight"] = validMeasurements[j].TotalWeight;
                 row["TimeStamp"] = DateTime.Now.ToString("HH:mm:ss");
                 dataTable.Rows.Add(row);
 
@@ -344,7 +356,7 @@ namespace ScalesAutomation
             }
         }
 
-        private bool CheckInputControls()
+        bool CheckInputControls()
         {
             bool inputsAreValid = true;
 
@@ -364,8 +376,8 @@ namespace ScalesAutomation
             txtLot.Enabled = true;
             cbProduct.Enabled = true;
             cbPackage.Enabled = true;
+            txtPackageTare.Enabled = true;
             txtNominalWeight.Enabled = false;
-            txtPackageTare.Enabled = false;
         }
 
         void DisableInputControls()
@@ -417,7 +429,7 @@ namespace ScalesAutomation
             writePort = new MySerialWriter();
         }
 
-        private void CreateTimer()
+        void CreateTimer()
         {
             timer = new System.Windows.Forms.Timer
             {
@@ -428,6 +440,7 @@ namespace ScalesAutomation
             timer.Start();
         }
 
-        #endregion  
+        #endregion
+
     }
 }
