@@ -12,7 +12,7 @@ namespace ScalesAutomation.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.5.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.6.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -97,7 +97,7 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("SerialTransmissionSimulation.txt")]
+        [global::System.Configuration.DefaultSettingValueAttribute("SerialTransmissionSimulation.log")]
         public string SerialTransmissionSimulationPath {
             get {
                 return ((string)(this["SerialTransmissionSimulationPath"]));
@@ -140,6 +140,18 @@ namespace ScalesAutomation.Properties {
             }
             set {
                 this["MeasurementTollerace"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public int ZeroThreshold {
+            get {
+                return ((int)(this["ZeroThreshold"]));
+            }
+            set {
+                this["ZeroThreshold"] = value;
             }
         }
     }

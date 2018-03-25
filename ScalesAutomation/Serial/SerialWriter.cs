@@ -22,7 +22,7 @@ namespace ScalesAutomation
             if (!serialPort.IsOpen)
                 serialPort.Open();
 
-            startTransmissionFromFile();
+            StartTransmissionFromFile();
 
             this.Dispose();
 
@@ -39,47 +39,63 @@ namespace ScalesAutomation
             }
         }
 
-        private void startTransmissionFromFile()
+        private void StartTransmissionFromFile()
         {
-            byte[][] dataToTransmit = loadSimulatedDataFromFile();
+            byte[][] dataToTransmit = LoadSimulatedDataFromFile();
             int i = 0;
 
             for (i = 0; i < dataToTransmit.Length; i++)
             {
-                writeData(dataToTransmit[i]);
-                Thread.Sleep(10);
+                WriteData(dataToTransmit[i]);
+                Thread.Sleep(10); // in reality is 100ms for ustable measurement and 200ms for stable measurement
             }
         }
 
-        public byte[][] loadSimulatedDataFromFile()
+        /// <summary>This function will load a series of measurements from a file. It can work with real logs provided by this program</summary>
+        /// <returns>A 2 dimensional byte array where each entry is one measurement (an array of bytes)</returns>
+        public byte[][] LoadSimulatedDataFromFile()
         {
+            string simulatedFilePath = Settings.Default.SerialTransmissionSimulationPath;
             string line;
+            string strippedLine;
             string[] lineAsStringArray;
             int i = 0;
 
+            var lineCount = File.ReadLines(simulatedFilePath).Count();
+            byte[][] byteArray2d = new byte[lineCount][]; // give it max possible size
 
-            var lineCount = File.ReadLines(Settings.Default.SerialTransmissionSimulationPath).Count();
-            byte[][] byteArray2d = new byte[lineCount][];
+            log.Info("Start Loading Simulated Data from: " + simulatedFilePath);
 
-            log.Debug("Loading from file: " + Environment.NewLine);
-
-            var file = new StreamReader(Settings.Default.SerialTransmissionSimulationPath);
-            while ((line = file.ReadLine()) != null)
+            using (var file = new StreamReader(simulatedFilePath))
             {
-                lineAsStringArray = line.Split('-');
-                byte[] lineAsByteArray = lineAsStringArray.Select(s => Convert.ToByte(s, 16)).ToArray();
-                byteArray2d[i] = new byte[lineAsByteArray.Length];
-                lineAsByteArray.CopyTo(byteArray2d[i], 0);
-                i++;
+                while ((line = file.ReadLine()) != null)
+                {
+                    // if measurement data found in the line, added to output array
+                    var startOfMeasurement = line.IndexOf(" 24-3");
+                    if (startOfMeasurement != -1)
+                    {
+                        strippedLine = line.Substring(startOfMeasurement + 1, 23); // get rid of starting SPACE char
+
+                        lineAsStringArray = strippedLine.Split('-');
+                        byte[] lineAsByteArray = lineAsStringArray.Select(s => Convert.ToByte(s, 16)).ToArray();
+                        byteArray2d[i] = new byte[lineAsByteArray.Length];
+                        lineAsByteArray.CopyTo(byteArray2d[i], 0);
+                        i++;
+                    }
+
+                }
             }
 
-            file.Close();
+            Array.Resize(ref byteArray2d, i); // correct the size because we had non-measurement lines
+
+            log.Info("Loaded " + i + " measurements");
+            log.Info("Stopped Loading Simulated Data" + Environment.NewLine);
 
             return byteArray2d;
 
         }
 
-        public void writeData(byte[] txBuffer)
+        public void WriteData(byte[] txBuffer)
         {
             // log.Debug("Writing bytes: " + BitConverter.ToString(txBuffer) + Environment.NewLine);
 

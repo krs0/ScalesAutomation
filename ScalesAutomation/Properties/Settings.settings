@@ -21,7 +21,7 @@
       <Value Profile="(Default)">CSVServer\</Value>
     </Setting>
     <Setting Name="SerialTransmissionSimulationPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">SerialTransmissionSimulation.txt</Value>
+      <Value Profile="(Default)">SerialTransmissionSimulation.log</Value>
     </Setting>
     <Setting Name="SimulationEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -31,6 +31,9 @@
     </Setting>
     <Setting Name="MeasurementTollerace" Type="System.Double" Scope="User">
       <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="ZeroThreshold" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">200</Value>
     </Setting>
   </Settings>
 </SettingsFile>

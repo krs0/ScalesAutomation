@@ -192,7 +192,7 @@ namespace ScalesAutomation
 
             btnPause.Enabled = false;
 
-            log.Info(Environment.NewLine + "Button Start Clicked" + Environment.NewLine);
+            log.Info("Button Start Clicked" + Environment.NewLine);
 
             var filePath = Path.Combine(AssemblyPath, Settings.Default.CSVOutputPath);
             csvHelper = new CsvHelper();
@@ -226,7 +226,7 @@ namespace ScalesAutomation
 
         void btnPause_Click(object sender, EventArgs e)
         {
-            log.Info(Environment.NewLine + "Button Pause Clicked" + Environment.NewLine);
+            log.Info("Button Pause Clicked" + Environment.NewLine);
 
             btnPause.Enabled = false;
             btnStart.Enabled = true;
@@ -238,7 +238,7 @@ namespace ScalesAutomation
 
         void btnStopLot_Click(object sender, EventArgs e)
         {
-            log.Info(Environment.NewLine + "Button Stop Clicked" + Environment.NewLine);
+            log.Info("Button Stop Clicked" + Environment.NewLine);
 
             btnStart.Enabled = true;
             btnPause.Enabled = false;

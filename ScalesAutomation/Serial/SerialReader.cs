@@ -234,10 +234,10 @@ namespace ScalesAutomation
                 measurement.TotalWeight = packageAsIntArray[6] + packageAsIntArray[5] * 10 + packageAsIntArray[4] * 100 + packageAsIntArray[3] * 1000 + packageAsIntArray[2] * 10000;
                 measurement.TimeStamp = DateTime.Now;
 
-                log.Debug("Package Received: " + BitConverter.ToString(packageAsByteArray) + "  Stable: " + measurement.IsStable + " - Weight: " + measurement.TotalWeight + Environment.NewLine);
+                log.Debug("Package Received: " + BitConverter.ToString(packageAsByteArray) + "  Stable: " + (measurement.IsStable ? "T" : "F") + " - Weight: " + measurement.TotalWeight);
 
-                // 20g is also 0
-                if (measurement.TotalWeight == 20)
+                // Everything up to ZeroThreshold grams is converted to 0
+                if (measurement.TotalWeight <= Settings.Default.ZeroThreshold)
                     measurement.TotalWeight = 0;
 
                 rawMeasurements.Add(measurement);
