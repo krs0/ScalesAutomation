@@ -20,6 +20,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Distribution", "Distributio
 		Distribution\SerialTransmissionSimulation.txt = Distribution\SerialTransmissionSimulation.txt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logs", "Logs", "{B770A26A-946D-40AE-8FC6-B30170020132}"
+	ProjectSection(SolutionItems) = preProject
+		Distribution\Logs\ScalesAutomation.log = Distribution\Logs\ScalesAutomation.log
+		Distribution\Logs\ScalesAutomationRolling.log = Distribution\Logs\ScalesAutomationRolling.log
+		Distribution\Logs\TestLot1.log = Distribution\Logs\TestLot1.log
+		Distribution\Logs\TestLot2.log = Distribution\Logs\TestLot2.log
+		Distribution\Logs\TestLot3.log = Distribution\Logs\TestLot3.log
+		Distribution\Logs\TestLot4.log = Distribution\Logs\TestLot4.log
+		Distribution\Logs\TestLot5.log = Distribution\Logs\TestLot5.log
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
