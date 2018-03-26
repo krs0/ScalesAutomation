@@ -237,8 +237,7 @@ namespace ScalesAutomation
                 log.Debug("Package Received: " + BitConverter.ToString(packageAsByteArray) + "  Stable: " + (measurement.IsStable ? "T" : "F") + " - Weight: " + measurement.TotalWeight);
 
                 // Everything up to ZeroThreshold grams is converted to 0
-                if (measurement.TotalWeight <= Settings.Default.ZeroThreshold)
-                    measurement.TotalWeight = 0;
+                measurement.TotalWeight = ApplyZeroThreshold(measurement.TotalWeight);
 
                 rawMeasurements.Add(measurement);
             }
@@ -266,11 +265,12 @@ namespace ScalesAutomation
 
         }
 
-        static Measurement Transform20gInZero(Measurement oneMeasurement)
+        static int ApplyZeroThreshold(int measuredWeight)
         {
-            if (oneMeasurement.TotalWeight < Settings.Default.ZeroThreshold)
-                oneMeasurement.TotalWeight = 0;
-            return oneMeasurement;
+            if (measuredWeight < Settings.Default.ZeroThreshold)
+                measuredWeight = 0;
+
+            return measuredWeight;
         }
 
         void CreateTimer()
