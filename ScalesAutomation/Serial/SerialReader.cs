@@ -130,7 +130,7 @@ namespace ScalesAutomation
                     {
                         stableCounter++;
 
-                        if (stableCounter == requiredConsecutiveStableMeasurements)
+                        if (stableCounter == requiredConsecutiveStableMeasurements - 1) // Starts at 0
                         {
                             Measurements.Add(currentMeasurement);
                             lastAddedMeasurement = currentMeasurement;
@@ -268,7 +268,7 @@ namespace ScalesAutomation
 
         static Measurement Transform20gInZero(Measurement oneMeasurement)
         {
-            if (oneMeasurement.TotalWeight == 20)
+            if (oneMeasurement.TotalWeight < Settings.Default.ZeroThreshold)
                 oneMeasurement.TotalWeight = 0;
             return oneMeasurement;
         }

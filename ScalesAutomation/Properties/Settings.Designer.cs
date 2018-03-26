@@ -97,7 +97,7 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("SerialTransmissionSimulation.log")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Logs\\TestLot3.log")]
         public string SerialTransmissionSimulationPath {
             get {
                 return ((string)(this["SerialTransmissionSimulationPath"]));
@@ -121,7 +121,7 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
         public int ConsecutiveStableMeasurements {
             get {
                 return ((int)(this["ConsecutiveStableMeasurements"]));
@@ -133,7 +133,7 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
         public double MeasurementTollerace {
             get {
                 return ((double)(this["MeasurementTollerace"]));

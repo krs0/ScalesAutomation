@@ -21,16 +21,16 @@
       <Value Profile="(Default)">CSVServer\</Value>
     </Setting>
     <Setting Name="SerialTransmissionSimulationPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">SerialTransmissionSimulation.log</Value>
+      <Value Profile="(Default)">Logs\TestLot3.log</Value>
     </Setting>
     <Setting Name="SimulationEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="ConsecutiveStableMeasurements" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
+      <Value Profile="(Default)">3</Value>
     </Setting>
     <Setting Name="MeasurementTollerace" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">5</Value>
+      <Value Profile="(Default)">3</Value>
     </Setting>
     <Setting Name="ZeroThreshold" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">200</Value>
