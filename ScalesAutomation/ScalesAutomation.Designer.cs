@@ -60,7 +60,7 @@
             // btnStart
             // 
             this.btnStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStart.Location = new System.Drawing.Point(87, 283);
+            this.btnStart.Location = new System.Drawing.Point(266, 287);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(150, 50);
             this.btnStart.TabIndex = 6;
@@ -72,7 +72,7 @@
             // 
             this.btnPause.Enabled = false;
             this.btnPause.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPause.Location = new System.Drawing.Point(270, 283);
+            this.btnPause.Location = new System.Drawing.Point(449, 287);
             this.btnPause.Name = "btnPause";
             this.btnPause.Size = new System.Drawing.Size(150, 50);
             this.btnPause.TabIndex = 7;
@@ -103,7 +103,7 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewMeasurements.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridViewMeasurements.Location = new System.Drawing.Point(501, 24);
+            this.dataGridViewMeasurements.Location = new System.Drawing.Point(764, 28);
             this.dataGridViewMeasurements.Name = "dataGridViewMeasurements";
             this.dataGridViewMeasurements.ReadOnly = true;
             this.dataGridViewMeasurements.RowTemplate.Height = 25;
@@ -114,9 +114,9 @@
             // txtLot
             // 
             this.txtLot.Font = new System.Drawing.Font("Georgia", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtLot.Location = new System.Drawing.Point(184, 24);
+            this.txtLot.Location = new System.Drawing.Point(155, 28);
             this.txtLot.Name = "txtLot";
-            this.txtLot.Size = new System.Drawing.Size(288, 26);
+            this.txtLot.Size = new System.Drawing.Size(589, 26);
             this.txtLot.TabIndex = 1;
             this.txtLot.TextChanged += new System.EventHandler(this.txtLot_Validated);
             this.txtLot.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtLot_KeyPress);
@@ -125,17 +125,17 @@
             // 
             this.txtNominalWeight.Enabled = false;
             this.txtNominalWeight.Font = new System.Drawing.Font("Georgia", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNominalWeight.Location = new System.Drawing.Point(184, 192);
+            this.txtNominalWeight.Location = new System.Drawing.Point(155, 196);
             this.txtNominalWeight.Name = "txtNominalWeight";
-            this.txtNominalWeight.Size = new System.Drawing.Size(288, 26);
+            this.txtNominalWeight.Size = new System.Drawing.Size(589, 26);
             this.txtNominalWeight.TabIndex = 5;
             // 
             // txtPackageTare
             // 
             this.txtPackageTare.Font = new System.Drawing.Font("Georgia", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPackageTare.Location = new System.Drawing.Point(184, 150);
+            this.txtPackageTare.Location = new System.Drawing.Point(155, 154);
             this.txtPackageTare.Name = "txtPackageTare";
-            this.txtPackageTare.Size = new System.Drawing.Size(288, 26);
+            this.txtPackageTare.Size = new System.Drawing.Size(589, 26);
             this.txtPackageTare.TabIndex = 4;
             this.txtPackageTare.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPackageTare_KeyPress);
             this.txtPackageTare.Validated += new System.EventHandler(this.txtPackageTare_Validated);
@@ -145,10 +145,10 @@
             this.cbPackage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPackage.Font = new System.Drawing.Font("Georgia", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbPackage.FormattingEnabled = true;
-            this.cbPackage.Location = new System.Drawing.Point(184, 108);
+            this.cbPackage.Location = new System.Drawing.Point(155, 112);
             this.cbPackage.Margin = new System.Windows.Forms.Padding(2);
             this.cbPackage.Name = "cbPackage";
-            this.cbPackage.Size = new System.Drawing.Size(288, 26);
+            this.cbPackage.Size = new System.Drawing.Size(589, 26);
             this.cbPackage.TabIndex = 3;
             this.cbPackage.SelectedIndexChanged += new System.EventHandler(this.cbPackage_SelectedIndexChanged);
             // 
@@ -217,10 +217,10 @@
             this.cbProduct.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbProduct.Font = new System.Drawing.Font("Georgia", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbProduct.FormattingEnabled = true;
-            this.cbProduct.Location = new System.Drawing.Point(184, 66);
+            this.cbProduct.Location = new System.Drawing.Point(155, 70);
             this.cbProduct.Margin = new System.Windows.Forms.Padding(2);
             this.cbProduct.Name = "cbProduct";
-            this.cbProduct.Size = new System.Drawing.Size(288, 26);
+            this.cbProduct.Size = new System.Drawing.Size(589, 26);
             this.cbProduct.TabIndex = 2;
             this.cbProduct.SelectedIndexChanged += new System.EventHandler(this.cbProduct_SelectedIndexChanged);
             // 
@@ -228,7 +228,7 @@
             // 
             this.btnStopLot.Enabled = false;
             this.btnStopLot.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStopLot.Location = new System.Drawing.Point(184, 436);
+            this.btnStopLot.Location = new System.Drawing.Point(363, 440);
             this.btnStopLot.Name = "btnStopLot";
             this.btnStopLot.Size = new System.Drawing.Size(150, 50);
             this.btnStopLot.TabIndex = 8;
@@ -240,7 +240,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(845, 561);
+            this.ClientSize = new System.Drawing.Size(1096, 561);
             this.Controls.Add(this.btnStopLot);
             this.Controls.Add(this.cbProduct);
             this.Controls.Add(this.lblPackageTare);
