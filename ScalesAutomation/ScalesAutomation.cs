@@ -352,7 +352,7 @@ namespace ScalesAutomation
                 // Add row to excel
                 csvHelper.WriteLine(row, dataTable.Columns.Count);
 
-                log.Debug("Measurements Added: " + row["#"] + " - Weight: " + row["Weight"] + " - at: " + row["TimeStamp"]);
+                log.Info("Measurements Added: " + row["#"] + " - Weight: " + row["Weight"] + " - at: " + row["TimeStamp"]);
             }
         }
 
@@ -362,7 +362,7 @@ namespace ScalesAutomation
 
             if ((txtLot.Text == "") || (cbProduct.SelectedIndex == -1) || (cbPackage.SelectedIndex == -1) || (txtPackageTare.Text == "") || (txtNominalWeight.Text == ""))
             {
-                log.Debug("Invalid Lot configuration detected!" + Environment.NewLine);
+                log.Info("Invalid Lot configuration detected!" + Environment.NewLine);
                 MessageBox.Show("Invalid Lot configuration detected. Please make sure all fields are filled and that they have the rigt values",
                     "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 inputsAreValid = false;

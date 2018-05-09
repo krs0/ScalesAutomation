@@ -157,7 +157,7 @@ namespace ScalesAutomation
                     busy = true;
 
                     byte[] data = new byte[serialPort.BytesToRead];
-                    // log.Debug("Bytes To Read: " + serialPort.BytesToRead.ToString() + Environment.NewLine);
+                    // log.Info("Bytes To Read: " + serialPort.BytesToRead.ToString() + Environment.NewLine);
 
                     serialPort.Read(data, 0, data.Length);
 
@@ -198,7 +198,7 @@ namespace ScalesAutomation
         void EnableCyclicTransmission()
         {
             byte[] txBuffer = PrepareCyclicTransmissionPackage();
-            log.Debug("Enabling Cyclic Transmission... " + BitConverter.ToString(txBuffer) + Environment.NewLine);
+            log.Info("Enabling Cyclic Transmission... " + BitConverter.ToString(txBuffer) + Environment.NewLine);
 
             var s = serialPort.IsOpen;
 
@@ -234,10 +234,14 @@ namespace ScalesAutomation
                 measurement.TotalWeight = packageAsIntArray[6] + packageAsIntArray[5] * 10 + packageAsIntArray[4] * 100 + packageAsIntArray[3] * 1000 + packageAsIntArray[2] * 10000;
                 measurement.TimeStamp = DateTime.Now;
 
-                log.Debug("Package Received: " + BitConverter.ToString(packageAsByteArray) + "  Stable: " + (measurement.IsStable ? "T" : "F") + " - Weight: " + measurement.TotalWeight);
+                // Logging long format
+                // log.Info("Package Received: " + BitConverter.ToString(packageAsByteArray) + "  Stable: " + (measurement.IsStable ? "T" : "F") + " - Weight: " + measurement.TotalWeight);
+
+                // Logging short format
+                log.Info("S: " + (measurement.IsStable ? "T" : "F") + " - W: " + measurement.TotalWeight);
 
                 // Everything up to ZeroThreshold grams is converted to 0
-                measurement.TotalWeight = ApplyZeroThreshold(measurement.TotalWeight);
+                ApplyZeroThresholdCorrection(ref measurement);
 
                 rawMeasurements.Add(measurement);
             }
@@ -265,12 +269,23 @@ namespace ScalesAutomation
 
         }
 
-        static int ApplyZeroThreshold(int measuredWeight)
+        /// <summary>
+        /// Make corrections here for measurements close to Zero but not really 0 and sometimes even not Stable
+        /// The measured weight is compared with the zero threshhold defined in settings and if lower, 0 is put instead and the measurement is forced to stable!
+        /// </summary>
+        bool ApplyZeroThresholdCorrection(ref Measurement measurement)
         {
-            if (measuredWeight < Settings.Default.ZeroThreshold)
-                measuredWeight = 0;
+            bool result = true;
 
-            return measuredWeight;
+            if ((measurement.TotalWeight < Settings.Default.ZeroThreshold) && !(measurement.TotalWeight == 0 && measurement.IsStable))
+            {
+                measurement.TotalWeight = 0;
+                measurement.IsStable = true;
+                log.Debug("S: " + (measurement.IsStable ? "T" : "F") + " - W: " + measurement.TotalWeight);
+                result = false;
+            }
+
+            return result;
         }
 
         void CreateTimer()
