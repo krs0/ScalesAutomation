@@ -240,7 +240,6 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
-/CSVServer/2018-02-07-060953_aaa_Gut80-MargarinaCreme_Cutie_20Kg.csv
 /CSVBackup
 /Resources/Bilanciai D410 Advanced User.pdf
 /Resources/Bilanciai EV2001 English Manual.pdf
@@ -249,14 +248,6 @@ ModelManifest.xml
 /Resources/Scales Setup - Docklite ASCII.png
 /Resources/Scales Setup - Docklite HEX.png
 /Recorded Data
-/Distribution/CatalogProduse.xlsx
-/Distribution/CSVServer
-/Distribution/CSVOutput
-/Distribution/CSVBackup
-/Distribution/SerialTransmissionSimulation - Not Working because of unstable.txt
-/Distribution/SerialTransmissionSimulation - Can skip the second 20480 measurement minimalistic.txt
-/Resources/BAZA-METROLOGIE_SEPTEMBRIE-2017-CRISTI.xls
-/Resources/SORTIMENTE-TARA.xlsx
 /Distribution/Server/CSVServer/2018-05-09-090653_666_GUT66-grasimetartinabila66%_CutieMargarita-20Kg.csv
 /Distribution/Server/CSVServer/2018-05-09-090144_9999_GUT66-grasimetartinabila66%_CutieMargarita-20Kg.csv
 /Distribution/Server/CSVServer/2018-05-09-085458_24234324234_GUT66-grasimetartinabila66%_CutieMargarita-20Kg.csv
@@ -270,3 +261,7 @@ ModelManifest.xml
 /Distribution/Server/CSVServer/2018-03-04-072149_1211_Gut80-MargarinaCreme_Cutie_20Kg.csv
 /Distribution/Server/CSVServer/2018-03-04-072129_1235_Gut80-MargarinaCreme_Cutie_20Kg.csv
 /Distribution/Server/CSVServer/2018-03-04-072100_1234_Gut80-MargarinaCreme_Cutie_20Kg.csv
+/Distribution/CSVBackup
+/Distribution/CSVOutput
+/Resources/SORTIMENTE-TARA.xlsx
+/Resources/BAZA-METROLOGIE_SEPTEMBRIE-2017-CRISTI.xls

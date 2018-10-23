@@ -16,6 +16,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Distribution", "Distribution", "{9F857F83-2670-4027-B0B4-BD5298C1B37F}"
 	ProjectSection(SolutionItems) = preProject
 		Distribution\CatalogProduse.xml = Distribution\CatalogProduse.xml
+		Distribution\log4net.config = Distribution\log4net.config
+		Distribution\log4net.dll = Distribution\log4net.dll
+		Distribution\log4net.xml = Distribution\log4net.xml
+		Distribution\ScalesAutomation.exe = Distribution\ScalesAutomation.exe
+		Distribution\ScalesAutomation.exe.config = Distribution\ScalesAutomation.exe.config
 		Distribution\SerialTransmissionSimulation.txt = Distribution\SerialTransmissionSimulation.txt
 	EndProjectSection
 EndProject
