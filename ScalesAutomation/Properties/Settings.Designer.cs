@@ -12,7 +12,7 @@ namespace ScalesAutomation.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.6.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.8.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -85,7 +85,7 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("CSVServer\\")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server\\CSVServer\\")]
         public string CSVServerFolderPath {
             get {
                 return ((string)(this["CSVServerFolderPath"]));
@@ -122,18 +122,6 @@ namespace ScalesAutomation.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("3")]
-        public int ConsecutiveStableMeasurements {
-            get {
-                return ((int)(this["ConsecutiveStableMeasurements"]));
-            }
-            set {
-                this["ConsecutiveStableMeasurements"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3")]
         public double MeasurementTollerace {
             get {
                 return ((double)(this["MeasurementTollerace"]));
@@ -145,7 +133,19 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int ConsecutiveStableMeasurements {
+            get {
+                return ((int)(this["ConsecutiveStableMeasurements"]));
+            }
+            set {
+                this["ConsecutiveStableMeasurements"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5000")]
         public int ZeroThreshold {
             get {
                 return ((int)(this["ZeroThreshold"]));

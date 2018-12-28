@@ -18,7 +18,7 @@
       <Value Profile="(Default)">CSVBackup\</Value>
     </Setting>
     <Setting Name="CSVServerFolderPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CSVServer\</Value>
+      <Value Profile="(Default)">Server\CSVServer\</Value>
     </Setting>
     <Setting Name="SerialTransmissionSimulationPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">Logs\TestLot1.log</Value>
@@ -26,14 +26,14 @@
     <Setting Name="SimulationEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ConsecutiveStableMeasurements" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">3</Value>
-    </Setting>
     <Setting Name="MeasurementTollerace" Type="System.Double" Scope="User">
       <Value Profile="(Default)">3</Value>
     </Setting>
+    <Setting Name="ConsecutiveStableMeasurements" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
     <Setting Name="ZeroThreshold" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1000</Value>
+      <Value Profile="(Default)">5000</Value>
     </Setting>
   </Settings>
 </SettingsFile>

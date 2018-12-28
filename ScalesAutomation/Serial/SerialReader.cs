@@ -103,7 +103,7 @@ namespace ScalesAutomation
 
             if (rawMeasurements.Count > 0)
             {
-                // keep in mid that we could already have added this measurement in the previous timer tick.
+                // we could already have added this measurement in the previous timer tick but it still continues as a stable measurement
                 if (lastAddedMeasurement.TotalWeight != -1)
                 {
                     currentMeasurement = lastAddedMeasurement;
@@ -225,6 +225,7 @@ namespace ScalesAutomation
             byte[] packageAsByteArray = new byte[] { };
 
             // Determine if we have a "package" in the queue
+
             if (recievedData.Count >= 8)
             {
                 var package = Enumerable.Range(0, 8).Select(i => recievedData.Dequeue());

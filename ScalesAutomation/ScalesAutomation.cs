@@ -102,7 +102,7 @@ namespace ScalesAutomation
                 // - A valid measurement will be the last Stable measurement before a Stable "0"
                 // - Glitches should be filtered out in code above this function  
 
-                // If no start detected insert one artificially
+                // If no start detected insert one zero measurement artificially
                 if (!(Measurements[0].TotalWeight == 0))
                 {
                     var item = new Measurement
@@ -113,15 +113,16 @@ namespace ScalesAutomation
                     Measurements.Insert(0, item);
                 }
 
-                // Identify Start and end of measurement positions
+                // Identify Start and end of measurement positions. (Measurements[] contains only "stable" measurements )
                 while (Measurements.Count > 1) // Start supposed at [0]
                 {
                     measurementStartPosition = 0;
 
-                    // Look for next "0"
+                    // Look for the position of next "0" measurement (measurementEndPosition),
+                    // ignoring all leading "0" by increasing measurementStartPosition
                     for (int i = 1; i < Measurements.Count; i++)
                     {
-                        // Ignore all duplicate trailing "0"
+                        // Ignore all duplicate leading "0"
                         if ((i == measurementStartPosition + 1) && (Measurements[i].TotalWeight == 0))
                         {
                             measurementStartPosition = i;
