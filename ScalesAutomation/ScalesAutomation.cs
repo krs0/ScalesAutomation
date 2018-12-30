@@ -193,6 +193,9 @@ namespace ScalesAutomation
 
             btnPause.Enabled = false;
 
+            // for each LOT save logs in separate files. (If you reopen a lot, a new file with a new timestamp will be created).
+            Logging.StartNewFile(log, "Logs/" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + "_" + LotInfo.Lot +".log");
+
             log.Info("Button Start Clicked" + Environment.NewLine);
 
             var filePath = Path.Combine(AssemblyPath, Settings.Default.CSVOutputPath);

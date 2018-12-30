@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Helpers\CsvHelper.cs" />
     <Compile Include="Definitions.cs" />
+    <Compile Include="Helpers\Logging.cs" />
     <Compile Include="ScalesAutomation.cs">
       <SubType>Form</SubType>
     </Compile>

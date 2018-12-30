@@ -58,9 +58,7 @@ namespace ScalesAutomation
             string simulatedFilePath = Settings.Default.SerialTransmissionSimulationPath;
             string line;
             string measurement;
-            string[] lineAsStringArray;
             int i = 0;
-            byte stable = 0;
             byte wrappedMeasurementLength = 8;
 
             var lineCount = File.ReadLines(simulatedFilePath).Count();
