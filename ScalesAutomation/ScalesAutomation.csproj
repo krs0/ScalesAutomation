@@ -55,7 +55,13 @@
   <ItemGroup>
     <Compile Include="Helpers\CsvHelper.cs" />
     <Compile Include="Definitions.cs" />
-    <Compile Include="Helpers\Logging.cs" />
+    <Compile Include="Helpers\Misc.cs" />
+    <Compile Include="LotData.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LotData.Designer.cs">
+      <DependentUpon>LotData.cs</DependentUpon>
+    </Compile>
     <Compile Include="ScalesAutomation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +73,9 @@
     <Compile Include="Serial\SerialWriter.cs" />
     <Compile Include="Serial\SerialReader.cs" />
     <Compile Include="Helpers\XmlHelper.cs" />
+    <EmbeddedResource Include="LotData.resx">
+      <DependentUpon>LotData.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ScalesAutomation.resx">
       <DependentUpon>ScalesAutomation.cs</DependentUpon>
     </EmbeddedResource>

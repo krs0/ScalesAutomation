@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Data;
 using ScalesAutomation.Properties;
 using System.IO;
-using System.Text.RegularExpressions;
 
 namespace ScalesAutomation
 {
@@ -18,7 +17,6 @@ namespace ScalesAutomation
         bool stopPressed;
 
         readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        XmlHelper XmlHandler = new XmlHelper();
 
         System.Windows.Forms.Timer timer;
         DataTable dataTable = new DataTable();
@@ -33,13 +31,7 @@ namespace ScalesAutomation
         double measurementTollerance;
         double netWeight;
 
-        #region Properties
-
-        LotInfo LotInfo;
-        Product ProductDefinition { get; set; }
-        Package PackageDefinition { get; set; }
-
-        #endregion
+        LotInfo lotInfo;
 
         public ScalesAutomation()
         {
@@ -47,24 +39,10 @@ namespace ScalesAutomation
 
             simulationEnabled = Settings.Default.SimulationEnabled;
 
-            XmlHandler.ReadCatalogue(Path.Combine(AssemblyPath, @Settings.Default.CatalogFilePath));
-            InitializeGuiFromXml();
-
             Measurements = new SynchronizedCollection<Measurement>();
 
             CreateTimer();
 
-        }
-
-        public static string AssemblyPath
-        {
-            get
-            {
-                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                UriBuilder uri = new UriBuilder(codeBase);
-                string path = Uri.UnescapeDataString(uri.Path);
-                return Path.GetDirectoryName(path);
-            }
         }
 
         #region "Events"
@@ -183,24 +161,27 @@ namespace ScalesAutomation
         {
             stopPressed = false;
 
-            if (!CheckInputControls()) return;
+            // ToDo: CL - if preparatoin window detected use those values
+
+            if (!uctlLotData.CheckInputControls()) return;
+
+            lotInfo = uctlLotData.GetLotInfo();
+            lotInfo.Date = DateTime.Now.ToString("yyyy-MM-dd");
 
             // Calculate Tollerance
-            netWeight = LotInfo.Package.NetWeight * 1000;
+            netWeight = lotInfo.Package.NetWeight * 1000;
             measurementTollerance = (netWeight * Settings.Default.MeasurementTollerace) / 100;
-
-            LotInfo.Date = DateTime.Now.ToString("yyyy-MM-dd");
 
             btnPause.Enabled = false;
 
             // for each LOT save logs in separate files. (If you reopen a lot, a new file with a new timestamp will be created).
-            Logging.StartNewFile(log, "Logs/" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + "_" + LotInfo.Lot +".log");
+            Misc.StartNewLogFile(log, "Logs/" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + "_" + lotInfo.Lot +".log");
 
             log.Info("Button Start Clicked" + Environment.NewLine);
 
-            var filePath = Path.Combine(AssemblyPath, Settings.Default.CSVOutputPath);
+            var filePath = Path.Combine(Misc.AssemblyPath, Settings.Default.CSVOutputPath);
             csvHelper = new CsvHelper();
-            csvHelper.PrepareFile(filePath, LotInfo, dataTable);
+            csvHelper.PrepareFile(filePath, lotInfo, dataTable);
 
             readPort?.Dispose();
             readPort = new MySerialReader(Measurements);
@@ -224,7 +205,7 @@ namespace ScalesAutomation
             btnPause.Enabled = true;
             btnStopLot.Enabled = true;
 
-            DisableInputControls();
+            uctlLotData.DisableInputControls();
 
         }
 
@@ -254,86 +235,13 @@ namespace ScalesAutomation
 
             Thread.Sleep(500);
 
-            LotInfo = new LotInfo();
             InitializeInputControls();
-            EnableInputControls();
+            uctlLotData.EnableInputControls();
 
             csvHelper.BackupCurrentCsv();
             if (csvHelper.IsServerFolderReachable())
                 csvHelper.CopyCurrentCsvToServer(Settings.Default.CSVServerFolderPath);
 
-        }
-
-        #endregion
-
-        #region "Events For Input Controls"
-
-        void txtLot_Validated(object sender, EventArgs e)
-        {
-            LotInfo = new LotInfo
-            {
-                Lot = txtLot.Text
-            };
-        }
-
-        void txtLot_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == 13)
-                this.SelectNextControl(this.ActiveControl, true, true, true, true);
-        }
-
-        void cbProduct_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cbProduct.SelectedIndex == -1) return;
-
-            LotInfo.ProductName = cbProduct.Text;
-            ProductDefinition = XmlHandler.Catalogue.Find(x => x.Name == LotInfo.ProductName);
-
-            cbPackage.Items.Clear();
-            foreach (var package in ProductDefinition.PackageDetails)
-            {
-                cbPackage.Items.Add(package.Type);
-            }
-
-            cbPackage.SelectedIndex = -1;
-            txtPackageTare.Text = "";
-            txtNominalWeight.Text = "";
-        }
-
-        void cbPackage_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cbPackage.SelectedIndex == -1) return;
-
-            // TODO: Separate type and netweight by _
-            LotInfo.Package.Type = cbPackage.Text;
-
-            PackageDefinition = ProductDefinition.PackageDetails.Find(x => x.Type == LotInfo.Package.Type);
-            LotInfo.Package.Tare = PackageDefinition.Tare;
-            LotInfo.Package.NetWeight = PackageDefinition.NetWeight;
-            LotInfo.Package.TotalWeight = PackageDefinition.TotalWeight;
-
-            txtPackageTare.Text = LotInfo.Package.Tare.ToString() + "Kg";
-            txtNominalWeight.Text = LotInfo.Package.TotalWeight.ToString() + "Kg";
-        }
-
-        void txtPackageTare_Validated(object sender, EventArgs e)
-        {
-            if (txtPackageTare.Text.IndexOf("Kg", StringComparison.InvariantCultureIgnoreCase) == -1)
-            {
-                MessageBox.Show("Tara trebuie sa fie urmata de unitatea de masura. Ex: 20.5Kg" + Environment.NewLine + "Doar Kg sunt suportate ca unitate de masura!");
-                return;
-            }
-
-            Double.TryParse(Regex.Replace(txtPackageTare.Text, "Kg", "", RegexOptions.IgnoreCase), out LotInfo.Package.Tare);
-            LotInfo.Package.TotalWeight = LotInfo.Package.NetWeight + LotInfo.Package.Tare;
-            txtNominalWeight.Text = LotInfo.Package.TotalWeight.ToString() + "Kg";
-
-        }
-
-        void txtPackageTare_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == 13)
-                this.SelectNextControl(this.ActiveControl, true, true, true, true);
         }
 
         #endregion
@@ -360,48 +268,15 @@ namespace ScalesAutomation
             }
         }
 
-        bool CheckInputControls()
-        {
-            bool inputsAreValid = true;
 
-            if ((txtLot.Text == "") || (cbProduct.SelectedIndex == -1) || (cbPackage.SelectedIndex == -1) || (txtPackageTare.Text == "") || (txtNominalWeight.Text == ""))
-            {
-                log.Info("Invalid Lot configuration detected!" + Environment.NewLine);
-                MessageBox.Show("Invalid Lot configuration detected. Please make sure all fields are filled and that they have the rigt values",
-                    "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                inputsAreValid = false;
-            }
-
-            return inputsAreValid;
-        }
-
-        void EnableInputControls()
-        {
-            txtLot.Enabled = true;
-            cbProduct.Enabled = true;
-            cbPackage.Enabled = true;
-            txtPackageTare.Enabled = true;
-            txtNominalWeight.Enabled = false;
-        }
-
-        void DisableInputControls()
-        {
-            txtLot.Enabled = false;
-            cbProduct.Enabled = false;
-            cbPackage.Enabled = false;
-            txtNominalWeight.Enabled = false;
-            txtPackageTare.Enabled = false;
-        }
 
         void InitializeInputControls()
         {
             dataTable.Rows.Clear();
             dataGridViewMeasurements.Refresh();
-            txtLot.Text = "";
-            cbProduct.SelectedIndex = -1;
-            cbPackage.SelectedIndex = -1;
-            txtNominalWeight.Text = "";
-            txtPackageTare.Text = "";
+            lotInfo = new LotInfo();
+            uctlLotData.InitializeLotInfo();
+            uctlLotData.InitializeInputControls();
         }
 
         void CloseSerialCommunication()
@@ -412,14 +287,6 @@ namespace ScalesAutomation
             {
                 writePort?.Dispose();
                 writeThread?.Abort();
-            }
-        }
-
-        void InitializeGuiFromXml()
-        {
-            foreach (var product in XmlHandler.Catalogue)
-            {
-                cbProduct.Items.Add(product.Name);
             }
         }
 
