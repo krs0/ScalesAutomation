@@ -133,6 +133,7 @@
             // txtPackageTare
             // 
             this.txtPackageTare.Font = new System.Drawing.Font("Georgia", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPackageTare.ForeColor = System.Drawing.Color.OrangeRed;
             this.txtPackageTare.Location = new System.Drawing.Point(155, 154);
             this.txtPackageTare.Name = "txtPackageTare";
             this.txtPackageTare.Size = new System.Drawing.Size(589, 26);
