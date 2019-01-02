@@ -16,7 +16,7 @@ namespace ScalesAutomation
 
         #region Properties
 
-        LotInfo LotInfo;
+        LotInfo LotInfo = new LotInfo();
         Product ProductDefinition { get; set; }
         Package PackageDefinition { get; set; }
 
@@ -35,10 +35,7 @@ namespace ScalesAutomation
 
         void txtLot_Validated(object sender, EventArgs e)
         {
-            LotInfo = new LotInfo
-            {
-                Lot = txtLot.Text
-            };
+            LotInfo.Lot = txtLot.Text;
         }
 
         void txtLot_KeyPress(object sender, KeyPressEventArgs e)
@@ -92,7 +89,6 @@ namespace ScalesAutomation
             Double.TryParse(Regex.Replace(txtPackageTare.Text, "Kg", "", RegexOptions.IgnoreCase), out LotInfo.Package.Tare);
             LotInfo.Package.TotalWeight = LotInfo.Package.NetWeight + LotInfo.Package.Tare;
             txtNominalWeight.Text = LotInfo.Package.TotalWeight.ToString() + "Kg";
-
         }
 
         void txtPackageTare_KeyPress(object sender, KeyPressEventArgs e)
@@ -106,6 +102,18 @@ namespace ScalesAutomation
         public LotInfo GetLotInfo()
         {
             return LotInfo;
+        }
+
+        public void SetLotInfo(LotInfo lotInfo)
+        {
+            this.LotInfo = lotInfo;
+
+            txtLot.Text = LotInfo.Lot;
+            cbProduct.SelectedItem = LotInfo.ProductName;
+            cbPackage.SelectedItem = LotInfo.Package.Type;
+            txtPackageTare.Text = LotInfo.Package.Tare.ToString() + "Kg";
+//            txtNominalWeight.Text = LotInfo.Package.NetWeight.ToString();
+// let the Tare validated event fill Nominal Weight
         }
 
         // double make sure we do noy use an old object
@@ -143,8 +151,13 @@ namespace ScalesAutomation
             txtLot.Enabled = false;
             cbProduct.Enabled = false;
             cbPackage.Enabled = false;
-            txtNominalWeight.Enabled = false;
             txtPackageTare.Enabled = false;
+            txtNominalWeight.Enabled = false;
+        }
+
+        public bool InputControlsEnabled()
+        {
+            return txtLot.Enabled;
         }
 
         public void InitializeInputControls()
@@ -152,8 +165,8 @@ namespace ScalesAutomation
             txtLot.Text = "";
             cbProduct.SelectedIndex = -1;
             cbPackage.SelectedIndex = -1;
-            txtNominalWeight.Text = "";
             txtPackageTare.Text = "";
+            txtNominalWeight.Text = "";
         }
 
         void InitializeGuiBackendFromXml()

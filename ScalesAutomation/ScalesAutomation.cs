@@ -28,10 +28,12 @@ namespace ScalesAutomation
         bool simulationEnabled;
         CsvHelper csvHelper;
 
+        double zeroThreshold;
         double measurementTollerance;
         double netWeight;
 
         LotInfo lotInfo;
+        NextLotData nextLotData = null;
 
         public ScalesAutomation()
         {
@@ -171,6 +173,7 @@ namespace ScalesAutomation
             // Calculate Tollerance
             netWeight = lotInfo.Package.NetWeight * 1000;
             measurementTollerance = (netWeight * Settings.Default.MeasurementTollerace) / 100;
+            zeroThreshold = (netWeight * Settings.Default.ZeroThreshold) / 100;
 
             btnPause.Enabled = false;
 
@@ -184,7 +187,7 @@ namespace ScalesAutomation
             csvHelper.PrepareFile(filePath, lotInfo, dataTable);
 
             readPort?.Dispose();
-            readPort = new MySerialReader(Measurements);
+            readPort = new MySerialReader(Measurements, zeroThreshold);
 
             // Code for Start Reading in a new Thread
             //readThread?.Abort();
@@ -244,6 +247,34 @@ namespace ScalesAutomation
 
         }
 
+        private void btnShowNextLotData_Click(object sender, EventArgs e)
+        {
+            if (nextLotData == null)
+            {
+                nextLotData = new NextLotData();
+                nextLotData.WindowClosed += NextLotDataClosed;
+                nextLotData.ApplyClicked += NextLotDataApplyClicked;
+                nextLotData.Show();
+            }
+            else
+            {
+                nextLotData.BringToFront();
+            }
+        }
+
+        private void NextLotDataClosed()
+        {
+            nextLotData = null;
+        }
+
+        private void NextLotDataApplyClicked()
+        {
+            if (uctlLotData.InputControlsEnabled())
+            {
+                uctlLotData.SetLotInfo(nextLotData.GetLotInfo());
+            }
+        }
+
         #endregion
 
         #endregion
@@ -268,8 +299,6 @@ namespace ScalesAutomation
             }
         }
 
-
-
         void InitializeInputControls()
         {
             dataTable.Rows.Clear();
@@ -292,7 +321,7 @@ namespace ScalesAutomation
 
         void ReadThread()
         {
-            readPort = new MySerialReader(Measurements);
+            readPort = new MySerialReader(Measurements, 5000);
         }
 
         void WriteThread()
@@ -313,5 +342,9 @@ namespace ScalesAutomation
 
         #endregion
 
+        public bool IsStopPressed()
+        {
+            return stopPressed;
+        }
     }
 }

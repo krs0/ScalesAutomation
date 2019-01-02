@@ -47,7 +47,7 @@ namespace ScalesAutomation
             for (i = 0; i < dataToTransmit.Length; i++)
             {
                 WriteData(dataToTransmit[i]);
-                Thread.Sleep(20); // in reality is 100ms for ustable measurement and 200ms for stable measurement
+                Thread.Sleep(30); // in reality is 100ms for ustable measurement and 200ms for stable measurement
             }
         }
 

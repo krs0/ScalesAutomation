@@ -33,7 +33,7 @@
       <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="ZeroThreshold" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">7000</Value>
+      <Value Profile="(Default)">75</Value>
     </Setting>
   </Settings>
 </SettingsFile>

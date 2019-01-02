@@ -62,6 +62,12 @@
     <Compile Include="LotData.Designer.cs">
       <DependentUpon>LotData.cs</DependentUpon>
     </Compile>
+    <Compile Include="NextLotData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NextLotData.Designer.cs">
+      <DependentUpon>NextLotData.cs</DependentUpon>
+    </Compile>
     <Compile Include="ScalesAutomation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,6 +81,9 @@
     <Compile Include="Helpers\XmlHelper.cs" />
     <EmbeddedResource Include="LotData.resx">
       <DependentUpon>LotData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NextLotData.resx">
+      <DependentUpon>NextLotData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ScalesAutomation.resx">
       <DependentUpon>ScalesAutomation.cs</DependentUpon>

@@ -19,6 +19,7 @@ namespace ScalesAutomation
         System.Windows.Forms.Timer timer;
 
         SynchronizedCollection<Measurement> rawMeasurements;
+        double zeroThreshold;
         Queue<byte> recievedData = new Queue<byte>();
         int requiredConsecutiveStableMeasurements;
         bool busy;
@@ -27,10 +28,11 @@ namespace ScalesAutomation
 
         #region Public Methods
 
-        public MySerialReader(SynchronizedCollection<Measurement> measurements)
+        public MySerialReader(SynchronizedCollection<Measurement> measurements, double zeroThreshold)
         {
             Measurements = measurements;
             rawMeasurements = new SynchronizedCollection<Measurement>();
+            this.zeroThreshold = zeroThreshold;
             lastAddedMeasurement.TotalWeight = -1;
 
             requiredConsecutiveStableMeasurements = Settings.Default.ConsecutiveStableMeasurements;
@@ -225,7 +227,7 @@ namespace ScalesAutomation
             byte[] packageAsByteArray = new byte[] { };
 
             // Determine if we have a "package" in the queue
-
+            // ToDo: CrLa - Here we could lose data. change to while and test
             if (recievedData.Count >= 8)
             {
                 var package = Enumerable.Range(0, 8).Select(i => recievedData.Dequeue());
@@ -278,7 +280,7 @@ namespace ScalesAutomation
         {
             bool result = true;
 
-            if ((measurement.TotalWeight < Settings.Default.ZeroThreshold) && !(measurement.TotalWeight == 0 && measurement.IsStable))
+            if ((measurement.TotalWeight < zeroThreshold) && !(measurement.TotalWeight == 0 && measurement.IsStable))
             {
                 measurement.TotalWeight = 0;
                 measurement.IsStable = true;

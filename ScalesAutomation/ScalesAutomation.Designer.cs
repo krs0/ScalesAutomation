@@ -41,6 +41,8 @@
             this.measurementBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.btnStopLot = new System.Windows.Forms.Button();
             this.uctlLotData = new LotData();
+            this.ShowNextLotData = new System.Windows.Forms.Button();
+            this.toolTipPrepareNextLot = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMeasurements)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.measurementBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.scalesAutomationBindingSource)).BeginInit();
@@ -114,18 +116,32 @@
             this.btnStopLot.UseVisualStyleBackColor = true;
             this.btnStopLot.Click += new System.EventHandler(this.btnStopLot_Click);
             // 
-            // lotData1
+            // uctlLotData
             // 
             this.uctlLotData.Location = new System.Drawing.Point(12, 28);
-            this.uctlLotData.Name = "lotData1";
+            this.uctlLotData.Name = "uctlLotData";
             this.uctlLotData.Size = new System.Drawing.Size(742, 214);
             this.uctlLotData.TabIndex = 9;
+            // 
+            // ShowNextLotData
+            // 
+            this.ShowNextLotData.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ShowNextLotData.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.ShowNextLotData.Location = new System.Drawing.Point(48, 287);
+            this.ShowNextLotData.Name = "ShowNextLotData";
+            this.ShowNextLotData.Size = new System.Drawing.Size(50, 50);
+            this.ShowNextLotData.TabIndex = 10;
+            this.ShowNextLotData.Text = "+";
+            this.toolTipPrepareNextLot.SetToolTip(this.ShowNextLotData, "Pregateste datele pentru urmatorul Lot");
+            this.ShowNextLotData.UseVisualStyleBackColor = true;
+            this.ShowNextLotData.Click += new System.EventHandler(this.btnShowNextLotData_Click);
             // 
             // ScalesAutomation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1096, 561);
+            this.Controls.Add(this.ShowNextLotData);
             this.Controls.Add(this.uctlLotData);
             this.Controls.Add(this.btnStopLot);
             this.Controls.Add(this.dataGridViewMeasurements);
@@ -155,6 +171,8 @@
         private System.Windows.Forms.BindingSource measurementBindingSource1;
         private System.Windows.Forms.Button btnStopLot;
         private LotData uctlLotData;
+        private System.Windows.Forms.Button ShowNextLotData;
+        private System.Windows.Forms.ToolTip toolTipPrepareNextLot;
     }
 }
 
