@@ -1,0 +1,53 @@
+Operatorul sa lase timp cantarului sa se stabilizeze minim 400ms dupa fiecare cantarire. (Apare simbolul de stabilizare masuratoare pe ecran)
+Operatorul sa nu deschida mai mult de o aplicatie simultan. (Pe viitor se va adauga o noua fereastra care sa permita pregatirea datelor)
+Laptopul trebuie legat la internet prin cablu de retea. (Conexiunea WiFi in Sectie e slaba)
+
+1. Programul a inregistrat o valoare mai mare decat cantitatea din cutie. 
+Descriere: In cutie a curs mai mult decat trebuia, s-a luat cu spatula pana cand a ramas cantitatea dorita, dar in program s-a inregistrat cantitatea mai mare.
+Cauza: Legata de 1. posibila cauza e mutarea de pe cantar a cuteiei inainte de timpul necesar pentru stabilizarea masuratorii.
+Solutie: dupa fiecare masuratoare trebuie asteptat un timp de minim 400ms ca ultima masuratoare sa devina stabila si sa fie transferata de cantar spre laptop. Se va implementa un algoritm care va asigura ca intre 2 masuratori de ZERO este tot timpul inregistrata o valoare.
+
+2. Programul nu inregistreaza toate masuratorile.
+Descriere: La fianlul lotului numarul de masuratori inregistrate e mai mic decat numarul de pachete procesate
+Cauza: Legata de 1. posibila cauza e mutarea de pe cantar a cuteiei inainte de timpul necesar pentru stabilizarea masuratorii.
+Solutie: dupa fiecare masuratoare trebuie asteptat un timp de minim 400ms ca ultima masuratoare sa devina stabila si sa fie transferata de cantar spre laptop. Se va implementa un algoritm care va asigura ca intre 2 masuratori de ZERO este tot timpul inregistrata o valoare.
+
+3. Programul dispare de pe ecran.
+Descriere: Cateodata fara motiv programul dispare de pe ecran.
+Cauza: Posibila cauza e deschiderea in acelasi timp a mai multor programe. (Nu e suportat de aplicatie). Acest lucru este dorit pentru a putea pregati din timp datele pentru urmatorul lot.
+Solutie: Adaugare checkuri la deschiderea mai multor programe simultan. Oferirea unui mod in care se poate pregati urmatorul lot fara a afecta lotul curent.
+
+4. Nu toate loturile masurate in productie au fost transferate pe Server.
+Descriere. In folderul de output al masuratorilor de pe cantar sunt mai multe fisiere cu masuratori decat pe server.
+Cauza: Posibil legata de 3. mai multe programe deschise simultan. Programul curent s-a inchis inainte de a transfera fisierul pe server. Retea indisponibila (probleme Wifi)
+Solutie: Muta manual fisierele netransferate. DONE. Pe langa Solutia 3 se va efectua o verificare suplimentara a transmiterii fisierului pe server.
+
+5. Locatiile in care se gaseste Aplicatia Automatizare Cantar si Centralizator masuratori nu sunt documentate
+Solutie: Toate locatiile vor fi adaugate la manual.
+
+6. In Aplicatia de Automatizare Cantar Tara ar trebui sa apara in Rosu pentru a atentiona ca trebuie modificata daca difera de ce e introdus pe cantar.
+Solutie: Minimal, se va implementa exact in modul cerut. Solutia completa ar fi ca Tara sa fie citita automat de pe cantar. (Verifica daca e posibil)
+
+7. Nevoia de arhivare a fisierelor dupa o anumita perioada
+Solutie: Arhivarea se poate face manual din Windows Explorer. Adauga descriere proces la manual.(Cai, sortare, etc)
+
+8. Ascunde sheetul Raw Data.
+DONE
+
+9. Adauga suport in Excelul de Metrologie pentru datele deja existente.
+Solutie: Se poate crea manual un fisier nou in CSVServer.
+DONE
+
+10. In Centralizator masuratori Cantitatea cantarita nu include Tara.
+Descriere: Pe cantar este scazuta Tara in prealabil. Datele trimise for fi de fapt Cantitatea Reala.
+Solutie: Se va adauga Tara la Cantitatea Cantarita
+DONE
+
+11. Formula Fara E trece desi Cantitatea cantarita nu cuprinde Tara
+Solutie: Formula e OK. Valorile mai mari decat Cantitatea Nominala Qn vor fi intotdeauna acceptate. (Doar valorile mai mici decat o valoare minima, vor arata eroare).
+DONE
+
+
+
+
+
