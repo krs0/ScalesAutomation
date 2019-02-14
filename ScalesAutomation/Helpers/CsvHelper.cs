@@ -14,8 +14,10 @@ namespace ScalesAutomation
         public string CsvFileFullName;
 
         readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private bool appendToExistingFile;
 
+        // TODO: CrLa - add multiple lots to same log file
+        private bool appendToExistingFile;
+       
         #region Public Methods
 
         public void PrepareFile(string folderPath, LotInfo lotInfo, DataTable dataTable)

@@ -35,5 +35,8 @@
     <Setting Name="ZeroThreshold" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">75</Value>
     </Setting>
+    <Setting Name="LogFolderPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Logs\</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -163,8 +163,6 @@ namespace ScalesAutomation
         {
             stopPressed = false;
 
-            // ToDo: CL - if preparatoin window detected use those values
-
             if (!uctlLotData.CheckInputControls()) return;
 
             lotInfo = uctlLotData.GetLotInfo();
@@ -178,9 +176,19 @@ namespace ScalesAutomation
             btnPause.Enabled = false;
 
             // for each LOT save logs in separate files. (If you reopen a lot, a new file with a new timestamp will be created).
-            Misc.StartNewLogFile(log, "Logs/" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + "_" + lotInfo.Lot +".log");
+            var logFileName = Settings.Default.LogFolderPath + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + "_" + lotInfo.Lot + ".log";
+            Misc.StartNewLogFile(log, logFileName);
 
             log.Info("Button Start Clicked" + Environment.NewLine);
+            log.Info("### Lot Info ###");
+            log.Info("Lot: " + lotInfo.Lot);
+            log.Info("Product Name: " + lotInfo.ProductName);
+            log.Info("Package: " + lotInfo.Package.Type);
+            log.Info("Net Weight: " + netWeight);
+            log.Info("Tare: " + lotInfo.Package.Tare * 1000);
+            log.Info("Zero Threshold: " + zeroThreshold + Environment.NewLine);
+            log.Info("Date: " + lotInfo.Date);
+
 
             var filePath = Path.Combine(Misc.AssemblyPath, Settings.Default.CSVOutputPath);
             csvHelper = new CsvHelper();

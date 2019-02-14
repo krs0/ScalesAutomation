@@ -38,5 +38,6 @@ namespace ScalesAutomation
                 return Path.GetDirectoryName(path);
             }
         }
+
     }
 }
