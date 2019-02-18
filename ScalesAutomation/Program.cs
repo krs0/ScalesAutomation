@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Windows.Forms;
+using ScalesAutomation.Properties;
 
 namespace ScalesAutomation
 {
@@ -15,7 +16,11 @@ namespace ScalesAutomation
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new ScalesAutomation());
+                if(Settings.Default.DataImporterEnabled)
+                    Application.Run(new DataImporter());
+                else
+                    Application.Run(new ScalesAutomation());
+
                 mutex.ReleaseMutex();
             }
             else

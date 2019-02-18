@@ -34,7 +34,7 @@ namespace ScalesAutomation
 
         public LotInfo GetLotInfo()
         {
-            return uctlLotData.GetLotInfo();
+            return uctlLotData.LotInfo;
         }
     }
 }

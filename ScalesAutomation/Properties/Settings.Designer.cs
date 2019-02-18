@@ -166,5 +166,17 @@ namespace ScalesAutomation.Properties {
                 this["LogFolderPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DataImporterEnabled {
+            get {
+                return ((bool)(this["DataImporterEnabled"]));
+            }
+            set {
+                this["DataImporterEnabled"] = value;
+            }
+        }
     }
 }

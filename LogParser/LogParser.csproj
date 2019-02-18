@@ -66,6 +66,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\ScalesAutomation\Definitions.cs">
+      <Link>Definitions.cs</Link>
+    </Compile>
+    <Compile Include="..\ScalesAutomation\LotInfo.cs">
+      <Link>LotInfo.cs</Link>
+    </Compile>
     <Compile Include="LogParser.cs">
       <SubType>Form</SubType>
     </Compile>

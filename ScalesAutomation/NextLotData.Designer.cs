@@ -72,7 +72,7 @@
             this.Controls.Add(this.btnApply);
             this.Controls.Add(this.uctlLotData);
             this.Name = "NextLotData";
-            this.Text = "NextLotData";
+            this.Text = "Date Lot Urmator";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.NextLotData_FormClosing);
             this.ResumeLayout(false);
 

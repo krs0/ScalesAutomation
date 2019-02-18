@@ -16,7 +16,7 @@ namespace ScalesAutomation
 
         #region Properties
 
-        LotInfo LotInfo = new LotInfo();
+        public LotInfo LotInfo { get; private set; }
         Product ProductDefinition { get; set; }
         Package PackageDefinition { get; set; }
 
@@ -29,13 +29,80 @@ namespace ScalesAutomation
             XmlHandler.ReadCatalogue(Path.Combine(Misc.AssemblyPath, @Settings.Default.CatalogFilePath));
 
             InitializeGuiBackendFromXml();
+
+            LotInfo = new LotInfo();
         }
 
         #region "Events For Input Controls"
 
         void txtLot_Validated(object sender, EventArgs e)
         {
-            LotInfo.Lot = txtLot.Text;
+            var logFilePath = "";
+            var outputFilePath = "";
+            var outputFolderPath = Path.Combine(Misc.AssemblyPath, @Settings.Default.CSVServerFolderPath);
+            var logFolderPath = Path.Combine(Misc.AssemblyPath, @Settings.Default.LogFolderPath);
+
+            if (txtLot.Text == "")
+                return;
+
+            if (!Settings.Default.DataImporterEnabled)
+            {
+                // Check if measurements were already done for selected lot
+                if (CsvHelper.LogAlreadyPresent(txtLot.Text, logFolderPath, ref logFilePath))
+                {
+                    DialogResult result = MessageBox.Show("Pentru lotul selectat exista deja masuratori. Doriti sa continuati lotul?", "Continuare Lot", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes)
+                    {
+                        var lotInfo = LotInfo.ReadLotInfo(logFilePath);
+                        lotInfo.AppendToLot = true;
+                        SetLotInfo(lotInfo);
+                    }
+                    else
+                    {
+                        txtLot.Text = "";
+                        LotInfo.Lot = "";
+                        LotInfo.AppendToLot = false;
+                    }
+                }
+                else
+                {
+                    LotInfo.Lot = txtLot.Text;
+                }
+            }
+            else
+            {
+                if (CsvHelper.LotAlreadyPresent(txtLot.Text, outputFolderPath, ref outputFilePath))
+                {
+                    DialogResult result = MessageBox.Show("Pentru lotul selectat exista deja masuratori. Doriti sa continuati lotul?" + Environment.NewLine + "(Masuratorile vor fi adaugate in continuare la cele existente pentru acest lot!)", "Continuare Lot", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes)
+                    {
+                        var lotInfo = CsvHelper.ReadMeasurementFileHeader(outputFilePath);
+                        lotInfo.AppendToLot = true;
+                        SetLotInfo(lotInfo);
+                    }
+                    else
+                    {
+                        txtLot.Text = "";
+                        LotInfo.Lot = "";
+                        LotInfo.AppendToLot = false;
+                    }
+
+                }
+                else
+                {
+                    LotInfo.Lot = txtLot.Text;                        
+                }
+            }
+
+            if (LotInfo.AppendToLot)
+            {
+                DisableInputControls();
+                txtLot.Enabled = true;
+            }
+            else
+            {
+                EnableInputControls();
+            }
         }
 
         void txtLot_KeyPress(object sender, KeyPressEventArgs e)
@@ -74,8 +141,8 @@ namespace ScalesAutomation
             LotInfo.Package.NetWeight = PackageDefinition.NetWeight;
             LotInfo.Package.TotalWeight = PackageDefinition.TotalWeight;
 
-            txtPackageTare.Text = LotInfo.Package.Tare.ToString() + "Kg";
-            txtNominalWeight.Text = LotInfo.Package.TotalWeight.ToString() + "Kg";
+            txtPackageTare.Text = LotInfo.Package.Tare + "Kg";
+            txtNominalWeight.Text = LotInfo.Package.TotalWeight + "Kg";
         }
 
         void txtPackageTare_Validated(object sender, EventArgs e)
@@ -88,7 +155,7 @@ namespace ScalesAutomation
 
             Double.TryParse(Regex.Replace(txtPackageTare.Text, "Kg", "", RegexOptions.IgnoreCase), out LotInfo.Package.Tare);
             LotInfo.Package.TotalWeight = LotInfo.Package.NetWeight + LotInfo.Package.Tare;
-            txtNominalWeight.Text = LotInfo.Package.TotalWeight.ToString() + "Kg";
+            txtNominalWeight.Text = LotInfo.Package.TotalWeight + "Kg";
         }
 
         void txtPackageTare_KeyPress(object sender, KeyPressEventArgs e)
@@ -99,21 +166,17 @@ namespace ScalesAutomation
 
         #endregion
 
-        public LotInfo GetLotInfo()
-        {
-            return LotInfo;
-        }
-
         public void SetLotInfo(LotInfo lotInfo)
         {
-            this.LotInfo = lotInfo;
+            LotInfo = lotInfo ?? throw new ArgumentNullException(nameof(lotInfo));
 
             txtLot.Text = LotInfo.Lot;
             cbProduct.SelectedItem = LotInfo.ProductName;
             cbPackage.SelectedItem = LotInfo.Package.Type;
-            txtPackageTare.Text = LotInfo.Package.Tare.ToString() + "Kg";
-//            txtNominalWeight.Text = LotInfo.Package.NetWeight.ToString();
-// let the Tare validated event fill Nominal Weight
+            txtPackageTare.Text = (LotInfo.Package.Tare != 0) ? LotInfo.Package.Tare + "Kg" : "";
+
+            // Tare validated() event will fill Nominal Weight
+
         }
 
         // double make sure we do noy use an old object
@@ -167,6 +230,8 @@ namespace ScalesAutomation
             cbPackage.SelectedIndex = -1;
             txtPackageTare.Text = "";
             txtNominalWeight.Text = "";
+
+            InitializeLotInfo();
         }
 
         void InitializeGuiBackendFromXml()

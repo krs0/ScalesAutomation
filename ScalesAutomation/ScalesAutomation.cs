@@ -165,7 +165,7 @@ namespace ScalesAutomation
 
             if (!uctlLotData.CheckInputControls()) return;
 
-            lotInfo = uctlLotData.GetLotInfo();
+            lotInfo = uctlLotData.LotInfo;
             lotInfo.Date = DateTime.Now.ToString("yyyy-MM-dd");
 
             // Calculate Tollerance
@@ -175,24 +175,35 @@ namespace ScalesAutomation
 
             btnPause.Enabled = false;
 
-            // for each LOT save logs in separate files. (If you reopen a lot, a new file with a new timestamp will be created).
-            var logFileName = Settings.Default.LogFolderPath + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + "_" + lotInfo.Lot + ".log";
-            Misc.StartNewLogFile(log, logFileName);
+            // for each LOT save logs in separate files. (If a log file was already created for a lot reuse it)
+            var logFilePath = "";
+            var logFolderPath = Misc.AssemblyPath + Settings.Default.LogFolderPath;
+            if (lotInfo.AppendToLot && CsvHelper.LogAlreadyPresent(lotInfo.Lot, logFolderPath, ref logFilePath))
+            {
+                Misc.ChangeLoggingFile(log, logFilePath);
 
-            log.Info("Button Start Clicked" + Environment.NewLine);
-            log.Info("### Lot Info ###");
-            log.Info("Lot: " + lotInfo.Lot);
-            log.Info("Product Name: " + lotInfo.ProductName);
-            log.Info("Package: " + lotInfo.Package.Type);
-            log.Info("Net Weight: " + netWeight);
-            log.Info("Tare: " + lotInfo.Package.Tare * 1000);
-            log.Info("Zero Threshold: " + zeroThreshold + Environment.NewLine);
-            log.Info("Date: " + lotInfo.Date);
+                log.Info("Button Start Clicked" + Environment.NewLine);
+                log.Info("### Lot " + lotInfo.Lot + " Resumed on " + lotInfo.Date + " ###");
+            }
+            else
+            {
+                logFilePath = Settings.Default.LogFolderPath + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + "_" + lotInfo.Lot + ".log";
+                Misc.ChangeLoggingFile(log, logFilePath);
 
+                log.Info("Button Start Clicked" + Environment.NewLine);
+                log.Info("### Lot Info ###");
+                log.Info("Lot: " + lotInfo.Lot);
+                log.Info("Product Name: " + lotInfo.ProductName);
+                log.Info("Package: " + lotInfo.Package.Type);
+                log.Info("Net Weight: " + netWeight);
+                log.Info("Tare: " + lotInfo.Package.Tare * 1000);
+                log.Info("Zero Threshold: " + zeroThreshold + Environment.NewLine);
+                log.Info("Date: " + lotInfo.Date);
+            }
 
-            var filePath = Path.Combine(Misc.AssemblyPath, Settings.Default.CSVOutputPath);
+            var CSVOutputFolderPath = Path.Combine(Misc.AssemblyPath, Settings.Default.CSVOutputPath);
             csvHelper = new CsvHelper();
-            csvHelper.PrepareFile(filePath, lotInfo, dataTable);
+            csvHelper.PrepareFile(CSVOutputFolderPath, lotInfo);
 
             readPort?.Dispose();
             readPort = new MySerialReader(Measurements, zeroThreshold);
@@ -312,7 +323,6 @@ namespace ScalesAutomation
             dataTable.Rows.Clear();
             dataGridViewMeasurements.Refresh();
             lotInfo = new LotInfo();
-            uctlLotData.InitializeLotInfo();
             uctlLotData.InitializeInputControls();
         }
 

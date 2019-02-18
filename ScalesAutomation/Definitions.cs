@@ -11,14 +11,6 @@ namespace ScalesAutomation
         public DateTime TimeStamp;
     }
 
-    public struct LotInfo
-    {
-        public String Lot;
-        public String ProductName;
-        public Package Package;
-        public String Date;
-    }
-
     public struct Package
     {
         public String Type;

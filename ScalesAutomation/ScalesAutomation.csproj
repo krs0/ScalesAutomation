@@ -56,12 +56,19 @@
     <Compile Include="Helpers\CsvHelper.cs" />
     <Compile Include="Definitions.cs" />
     <Compile Include="Helpers\Misc.cs" />
+    <Compile Include="DataImporter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataImporter.Designer.cs">
+      <DependentUpon>DataImporter.cs</DependentUpon>
+    </Compile>
     <Compile Include="LotData.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="LotData.Designer.cs">
       <DependentUpon>LotData.cs</DependentUpon>
     </Compile>
+    <Compile Include="LotInfo.cs" />
     <Compile Include="NextLotData.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -79,6 +86,9 @@
     <Compile Include="Serial\SerialWriter.cs" />
     <Compile Include="Serial\SerialReader.cs" />
     <Compile Include="Helpers\XmlHelper.cs" />
+    <EmbeddedResource Include="DataImporter.resx">
+      <DependentUpon>DataImporter.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LotData.resx">
       <DependentUpon>LotData.cs</DependentUpon>
     </EmbeddedResource>

@@ -132,6 +132,7 @@
             this.txtPackageTare.Name = "txtPackageTare";
             this.txtPackageTare.Size = new System.Drawing.Size(589, 26);
             this.txtPackageTare.TabIndex = 18;
+            this.txtPackageTare.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPackageTare_KeyPress);
             this.txtPackageTare.Validated += new System.EventHandler(this.txtPackageTare_Validated);
             // 
             // txtNominalWeight

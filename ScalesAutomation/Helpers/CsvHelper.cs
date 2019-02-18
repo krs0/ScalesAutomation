@@ -4,31 +4,79 @@ using System.Data;
 using System.IO;
 using log4net;
 using System.Reflection;
+using System.Windows.Forms.VisualStyles;
 
 namespace ScalesAutomation
 {
     public class CsvHelper
     {
-        public string CsvFileFullPath;
-        public string CsvFolderPath;
-        public string CsvFileFullName;
+        public static string CsvFileFullPath;
+        public static string CsvFolderPath;
+        public static string CsvFileFullName;
 
         readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        // TODO: CrLa - add multiple lots to same log file
-        private bool appendToExistingFile;
+        private bool appendToExistingOutputFile;
        
         #region Public Methods
 
-        public void PrepareFile(string folderPath, LotInfo lotInfo, DataTable dataTable)
+        public void PrepareFile(string folderPath, LotInfo lotInfo)
+        {
+            var productInfo = MakeProductInfo(lotInfo);
+
+            CalculatePaths(folderPath, productInfo, lotInfo.AppendToLot);
+
+            if (!appendToExistingOutputFile)
+            {
+                var fileHeader = CreateMeasurementFileHeader(lotInfo);
+                InitializeOutputFile(folderPath, fileHeader);
+            }
+        }
+
+        public static string MakeProductInfo(LotInfo lotInfo)
         {
             var productInfo = lotInfo.Lot + "_" + lotInfo.ProductName + "_" + lotInfo.Package.Type;
             productInfo = productInfo.Replace(" ", ""); // No spaces in file names
 
-            CalculatePaths(folderPath, productInfo);
+            return productInfo;
+        }
 
-            if (!appendToExistingFile)
-                CreateFile(lotInfo, dataTable);
+        public static string CreateMeasurementFileHeader(LotInfo lotInfo)
+        {
+            var fileHeader = "#;Cantitatea Cantarita [Cc];Ora;" +
+                         lotInfo.Lot + ";" +
+                         lotInfo.ProductName + ";" +
+                         lotInfo.Package.Type + ";" +
+                         lotInfo.Package.NetWeight + "Kg" + ";" +
+                         lotInfo.Package.Tare + "Kg" + ";" +
+                         lotInfo.Date;
+
+            return fileHeader;
+        }
+
+        public static LotInfo ReadMeasurementFileHeader(string CSVOutputFilePath)
+        {
+            var lotInfo = new LotInfo();
+            using (var outputFile = new StreamReader(CSVOutputFilePath))
+            {
+                var line = outputFile.ReadLine() ?? throw new Exception("Empty output file. No header found.");
+                {
+                    if (line.Contains("#;Cantitatea Cantarita [Cc];Ora")) // Header line
+                    {
+                        var splitLine = line.Split(';');
+                        lotInfo.Lot = splitLine[3];
+                        lotInfo.ProductName = splitLine[4];
+                        lotInfo.Package.Type = splitLine[5];
+                        var netWeight = splitLine[6].Remove(splitLine[6].Length - 2); // remove trailing kg from string
+                        double.TryParse(netWeight, out lotInfo.Package.NetWeight);
+                        var tare = splitLine[7].Remove(splitLine[7].Length - 2); // remove trailing kg from string
+                        double.TryParse(tare, out lotInfo.Package.Tare);
+                        lotInfo.Date = splitLine[8];
+                    }
+                }
+            }
+
+            return lotInfo;
         }
 
         public void WriteLine(DataRow row, int iColCount)
@@ -86,31 +134,103 @@ namespace ScalesAutomation
             return DirectoryExists(CsvFolderPath);
         }
 
+        public static bool OutputAlreadyPresent(string lotInfo, string outputFolderPath, ref string lotOutputFileName)
+        {
+            var result = false;
+
+            try
+            {
+                var dirInfo = new DirectoryInfo(outputFolderPath);
+                var files = dirInfo.GetFiles("*" + lotInfo + ".csv");
+
+                if (files.Length > 0)
+                {
+                    lotOutputFileName = files[0].FullName;
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return result;
+        }
+
+        public static bool LogAlreadyPresent(string lotNumber, string logFolderPath, ref string lotLogFileName)
+        {
+            var result = false;
+
+            try
+            {
+                var dirInfo = new DirectoryInfo(logFolderPath);
+                var files = dirInfo.GetFiles("*" + lotNumber + ".log");
+
+                if (files.Length > 0)
+                {
+                    lotLogFileName = files[0].FullName;
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return result;
+        }
+
+        public static bool LotAlreadyPresent(string lotNumber, string outputFolderPath, ref string lotLogFileName)
+        {
+            var result = false;
+
+            try
+            {
+                var dirInfo = new DirectoryInfo(outputFolderPath);
+                var files = dirInfo.GetFiles("*_" + lotNumber + "*.csv");
+
+                if (files.Length > 0)
+                {
+                    lotLogFileName = files[0].FullName;
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return result;
+        }
+
+        public static string GetExistingLotOutputFileName(string lotNumber, string outputFolderPath)
+        {
+            var outputFileName = "";
+
+            LotAlreadyPresent(lotNumber, outputFolderPath, ref outputFileName);
+
+            return outputFileName;
+        }
+
         #endregion
 
         #region Private Methods
 
-        private void CalculatePaths(string folderPath, string productInfo)
+        private void CalculatePaths(string folderPath, string productInfo, bool appendToExistingLogFile)
         {
             try
             {
                 CsvFolderPath = folderPath;
 
-                var dirInfo = new DirectoryInfo(CsvFolderPath);
-                var files = dirInfo.GetFiles("*" + productInfo + ".csv");
-
-                // if a file exists starting with same product info (LOT!!!), reuse it
-                if (files.Length > 0)
+                if (appendToExistingLogFile && OutputAlreadyPresent(productInfo, folderPath, ref CsvFileFullPath))
                 {
-                    CsvFileFullName = files[0].Name;
-                    CsvFileFullPath = files[0].FullName;
-                    appendToExistingFile = true;
+                    CsvFileFullName = Path.GetFileName(CsvFileFullPath);
+                    appendToExistingOutputFile = true;
                 }
                 else
                 {
-                    CsvFileFullName = DateTime.Now.ToString("yyyy-MM-dd-hhmmss") + "_" + productInfo + ".csv";
-                    CsvFileFullPath = Path.Combine(CsvFolderPath, CsvFileFullName);
-                    appendToExistingFile = false;
+                    MakeOutputFilePath(folderPath, DateTime.Now, productInfo);
+                    appendToExistingOutputFile = false;
                 }
             }
             catch (Exception ex)
@@ -120,33 +240,27 @@ namespace ScalesAutomation
             }
         }
 
-        private void CreateFile(LotInfo lotInfo, DataTable dataTable)
+        public static string MakeOutputFilePath(string outputFolderPath, DateTime date, string productInfo)
+        {
+            CsvFileFullName = date.ToString("yyyy-MM-dd-hhmmss") + "_" + productInfo + ".csv";
+            CsvFileFullPath = Path.Combine(outputFolderPath, CsvFileFullName);
+
+            return CsvFileFullPath;
+        }
+
+        public static void InitializeOutputFile(string outputFilePath, string headerRow)
         {
             try
             {
-                // Create the CSV file to which grid data will be exported.
-                using (var sw = new StreamWriter(CsvFileFullPath, false))
+                // Create the CSV file to which measured data will be saved
+                using (var csvFile = new StreamWriter(outputFilePath, false))
                 {
-                    // Old code for writing column names
-                    //var iColCount = dataTable.Columns.Count;
-                    //for (var i = 0; i < iColCount; i++)
-                    //{
-                    //    sw.Write(dataTable.Columns[i]);
-                    //    if (i < iColCount - 1)
-                    //    {
-                    //        sw.Write(";");
-                    //    }
-                    //}
-
-                    sw.Write("#;Cantitatea Cantarita [Cc];Ora;" + lotInfo.Lot + ";" + lotInfo.ProductName + ";" + lotInfo.Package.Type + ";" +
-                        lotInfo.Package.NetWeight.ToString() + "Kg" + ";" + lotInfo.Package.Tare.ToString() + "Kg" + ";" + lotInfo.Date);
-                    sw.Write(sw.NewLine);
-                    sw.Close();
+                    csvFile.Write(headerRow + csvFile.NewLine);
                 }
             }
             catch (Exception ex)
             {
-                log.Error("Error creating CSV File... " + CsvFileFullPath + ex.Message + Environment.NewLine);
+                // log.Error("Error creating CSV File... " + CsvFileFullPath + ex.Message + Environment.NewLine);
                 throw;
             }
         }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.IO;
 using LogParser.Properties;
+using ScalesAutomation;
 
 namespace LogParser
 {
@@ -20,17 +21,6 @@ namespace LogParser
             public string time;
             public bool isStable;
             public int measurement;
-        }
-
-        public struct LotInfo // everything in grams!
-        {
-            public string Lot;
-            public string ProductName;
-            public string PackageType;
-            public int NetWeight;
-            public int Tare;
-            public int ZeroThreshold;
-            public string Date;
         }
 
         LotInfo lotInfo;
@@ -63,7 +53,7 @@ namespace LogParser
 
         private void ParseOneFile(string logFilePath)
         {
-            ReadLotInfo(logFilePath);
+            lotInfo = lotInfo.ReadLotInfo(logFilePath);
 
             var logFileName = Path.GetFileNameWithoutExtension(logFilePath);
 
@@ -74,12 +64,12 @@ namespace LogParser
             RemoveFakeMeasurements(normalizedMeasurements);
             SaveListToFile(normalizedMeasurements, normalizedMeasurementsFilePath);
 
-            var finalMeasurements = ExtractFinalMeasurements(normalizedMeasurements, lotInfo.NetWeight);
+            var finalMeasurements = ExtractFinalMeasurements(normalizedMeasurements, lotInfo.Package.NetWeight);
             SaveListToFile(finalMeasurements, outMeasurementsFilePath);
 
         }
 
-        private static List<int> ExtractFinalMeasurements(List<MeasurementInfo> normalizedMeasurements, int netWeight)
+        private static List<int> ExtractFinalMeasurements(List<MeasurementInfo> normalizedMeasurements, double netWeight)
         {
             var measurementsDetected = false;
             var stableMeasurementFound = false;
@@ -93,7 +83,7 @@ namespace LogParser
                 {
                     if (measurementsDetected && !stableMeasurementFound)
                     {
-                        finalMeasurements.Add(netWeight); // Invent an appropriate unstable measurement
+                        finalMeasurements.Add((int)netWeight); // Invent an appropriate unstable measurement
                     }
 
                     measurementsDetected = false;
@@ -176,7 +166,7 @@ namespace LogParser
         // read all lines containing measurements from the log file,
         // save info in a list of structs
         // and change all measurements below threshold to ZERO
-        private static List<MeasurementInfo> ReadAndNormalizeMeasurements(string logFilePath, int zeroThreshold)
+        private static List<MeasurementInfo> ReadAndNormalizeMeasurements(string logFilePath, double zeroThreshold)
         {
             var normalizedMeasurements = new List<MeasurementInfo>();
 
@@ -207,60 +197,6 @@ namespace LogParser
             return normalizedMeasurements;
         }
 
-        // log file will contain 2 normalizedMeasurements at the top in this order
-        // 2019-01-07 15:59:26,051 INFO Net Weight: 10000
-        // 2019-01-07 15:59:26,051 INFO Zero Threshold: 7500
-        private void ReadLotInfo(string logFilePath)
-        {
-            var lotInfoFound = false;
-
-            lotInfo = new LotInfo();
-
-            using (var file = new StreamReader(logFilePath))
-            {
-                var line = "";
-                while ((line = file.ReadLine()) != null)
-                {
-                    if (line.Contains("### Lot Info ###"))
-                    {
-                        lotInfo.Lot = GetLotInfoValueString(file, "Lot");
-                        lotInfo.ProductName = GetLotInfoValueString(file, "Product Name");
-                        lotInfo.PackageType = GetLotInfoValueString(file, "Package");
-                        lotInfo.NetWeight = GetLotInfoValueInt(file, "Net Weight");
-                        lotInfo.Tare = GetLotInfoValueInt(file, "Tare");
-                        lotInfo.ZeroThreshold = GetLotInfoValueInt(file, "Zero Threshold");
-                        lotInfo.Date = GetLotInfoValueString(file, "Date");
-
-                        lotInfoFound = true;
-                        break;
-                    }
-                }
-
-                if (!lotInfoFound)
-                    log.Error("No Lot Info found!");
-            }
-        }
-
-        private static string GetLotInfoValueString(StreamReader file, string attributeName)
-        {
-            var line = file.ReadLine();
-            if (line == null)
-                return "";
-
-            attributeName += ": ";
-            var splitLine = line.Split(new[] {attributeName}, StringSplitOptions.None);
-
-            return splitLine[1];
-
-        }
-
-        private static int GetLotInfoValueInt(StreamReader file, string attributeName)
-        {
-            int.TryParse(GetLotInfoValueString(file, attributeName), out var value);
-
-            return value;
-        }
-        
         private bool IsZeroGlitch(List<MeasurementInfo> lines, int startingIndex)
         {
             var isZeroGlitch = false;
