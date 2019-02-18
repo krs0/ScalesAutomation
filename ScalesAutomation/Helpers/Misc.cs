@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace ScalesAutomation
 {
@@ -57,8 +58,8 @@ namespace ScalesAutomation
 
                 // read all csv file contents and split it in a list
                 string contents = File.ReadAllText(inputFilePath);
-                contents = contents.Replace(Environment.NewLine, "");
-                var fileAsList = contents.Split(';');
+                contents = contents.TrimEnd('\r', '\n');
+                var fileAsList = contents.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 
                 // modify each line to include index and date
                 for (var i = 0; i < fileAsList.Length; i++)
@@ -77,7 +78,7 @@ namespace ScalesAutomation
             }
             catch (Exception ex)
             {
-                // log.Error("Error creating CSV File... " + CsvFileFullPath + ex.Message + Environment.NewLine);
+                MessageBox.Show("Nu se poate deschide fisierul .csv: " + inputFilePath + Environment.NewLine + "Inchideti fisierul deschis in Excel si mai incercati odata.");
                 throw;
             }
         }

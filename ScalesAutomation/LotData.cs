@@ -26,7 +26,11 @@ namespace ScalesAutomation
         {
             InitializeComponent();
 
-            XmlHandler.ReadCatalogue(Path.Combine(Misc.AssemblyPath, @Settings.Default.CatalogFilePath));
+            var catalogFilePath = Settings.Default.CatalogFilePath;
+            if (!catalogFilePath.Contains(":")) // if relative file path
+                catalogFilePath = Path.Combine(Misc.AssemblyPath, catalogFilePath);
+
+            XmlHandler.ReadCatalogue(catalogFilePath);
 
             InitializeGuiBackendFromXml();
 
@@ -39,8 +43,8 @@ namespace ScalesAutomation
         {
             var logFilePath = "";
             var outputFilePath = "";
-            var outputFolderPath = Path.Combine(Misc.AssemblyPath, @Settings.Default.CSVServerFolderPath);
-            var logFolderPath = Path.Combine(Misc.AssemblyPath, @Settings.Default.LogFolderPath);
+            var outputFolderPath = Path.Combine(Misc.AssemblyPath, Settings.Default.CSVServerFolderPath);
+            var logFolderPath = Path.Combine(Misc.AssemblyPath, Settings.Default.LogFolderPath);
 
             if (txtLot.Text == "")
                 return;

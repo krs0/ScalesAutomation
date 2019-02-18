@@ -187,7 +187,7 @@ namespace ScalesAutomation
             try
             {
                 var dirInfo = new DirectoryInfo(outputFolderPath);
-                var files = dirInfo.GetFiles("*_" + lotNumber + "*.csv");
+                var files = dirInfo.GetFiles("*_" + lotNumber + "_*.csv");
 
                 if (files.Length > 0)
                 {
