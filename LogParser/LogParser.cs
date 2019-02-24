@@ -43,7 +43,7 @@ namespace LogParser
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            var logFilePaths = GetListOfLogs(logFolderPath);
+            var logFilePaths = GetListOfFiles(logFolderPath, "*.log");
 
             foreach (var logFilePath in logFilePaths)
             {
@@ -227,13 +227,55 @@ namespace LogParser
             }
         }
 
-        private List<string> GetListOfLogs(string folder)
+        private List<string> GetListOfFiles(string folder, string searchPattern)
         {
-            return Directory.GetFiles(folder, "*.log", SearchOption.TopDirectoryOnly).ToList();
+            return Directory.GetFiles(folder, searchPattern, SearchOption.TopDirectoryOnly).ToList();
         }
 
+        #region Temporary Code for processing log headers
 
+        // will replace the .csv file contents with lot info header!!!!!!!!!!!!
+        private void btnMakeLotInfoHeader_Click(object sender, EventArgs e)
+        {
 
+            var csvFilePaths = GetListOfFiles(Settings.Default.CSVFolderPath, "*.csv");
 
-}
+            foreach (var csvFilePath in csvFilePaths)
+            {
+                MakeLotInfoHeader(csvFilePath);
+            }
+        }
+
+        private void MakeLotInfoHeader(string csvFilePath)
+        {
+            var lotInfoHeader = ReadLotInfoFromFirstLine(csvFilePath);
+            SaveListToFile(lotInfoHeader, csvFilePath);
+        }
+
+        private List<string> ReadLotInfoFromFirstLine(string csvFilePath)
+        {
+            var lotInfoHeader = new List<string>();
+
+            using (var csvFile = new StreamReader(csvFilePath))
+            {
+                string line;
+                line = csvFile.ReadLine();
+                var splittedLine = line.Split(';');
+
+                lotInfoHeader.Add(splittedLine[8] + " INFO  ### Lot Info ###");
+                lotInfoHeader.Add(splittedLine[8] + " INFO  Lot:  " + splittedLine[3]);
+                lotInfoHeader.Add(splittedLine[8] + " INFO  Product Name:  " + splittedLine[4]);
+                lotInfoHeader.Add(splittedLine[8] + " INFO  Package:  " + splittedLine[5]);
+                lotInfoHeader.Add(splittedLine[8] + " INFO  Net Weight:  " + splittedLine[6]);
+                lotInfoHeader.Add(splittedLine[8] + " INFO  Tare:  " + splittedLine[7]);
+                lotInfoHeader.Add(splittedLine[8] + " INFO  Zero Threshold:  " + "Kg");
+                lotInfoHeader.Add(splittedLine[8] + " INFO  Date:  " + splittedLine[8]);
+
+            }
+
+            return lotInfoHeader;
+        }
+
+        #endregion
+    }
 }

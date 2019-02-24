@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.btnStart = new System.Windows.Forms.Button();
+            this.btnMakeLotInfoHeader = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnStart
@@ -37,15 +38,26 @@
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(89, 46);
             this.btnStart.TabIndex = 0;
-            this.btnStart.Text = "Start";
+            this.btnStart.Text = "Start Parsing";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            // 
+            // btnMakeLotInfoHeader
+            // 
+            this.btnMakeLotInfoHeader.Location = new System.Drawing.Point(29, 185);
+            this.btnMakeLotInfoHeader.Name = "btnMakeLotInfoHeader";
+            this.btnMakeLotInfoHeader.Size = new System.Drawing.Size(75, 23);
+            this.btnMakeLotInfoHeader.TabIndex = 1;
+            this.btnMakeLotInfoHeader.Text = "Make Lot Info Header";
+            this.btnMakeLotInfoHeader.UseVisualStyleBackColor = true;
+            this.btnMakeLotInfoHeader.Click += new System.EventHandler(this.btnMakeLotInfoHeader_Click);
             // 
             // LogParser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(361, 226);
+            this.Controls.Add(this.btnMakeLotInfoHeader);
             this.Controls.Add(this.btnStart);
             this.Name = "LogParser";
             this.Text = "Log Parser";
@@ -56,6 +68,7 @@
         #endregion
 
         private System.Windows.Forms.Button btnStart;
+        private System.Windows.Forms.Button btnMakeLotInfoHeader;
     }
 }
 

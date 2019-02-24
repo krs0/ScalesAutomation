@@ -34,5 +34,18 @@ namespace LogParser.Properties {
                 this["LogFolderPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Home\\Krs\\Work\\Cantar\\ScalesAutomation\\Resources\\Eurocas\\Productie-2019-02-22_C" +
+            "URATED\\CSVOutput\\")]
+        public string CSVFolderPath {
+            get {
+                return ((string)(this["CSVFolderPath"]));
+            }
+            set {
+                this["CSVFolderPath"] = value;
+            }
+        }
     }
 }
