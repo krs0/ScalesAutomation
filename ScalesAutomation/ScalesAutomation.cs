@@ -260,7 +260,7 @@ namespace ScalesAutomation
             InitializeInputControls();
             uctlLotData.EnableInputControls();
 
-            csvHelper.BackupCurrentCsv();
+            csvHelper.BackupCurrentCsv(Settings.Default.CSVBackupPath);
             if (csvHelper.IsServerFolderReachable())
                 csvHelper.CopyCurrentCsvToServer(Settings.Default.CSVServerFolderPath);
 

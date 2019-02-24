@@ -1,5 +1,4 @@
-﻿using ScalesAutomation.Properties;
-using System;
+﻿using System;
 using System.Data;
 using System.IO;
 using log4net;
@@ -124,9 +123,9 @@ namespace ScalesAutomation
             }
         }
 
-        public void BackupCurrentCsv()
+        public void BackupCurrentCsv(string bckFolderPath)
         {
-            FileCopy(CsvFolderPath, Settings.Default.CSVBackupPath, CsvFileFullName);
+            FileCopy(CsvFolderPath, bckFolderPath, CsvFileFullName);
         }
 
         public bool IsServerFolderReachable()

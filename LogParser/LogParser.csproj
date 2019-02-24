@@ -69,6 +69,9 @@
     <Compile Include="..\ScalesAutomation\Definitions.cs">
       <Link>Definitions.cs</Link>
     </Compile>
+    <Compile Include="..\ScalesAutomation\Helpers\CsvHelper.cs">
+      <Link>CsvHelper.cs</Link>
+    </Compile>
     <Compile Include="..\ScalesAutomation\Helpers\Misc.cs">
       <Link>Misc.cs</Link>
     </Compile>

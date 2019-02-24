@@ -57,8 +57,7 @@ namespace ScalesAutomation
                     var lastLine = File.ReadLines(lotOutputFilePath).Last();
                     var splitLine = lastLine.Split(';');
                     var lastMeasurementIndex = splitLine[0];
-                    Misc.MakeTemporaryFileWithStandardizedContents(inputFilePath, intermediateFilePath, lotInfo.Date,
-                        Int32.Parse(lastMeasurementIndex));
+                    Misc.MakeTemporaryFileWithStandardizedContents(inputFilePath, intermediateFilePath, lotInfo.Date, Int32.Parse(lastMeasurementIndex));
 
                     Misc.AppendOneFileToAnother(intermediateFilePath, lotOutputFilePath);
                 }
@@ -68,8 +67,7 @@ namespace ScalesAutomation
                     lotOutputFilePath = CsvHelper.MakeOutputFilePath(outputFolderPath, DateTime.Now, productInfo);
 
                     CsvHelper.InitializeOutputFile(lotOutputFilePath, CsvHelper.CreateMeasurementFileHeader(lotInfo));
-                    Misc.MakeTemporaryFileWithStandardizedContents(inputFilePath, intermediateFilePath, lotInfo.Date,
-                        0);
+                    Misc.MakeTemporaryFileWithStandardizedContents(inputFilePath, intermediateFilePath, lotInfo.Date, 0);
 
                     Misc.AppendOneFileToAnother(intermediateFilePath, lotOutputFilePath);
                 }

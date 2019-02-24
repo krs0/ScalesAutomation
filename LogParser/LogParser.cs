@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Linq;
 using System.Windows.Forms;
 using System.IO;
+using System.Windows.Forms.VisualStyles;
 using LogParser.Properties;
 using ScalesAutomation;
 
@@ -16,11 +17,33 @@ namespace LogParser
 
         // TODO: CrLa - Add code to save to .csv
 
-        struct MeasurementInfo
+        class MeasurementInfo
         {
+            public int position;
             public string time;
             public bool isStable;
-            public int measurement;
+            public double measurement;
+
+            public MeasurementInfo(int position, string time, bool isStable, double measurement)
+            {
+                this.position = position;
+                this.time = time;
+                this.isStable = isStable;
+                this.measurement = measurement;
+            }
+
+            public MeasurementInfo()
+            {
+                position = 0;
+                time = "";
+                isStable = false;
+                measurement = 0;
+            }
+
+            public override string ToString()
+            {
+                return position + ";" + measurement + ";" + time;
+            }
         }
 
         LotInfo lotInfo;
@@ -62,6 +85,8 @@ namespace LogParser
             normalizedMeasurementsFilePath = Path.Combine(logFolderPath, logFileName + ".out");
             outMeasurementsFilePath = Path.Combine(logFolderPath, logFileName + ".meas");
 
+            CsvHelper.InitializeOutputFile(outMeasurementsFilePath, CsvHelper.CreateMeasurementFileHeader(lotInfo));
+
             var normalizedMeasurements = ReadAndNormalizeMeasurements(logFilePath, lotInfo.ZeroThreshold);
             RemoveFakeMeasurements(normalizedMeasurements);
             // SaveListToFile(normalizedMeasurements, normalizedMeasurementsFilePath); // Generic list save does not work
@@ -71,11 +96,11 @@ namespace LogParser
 
         }
 
-        private static List<int> ExtractFinalMeasurements(List<MeasurementInfo> normalizedMeasurements, double netWeight)
+        private static List<MeasurementInfo> ExtractFinalMeasurements(List<MeasurementInfo> normalizedMeasurements, double netWeight)
         {
             var measurementsDetected = false;
             var stableMeasurementFound = false;
-            var finalMeasurements = new List<int>();
+            var finalMeasurements = new List<MeasurementInfo>();
 
             for (var i = normalizedMeasurements.Count - 1; i >= 0; i--)
             {
@@ -85,7 +110,7 @@ namespace LogParser
                 {
                     if (measurementsDetected && !stableMeasurementFound)
                     {
-                        finalMeasurements.Add((int)netWeight); // Invent an appropriate unstable measurement
+                        finalMeasurements.Add(new MeasurementInfo(finalMeasurements.Count + 1, "", true, netWeight)); // Invent an appropriate unstable measurement
                     }
 
                     measurementsDetected = false;
@@ -101,16 +126,20 @@ namespace LogParser
                     // find the "first" aka last 4 stable measurements
                     if (!l.isStable || i <= 3) continue;
 
-                    // find if stable more than 2
+                    // find if stable more than 4
                     if (normalizedMeasurements[i - 1].isStable && normalizedMeasurements[i - 2].isStable && normalizedMeasurements[i - 3].isStable)
                     {
                         stableMeasurementFound = true;
-                        finalMeasurements.Add(normalizedMeasurements[i - 1].measurement);
+                        finalMeasurements.Add(normalizedMeasurements[i - 1]);
                     }
                 }
             }
 
             finalMeasurements.Reverse();
+            for (int i = 0; i < finalMeasurements.Count; i++)
+            {
+                finalMeasurements[i].position = i + 1;
+            }
 
             return finalMeasurements;
         }
@@ -222,7 +251,7 @@ namespace LogParser
 
         private void SaveListToFile<T>(List<T> list, string filePath)
         {
-            using (var file = new StreamWriter(filePath))
+            using (var file = new StreamWriter(filePath, append: true))
             {
                 foreach (var element in list)
                 {
