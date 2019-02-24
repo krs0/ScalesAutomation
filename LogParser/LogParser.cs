@@ -26,6 +26,7 @@ namespace LogParser
         LotInfo lotInfo;
 
         string logFolderPath = Settings.Default.LogFolderPath;
+        string outputFolderPath = Settings.Default.OutputFolderPath;
         string outFileName = "";
         string outMeasurementsFilePath = "";
         string normalizedMeasurementsFilePath = "";
@@ -34,6 +35,7 @@ namespace LogParser
         public LogParser()
         {
             InitializeComponent();
+            lotInfo = new LotInfo();
         }
 
         public void Initialize(string logFolderPath)
@@ -47,11 +49,11 @@ namespace LogParser
 
             foreach (var logFilePath in logFilePaths)
             {
-                ParseOneFile(logFilePath);
+                ParseLog(logFilePath);
             }
         }
 
-        private void ParseOneFile(string logFilePath)
+        private void ParseLog(string logFilePath)
         {
             lotInfo = lotInfo.ReadLotInfo(logFilePath);
 
@@ -62,7 +64,7 @@ namespace LogParser
 
             var normalizedMeasurements = ReadAndNormalizeMeasurements(logFilePath, lotInfo.ZeroThreshold);
             RemoveFakeMeasurements(normalizedMeasurements);
-            SaveListToFile(normalizedMeasurements, normalizedMeasurementsFilePath);
+            // SaveListToFile(normalizedMeasurements, normalizedMeasurementsFilePath); // Generic list save does not work
 
             var finalMeasurements = ExtractFinalMeasurements(normalizedMeasurements, lotInfo.Package.NetWeight);
             SaveListToFile(finalMeasurements, outMeasurementsFilePath);
@@ -145,7 +147,7 @@ namespace LogParser
                         }
                         else
                         {
-                            if (IsZeroGlitch(normalizedMeasurements, index))
+                            if (IsZeroGlitch(normalizedMeasurements, index - deletedItems))
                             {
                                 normalizedMeasurements.RemoveRange(index - deletedItems, 1); // remove current Zero Measurement
                                 deletedItems++;
@@ -200,8 +202,12 @@ namespace LogParser
         private bool IsZeroGlitch(List<MeasurementInfo> lines, int startingIndex)
         {
             var isZeroGlitch = false;
+            var endIndex = startingIndex + 20;
 
-            for (var i = startingIndex; i < startingIndex + 20; i++)
+            if (startingIndex >= lines.Count() - 20)
+                endIndex = lines.Count();
+
+            for (var i = startingIndex; i < endIndex; i++)
             {
                 if (lines[i].measurement > 0)
                 {
@@ -232,13 +238,13 @@ namespace LogParser
             return Directory.GetFiles(folder, searchPattern, SearchOption.TopDirectoryOnly).ToList();
         }
 
-        #region Temporary Code for processing log headers
+        #region Temporary Code for extracting csv headers
 
         // will replace the .csv file contents with lot info header!!!!!!!!!!!!
         private void btnMakeLotInfoHeader_Click(object sender, EventArgs e)
         {
 
-            var csvFilePaths = GetListOfFiles(Settings.Default.CSVFolderPath, "*.csv");
+            var csvFilePaths = GetListOfFiles(Settings.Default.OutputFolderPath, "*.csv");
 
             foreach (var csvFilePath in csvFilePaths)
             {

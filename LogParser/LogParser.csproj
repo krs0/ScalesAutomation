@@ -69,6 +69,9 @@
     <Compile Include="..\ScalesAutomation\Definitions.cs">
       <Link>Definitions.cs</Link>
     </Compile>
+    <Compile Include="..\ScalesAutomation\Helpers\Misc.cs">
+      <Link>Misc.cs</Link>
+    </Compile>
     <Compile Include="..\ScalesAutomation\LotInfo.cs">
       <Link>LotInfo.cs</Link>
     </Compile>

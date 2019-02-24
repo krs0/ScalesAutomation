@@ -35,9 +35,9 @@ namespace ScalesAutomation
                         lotInfo.Lot = GetLotInfoValueString(file, "Lot");
                         lotInfo.ProductName = GetLotInfoValueString(file, "Product Name");
                         lotInfo.Package.Type = GetLotInfoValueString(file, "Package");
-                        lotInfo.Package.NetWeight = GetLotInfoValueInt(file, "Net Weight");
-                        lotInfo.Package.Tare = GetLotInfoValueInt(file, "Tare");
-                        lotInfo.ZeroThreshold = GetLotInfoValueInt(file, "Zero Threshold");
+                        lotInfo.Package.NetWeight = GetLotInfoValueDouble(file, "Net Weight");
+                        lotInfo.Package.Tare = GetLotInfoValueDouble(file, "Tare");
+                        lotInfo.ZeroThreshold = GetLotInfoValueDouble(file, "Zero Threshold");
                         lotInfo.Date = GetLotInfoValueString(file, "Date");
 
                         lotInfoFound = true;
@@ -66,9 +66,21 @@ namespace ScalesAutomation
 
             }
 
-            int GetLotInfoValueInt(StreamReader file, string attributeName)
+            double GetLotInfoValueDouble(StreamReader file, string attributeName)
             {
-                int.TryParse(GetLotInfoValueString(file, attributeName), out var value);
+                double value;
+                var rawValue = GetLotInfoValueString(file, attributeName);
+
+                if (rawValue.Contains("Kg"))
+                {
+                    Misc.RemoveTrailingKg(ref rawValue);
+                    double.TryParse(rawValue, out value);
+                    value = value * 1000;
+                }
+                else
+                {
+                    double.TryParse(rawValue, out value);
+                }
 
                 return value;
             }

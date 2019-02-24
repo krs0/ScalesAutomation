@@ -25,7 +25,7 @@ namespace LogParser.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Home\\Krs\\Work\\Cantar\\ScalesAutomation\\Recorded Data\\Logs\\")]
+        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Home\\Krs\\Work\\Cantar\\ScalesAutomation\\Resources\\Eurocas\\Productie-2019-02-22_CURATED\\Logs\\")]
         public string LogFolderPath {
             get {
                 return ((string)(this["LogFolderPath"]));
@@ -37,14 +37,13 @@ namespace LogParser.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Home\\Krs\\Work\\Cantar\\ScalesAutomation\\Resources\\Eurocas\\Productie-2019-02-22_C" +
-            "URATED\\CSVOutput\\")]
-        public string CSVFolderPath {
+        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Home\\Krs\\Work\\Cantar\\ScalesAutomation\\Resources\\Eurocas\\Productie-2019-02-22_CURATED\\CSVOutput\\")]
+        public string OutputFolderPath {
             get {
-                return ((string)(this["CSVFolderPath"]));
+                return ((string)(this["OutputFolderPath"]));
             }
             set {
-                this["CSVFolderPath"] = value;
+                this["OutputFolderPath"] = value;
             }
         }
     }

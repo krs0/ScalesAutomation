@@ -82,5 +82,12 @@ namespace ScalesAutomation
                 throw;
             }
         }
+
+        /// <summary>// remove trailing kg from string </summary>
+        public static void RemoveTrailingKg(ref string rawValue)
+        {
+            if (!string.IsNullOrEmpty(rawValue))
+                rawValue = rawValue.Remove(rawValue.Length - 2);
+        }
     }
 }

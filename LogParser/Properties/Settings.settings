@@ -3,9 +3,9 @@
   <Profiles />
   <Settings>
     <Setting Name="LogFolderPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">c:\Home\Krs\Work\Cantar\ScalesAutomation\Recorded Data\Logs\</Value>
+      <Value Profile="(Default)">c:\Home\Krs\Work\Cantar\ScalesAutomation\Resources\Eurocas\Productie-2019-02-22_CURATED\Logs\</Value>
     </Setting>
-    <Setting Name="CSVFolderPath" Type="System.String" Scope="User">
+    <Setting Name="OutputFolderPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">c:\Home\Krs\Work\Cantar\ScalesAutomation\Resources\Eurocas\Productie-2019-02-22_CURATED\CSVOutput\</Value>
     </Setting>
   </Settings>
