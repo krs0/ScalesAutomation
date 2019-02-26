@@ -21,23 +21,13 @@ namespace ScalesAutomation
 
         public void PrepareFile(string folderPath, LotInfo lotInfo)
         {
-            var productInfo = MakeProductInfo(lotInfo);
-
-            CalculatePaths(folderPath, productInfo, lotInfo.AppendToLot);
+            CalculatePaths(folderPath, lotInfo.ID, lotInfo.AppendToLot);
 
             if (!appendToExistingOutputFile)
             {
                 var fileHeader = CreateMeasurementFileHeader(lotInfo);
                 InitializeOutputFile(folderPath, fileHeader);
             }
-        }
-
-        public static string MakeProductInfo(LotInfo lotInfo)
-        {
-            var productInfo = lotInfo.Lot + "_" + lotInfo.ProductName + "_" + lotInfo.Package.Type;
-            productInfo = productInfo.Replace(" ", ""); // No spaces in file names
-
-            return productInfo;
         }
 
         public static string CreateMeasurementFileHeader(LotInfo lotInfo)
@@ -112,9 +102,13 @@ namespace ScalesAutomation
         {
             try
             {
-                string destinationFilePath = Path.Combine(serverFolderPath, CsvFileFullName);
+                if (IsServerFolderReachable(serverFolderPath))
+                {
 
-                File.Copy(CsvFileFullPath, destinationFilePath, true);
+                    string destinationFilePath = Path.Combine(serverFolderPath, CsvFileFullName);
+
+                    File.Copy(CsvFileFullPath, destinationFilePath, true);
+                }
             }
             catch (Exception ex)
             {
@@ -128,23 +122,38 @@ namespace ScalesAutomation
             FileCopy(CsvFolderPath, bckFolderPath, CsvFileFullName);
         }
 
-        public bool IsServerFolderReachable()
+        public bool IsServerFolderReachable(string serverFolderPath)
         {
-            return DirectoryExists(CsvFolderPath);
+            return DirectoryExists(serverFolderPath);
         }
 
-        public static bool OutputAlreadyPresent(string lotInfo, string outputFolderPath, ref string lotOutputFileName)
+        public static bool IsAbsolutePath(string filePath)
+        {
+            return filePath.Contains(":");
+        }
+
+        public static bool LogAlreadyPresent(string lotID, string logFolderPath, ref string logFilePath)
+        {
+            return FileAlreadyPresent(lotID, logFolderPath, ref logFilePath, ".log");
+        }
+
+        public static bool OutputAlreadyPresent(string lotID, string outputFolderPath, ref string outputFilePath)
+        {
+            return FileAlreadyPresent(lotID, outputFolderPath, ref outputFilePath, ".csv");
+        }
+
+        private static bool FileAlreadyPresent(string lotID, string folderPath, ref string filePath, string fileExtension)
         {
             var result = false;
 
             try
             {
-                var dirInfo = new DirectoryInfo(outputFolderPath);
-                var files = dirInfo.GetFiles("*" + lotInfo + ".csv");
+                var dirInfo = new DirectoryInfo(folderPath);
+                var files = dirInfo.GetFiles("*" + lotID + fileExtension);
 
                 if (files.Length > 0)
                 {
-                    lotOutputFileName = files[0].FullName;
+                    filePath = files[0].FullName;
                     result = true;
                 }
             }
@@ -156,59 +165,22 @@ namespace ScalesAutomation
             return result;
         }
 
-        public static bool LogAlreadyPresent(string lotNumber, string logFolderPath, ref string lotLogFileName)
-        {
-            var result = false;
-
-            try
-            {
-                var dirInfo = new DirectoryInfo(logFolderPath);
-                var files = dirInfo.GetFiles("*" + lotNumber + ".log");
-
-                if (files.Length > 0)
-                {
-                    lotLogFileName = files[0].FullName;
-                    result = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-
-            return result;
-        }
-
-        public static bool LotAlreadyPresent(string lotNumber, string outputFolderPath, ref string lotLogFileName)
-        {
-            var result = false;
-
-            try
-            {
-                var dirInfo = new DirectoryInfo(outputFolderPath);
-                var files = dirInfo.GetFiles("*_" + lotNumber + "_*.csv");
-
-                if (files.Length > 0)
-                {
-                    lotLogFileName = files[0].FullName;
-                    result = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-
-            return result;
-        }
-
-        public static string GetExistingLotOutputFileName(string lotNumber, string outputFolderPath)
+        public static string GetExistingOutputFileName(string lotID, string outputFolderPath)
         {
             var outputFileName = "";
 
-            LotAlreadyPresent(lotNumber, outputFolderPath, ref outputFileName);
+            OutputAlreadyPresent(lotID, outputFolderPath, ref outputFileName);
 
             return outputFileName;
+        }
+
+        public static string GetExistingLogFileName(string lotID, string logFolderPath)
+        {
+            var logFileName = "";
+
+            LogAlreadyPresent(lotID, logFolderPath, ref logFileName);
+
+            return logFileName;
         }
 
         #endregion
@@ -251,7 +223,6 @@ namespace ScalesAutomation
         {
             try
             {
-                // Create the CSV file to which measured data will be saved
                 using (var csvFile = new StreamWriter(outputFilePath, false))
                 {
                     csvFile.Write(headerRow + csvFile.NewLine);
@@ -282,7 +253,7 @@ namespace ScalesAutomation
 
         private bool DirectoryExists(string folderPath)
         {
-            bool exists = false;
+            var exists = false;
 
             try
             {
@@ -291,7 +262,7 @@ namespace ScalesAutomation
             }
             catch (Exception ex)
             {
-                log.Error("Folder does not exist:" + folderPath + ex.Message + Environment.NewLine);
+                log.Error("Folder does not exist or is unreachable:" + folderPath + ex.Message + Environment.NewLine);
                 throw;
             }
 

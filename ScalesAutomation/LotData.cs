@@ -26,93 +26,21 @@ namespace ScalesAutomation
         {
             InitializeComponent();
 
-            var catalogFilePath = Settings.Default.CatalogFilePath;
-            if (!catalogFilePath.Contains(":")) // if relative file path
-                catalogFilePath = Path.Combine(Misc.AssemblyPath, catalogFilePath);
-
-            XmlHandler.ReadCatalogue(catalogFilePath);
-
             InitializeGuiBackendFromXml();
 
-            LotInfo = new LotInfo();
+            InitializeLotInfo();
         }
 
         #region "Events For Input Controls"
 
         void txtLot_Validated(object sender, EventArgs e)
         {
-            var logFilePath = "";
-            var outputFilePath = "";
-            var outputFolderPath = Path.Combine(Misc.AssemblyPath, Settings.Default.CSVServerFolderPath);
-            var logFolderPath = Path.Combine(Misc.AssemblyPath, Settings.Default.LogFolderPath);
-
-            if (txtLot.Text == "")
-                return;
-
-            if (!Settings.Default.DataImporterEnabled)
-            {
-                // Check if measurements were already done for selected lot
-                if (CsvHelper.LogAlreadyPresent(txtLot.Text, logFolderPath, ref logFilePath))
-                {
-                    DialogResult result = MessageBox.Show("Pentru lotul selectat exista deja masuratori. Doriti sa continuati lotul?", "Continuare Lot", MessageBoxButtons.YesNo);
-                    if (result == DialogResult.Yes)
-                    {
-                        var lotInfo = LotInfo.ReadLotInfo(logFilePath);
-                        lotInfo.AppendToLot = true;
-                        SetLotInfo(lotInfo);
-                    }
-                    else
-                    {
-                        txtLot.Text = "";
-                        LotInfo.Lot = "";
-                        LotInfo.AppendToLot = false;
-                    }
-                }
-                else
-                {
-                    LotInfo.Lot = txtLot.Text;
-                }
-            }
-            else
-            {
-                if (CsvHelper.LotAlreadyPresent(txtLot.Text, outputFolderPath, ref outputFilePath))
-                {
-                    DialogResult result = MessageBox.Show("Pentru lotul selectat exista deja masuratori. Doriti sa continuati lotul?" + Environment.NewLine + "(Masuratorile vor fi adaugate in continuare la cele existente pentru acest lot!)", "Continuare Lot", MessageBoxButtons.YesNo);
-                    if (result == DialogResult.Yes)
-                    {
-                        var lotInfo = CsvHelper.ReadMeasurementFileHeader(outputFilePath);
-                        lotInfo.AppendToLot = true;
-                        SetLotInfo(lotInfo);
-                    }
-                    else
-                    {
-                        txtLot.Text = "";
-                        LotInfo.Lot = "";
-                        LotInfo.AppendToLot = false;
-                    }
-
-                }
-                else
-                {
-                    LotInfo.Lot = txtLot.Text;                        
-                }
-            }
-
-            if (LotInfo.AppendToLot)
-            {
-                DisableInputControls();
-                txtLot.Enabled = true;
-            }
-            else
-            {
-                EnableInputControls();
-            }
+            LotInfo.Lot = txtLot.Text;
         }
 
         void txtLot_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == 13)
-                SelectNextControl(this.ActiveControl, true, true, true, true);
+            OnEnterSelectNextControl(e);
         }
 
         void cbProduct_SelectedIndexChanged(object sender, EventArgs e)
@@ -137,7 +65,6 @@ namespace ScalesAutomation
         {
             if (cbPackage.SelectedIndex == -1) return;
 
-            // TODO: Separate type and netweight by _
             LotInfo.Package.Type = cbPackage.Text;
 
             PackageDefinition = ProductDefinition.PackageDetails.Find(x => x.Type == LotInfo.Package.Type);
@@ -164,11 +91,22 @@ namespace ScalesAutomation
 
         void txtPackageTare_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == 13)
+            OnEnterSelectNextControl(e);
+        }
+
+        private void OnEnterSelectNextControl(KeyPressEventArgs e)
+        {
+            if ((e.KeyChar == 13) && (txtLot.Text != ""))
                 this.SelectNextControl(this.ActiveControl, true, true, true, true);
         }
 
         #endregion
+
+        // Make sure we do noy use an old object
+        public void InitializeLotInfo()
+        {
+            LotInfo = new LotInfo();
+        }
 
         public void SetLotInfo(LotInfo lotInfo)
         {
@@ -181,12 +119,6 @@ namespace ScalesAutomation
 
             // Tare validated() event will fill Nominal Weight
 
-        }
-
-        // double make sure we do noy use an old object
-        public void InitializeLotInfo()
-        {
-            LotInfo = new LotInfo();
         }
 
         public bool CheckInputControls()
@@ -240,6 +172,13 @@ namespace ScalesAutomation
 
         void InitializeGuiBackendFromXml()
         {
+            // Get Catalogue file path
+            var catalogFilePath = Settings.Default.CatalogFilePath;
+            if (!CsvHelper.IsAbsolutePath(catalogFilePath))
+                catalogFilePath = Path.Combine(Misc.AssemblyPath, catalogFilePath);
+
+            XmlHandler.ReadCatalogue(catalogFilePath);
+
             foreach (var product in XmlHandler.Catalogue)
             {
                 cbProduct.Items.Add(product.Name);

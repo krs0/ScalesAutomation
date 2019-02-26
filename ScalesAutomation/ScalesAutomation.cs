@@ -165,6 +165,9 @@ namespace ScalesAutomation
 
             if (!uctlLotData.CheckInputControls()) return;
 
+            // Search for existing Lot
+
+
             lotInfo = uctlLotData.LotInfo;
             lotInfo.Date = DateTime.Now.ToString("yyyy-MM-dd");
 
@@ -178,27 +181,24 @@ namespace ScalesAutomation
             // for each LOT save logs in separate files. (If a log file was already created for a lot reuse it)
             var logFilePath = "";
             var logFolderPath = Misc.AssemblyPath + Settings.Default.LogFolderPath;
-            if (lotInfo.AppendToLot && CsvHelper.LogAlreadyPresent(lotInfo.Lot, logFolderPath, ref logFilePath))
+            if (CsvHelper.LogAlreadyPresent(lotInfo.ID, logFolderPath, ref logFilePath))
             {
+                DialogResult result = MessageBox.Show("Pentru lotul selectat exista deja masuratori. Doriti sa continuati lotul?", "Continuare Lot", MessageBoxButtons.YesNo);
+                if (result != DialogResult.Yes)
+                    return;
+
                 Misc.ChangeLoggingFile(log, logFilePath);
 
                 log.Info("Button Start Clicked" + Environment.NewLine);
-                log.Info("### Lot " + lotInfo.Lot + " Resumed on " + lotInfo.Date + " ###");
+                log.Info("### Lot " + lotInfo.ID + " Resumed on " + lotInfo.Date + " ###");
             }
             else
             {
-                logFilePath = Settings.Default.LogFolderPath + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + "_" + lotInfo.Lot + ".log";
+                logFilePath = Settings.Default.LogFolderPath + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + "_" + lotInfo.ID + ".log";
                 Misc.ChangeLoggingFile(log, logFilePath);
 
                 log.Info("Button Start Clicked" + Environment.NewLine);
-                log.Info("### Lot Info ###");
-                log.Info("Lot: " + lotInfo.Lot);
-                log.Info("Product Name: " + lotInfo.ProductName);
-                log.Info("Package: " + lotInfo.Package.Type);
-                log.Info("Net Weight: " + netWeight);
-                log.Info("Tare: " + lotInfo.Package.Tare * 1000);
-                log.Info("Zero Threshold: " + zeroThreshold + Environment.NewLine);
-                log.Info("Date: " + lotInfo.Date);
+                LogLotInfo(lotInfo);
             }
 
             var CSVOutputFolderPath = Path.Combine(Misc.AssemblyPath, Settings.Default.CSVOutputPath);
@@ -231,6 +231,18 @@ namespace ScalesAutomation
 
         }
 
+        private void LogLotInfo(LotInfo lotInfo)
+        {
+            log.Info("### Lot Info ###");
+            log.Info("Lot: " + lotInfo.Lot);
+            log.Info("Product Name: " + lotInfo.ProductName);
+            log.Info("Package: " + lotInfo.Package.Type);
+            log.Info("Net Weight: " + netWeight);
+            log.Info("Tare: " + lotInfo.Package.Tare * 1000);
+            log.Info("Zero Threshold: " + zeroThreshold + Environment.NewLine);
+            log.Info("Date: " + lotInfo.Date);
+        }
+
         void btnPause_Click(object sender, EventArgs e)
         {
             log.Info("Button Pause Clicked" + Environment.NewLine);
@@ -261,7 +273,7 @@ namespace ScalesAutomation
             uctlLotData.EnableInputControls();
 
             csvHelper.BackupCurrentCsv(Settings.Default.CSVBackupPath);
-            if (csvHelper.IsServerFolderReachable())
+            if (csvHelper.IsServerFolderReachable(Settings.Default.CSVServerFolderPath))
                 csvHelper.CopyCurrentCsvToServer(Settings.Default.CSVServerFolderPath);
 
         }

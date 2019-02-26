@@ -78,7 +78,7 @@ namespace LogParser
 
         private void ParseLog(string logFilePath)
         {
-            lotInfo = lotInfo.ReadLotInfo(logFilePath);
+            lotInfo = lotInfo.ReadLotInfoFromLog(logFilePath);
 
             var logFileName = Path.GetFileNameWithoutExtension(logFilePath);
 

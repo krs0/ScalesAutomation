@@ -15,11 +15,12 @@ namespace ScalesAutomation
         public string Date;
         public double ZeroThreshold;
         public bool AppendToLot;
+        public string ID => MakeUniqueLotID();
 
         // log file will contain 2 normalizedMeasurements at the top in this order
         // 2019-01-07 15:59:26,051 INFO Net Weight: 10000
         // 2019-01-07 15:59:26,051 INFO Zero Threshold: 7500
-        public LotInfo ReadLotInfo(string logFilePath)
+        public LotInfo ReadLotInfoFromLog(string logFilePath)
         {
             var lotInfoFound = false;
 
@@ -84,6 +85,14 @@ namespace ScalesAutomation
 
                 return value;
             }
+        }
+
+        public string MakeUniqueLotID()
+        {
+            var uniqueID = Lot + "_" + ProductName + "_" + Package.Type;
+            uniqueID = uniqueID.Replace(" ", ""); // No spaces in file names
+
+            return uniqueID;
         }
     }
 }

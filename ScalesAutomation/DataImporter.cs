@@ -53,7 +53,7 @@ namespace ScalesAutomation
 
                 if (uctlLotData.LotInfo.AppendToLot)
                 {
-                    lotOutputFilePath = CsvHelper.GetExistingLotOutputFileName(lotInfo.Lot, outputFolderPath);
+                    lotOutputFilePath = CsvHelper.GetExistingOutputFileName(lotInfo.ID, outputFolderPath);
                     var lastLine = File.ReadLines(lotOutputFilePath).Last();
                     var splitLine = lastLine.Split(';');
                     var lastMeasurementIndex = splitLine[0];
@@ -63,8 +63,7 @@ namespace ScalesAutomation
                 }
                 else
                 {
-                    var productInfo = CsvHelper.MakeProductInfo(lotInfo);
-                    lotOutputFilePath = CsvHelper.MakeOutputFilePath(outputFolderPath, DateTime.Now, productInfo);
+                    lotOutputFilePath = CsvHelper.MakeOutputFilePath(outputFolderPath, DateTime.Now, lotInfo.ID);
 
                     CsvHelper.InitializeOutputFile(lotOutputFilePath, CsvHelper.CreateMeasurementFileHeader(lotInfo));
                     Misc.MakeTemporaryFileWithStandardizedContents(inputFilePath, intermediateFilePath, lotInfo.Date, 0);
