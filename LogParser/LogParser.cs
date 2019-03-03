@@ -19,30 +19,30 @@ namespace LogParser
 
         class MeasurementInfo
         {
-            public int position;
-            public string time;
-            public bool isStable;
-            public double measurement;
+            public int Position;
+            public string Time;
+            public bool IsStable;
+            public double Measurement;
 
             public MeasurementInfo(int position, string time, bool isStable, double measurement)
             {
-                this.position = position;
-                this.time = time;
-                this.isStable = isStable;
-                this.measurement = measurement;
+                Position = position;
+                Time = time;
+                IsStable = isStable;
+                Measurement = measurement;
             }
 
             public MeasurementInfo()
             {
-                position = 0;
-                time = "";
-                isStable = false;
-                measurement = 0;
+                Position = 0;
+                Time = "";
+                IsStable = false;
+                Measurement = 0;
             }
 
             public override string ToString()
             {
-                return position + ";" + measurement + ";" + time;
+                return Position + ";" + Measurement + ";" + Time;
             }
         }
 
@@ -53,7 +53,6 @@ namespace LogParser
         string outFileName = "";
         string outMeasurementsFilePath = "";
         string normalizedMeasurementsFilePath = "";
-
 
         public LogParser()
         {
@@ -106,7 +105,7 @@ namespace LogParser
             {
                 var l = normalizedMeasurements[i];
 
-                if (l.measurement == 0)
+                if (l.Measurement == 0)
                 {
                     if (measurementsDetected && !stableMeasurementFound)
                     {
@@ -124,10 +123,10 @@ namespace LogParser
                         measurementsDetected = true;
 
                     // find the "first" aka last 4 stable measurements
-                    if (!l.isStable || i <= 3) continue;
+                    if (!l.IsStable || i <= 3) continue;
 
                     // find if stable more than 4
-                    if (normalizedMeasurements[i - 1].isStable && normalizedMeasurements[i - 2].isStable && normalizedMeasurements[i - 3].isStable)
+                    if (normalizedMeasurements[i - 1].IsStable && normalizedMeasurements[i - 2].IsStable && normalizedMeasurements[i - 3].IsStable)
                     {
                         stableMeasurementFound = true;
                         finalMeasurements.Add(normalizedMeasurements[i - 1]);
@@ -138,7 +137,7 @@ namespace LogParser
             finalMeasurements.Reverse();
             for (int i = 0; i < finalMeasurements.Count; i++)
             {
-                finalMeasurements[i].position = i + 1;
+                finalMeasurements[i].Position = i + 1;
             }
 
             return finalMeasurements;
@@ -156,7 +155,7 @@ namespace LogParser
             foreach (var element in clonedList)
             {
                 // we ignore everything until we find some positive measurements
-                if (element.measurement > 0)
+                if (element.Measurement > 0)
                 {
                     if (consecutives == 0)
                         startingIndex = index; // save starting index of first non zero measurement
@@ -211,13 +210,13 @@ namespace LogParser
                     var splitLine = line.Split(' ');
 
                     var measurementInfo = new MeasurementInfo();
-                    measurementInfo.time = splitLine[1];
-                    measurementInfo.isStable = (splitLine[5] == "T");
+                    measurementInfo.Time = splitLine[1];
+                    measurementInfo.IsStable = (splitLine[5] == "T");
 
                     int.TryParse(splitLine[8], out var measurement);
                     if (measurement < zeroThreshold)
                         measurement = 0;
-                    measurementInfo.measurement = measurement;
+                    measurementInfo.Measurement = measurement;
 
                     normalizedMeasurements.Add(measurementInfo);
                 }
@@ -238,7 +237,7 @@ namespace LogParser
 
             for (var i = startingIndex; i < endIndex; i++)
             {
-                if (lines[i].measurement > 0)
+                if (lines[i].Measurement > 0)
                 {
                     isZeroGlitch = true;
 
@@ -312,5 +311,34 @@ namespace LogParser
         }
 
         #endregion
+
+        #region "Temporary Code for batch renaming output files with lot id's"
+
+        private void btnRenameOutput_Click(object sender, EventArgs e)
+        {
+            var outputFilePaths = GetListOfFiles(logFolderPath, "*.csv");
+
+            foreach (var outputFilePath in outputFilePaths)
+            {
+                RenameOutputFile(outputFilePath);
+            }
+        }
+
+        private void RenameOutputFile(string outputFilePath)
+        {
+            var fileHeader = ReadLotInfoFromFirstLine(outputFilePath);
+            var productName = fileHeader[2].Split(new[] { "Product Name:  " }, StringSplitOptions.None)[1];
+            var package = fileHeader[3].Split(new[] { "Package:  " }, StringSplitOptions.None)[1];
+
+            var outputFileName = Path.GetFileNameWithoutExtension(outputFilePath);
+            var newOutputFileName = outputFileName + "_" + productName + "_" + package;
+            var newOutputFilePath = outputFilePath.Replace(outputFileName, newOutputFileName);
+
+            File.Move(outputFilePath, newOutputFilePath);
+        }
+
+        #endregion
+
+
     }
 }

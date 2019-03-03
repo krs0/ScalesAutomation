@@ -30,6 +30,7 @@
         {
             this.btnStart = new System.Windows.Forms.Button();
             this.btnMakeLotInfoHeader = new System.Windows.Forms.Button();
+            this.btnRenameOutput = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnStart
@@ -46,17 +47,28 @@
             // 
             this.btnMakeLotInfoHeader.Location = new System.Drawing.Point(29, 185);
             this.btnMakeLotInfoHeader.Name = "btnMakeLotInfoHeader";
-            this.btnMakeLotInfoHeader.Size = new System.Drawing.Size(75, 23);
+            this.btnMakeLotInfoHeader.Size = new System.Drawing.Size(126, 23);
             this.btnMakeLotInfoHeader.TabIndex = 1;
             this.btnMakeLotInfoHeader.Text = "Make Lot Info Header";
             this.btnMakeLotInfoHeader.UseVisualStyleBackColor = true;
             this.btnMakeLotInfoHeader.Click += new System.EventHandler(this.btnMakeLotInfoHeader_Click);
+            // 
+            // btnRenameOutput
+            // 
+            this.btnRenameOutput.Location = new System.Drawing.Point(241, 185);
+            this.btnRenameOutput.Name = "btnRenameOutput";
+            this.btnRenameOutput.Size = new System.Drawing.Size(91, 23);
+            this.btnRenameOutput.TabIndex = 2;
+            this.btnRenameOutput.Text = "Rename Output";
+            this.btnRenameOutput.UseVisualStyleBackColor = true;
+            this.btnRenameOutput.Click += new System.EventHandler(this.btnRenameOutput_Click);
             // 
             // LogParser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(361, 226);
+            this.Controls.Add(this.btnRenameOutput);
             this.Controls.Add(this.btnMakeLotInfoHeader);
             this.Controls.Add(this.btnStart);
             this.Name = "LogParser";
@@ -69,6 +81,7 @@
 
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnMakeLotInfoHeader;
+        private System.Windows.Forms.Button btnRenameOutput;
     }
 }
 
