@@ -32,13 +32,15 @@ namespace ScalesAutomation
 
         private void btnImport_Click(object sender, System.EventArgs e)
         {
-            var inputFilePath = txtFileName.Text;
-            var outputFolderPath = Settings.Default.CSVServerFolderPath;
-            var lotOutputFilePath = "";
-            var intermediateFilePath = Path.GetDirectoryName(inputFilePath) + "\\temp_.bak";
 
-            if (!uctlLotData.CheckInputControls())
+            var outputFolderPath = Settings.Default.CSVServerFolderPath;
+            var outputFilePath = "";
+            var startMeasurementIndex = 1;
+
+            if (!uctlLotData.AreInputControlsValid())
                 return;
+
+            var inputFilePath = txtFileName.Text;
 
             if (string.IsNullOrEmpty(inputFilePath))
             {
@@ -49,37 +51,40 @@ namespace ScalesAutomation
             try
             {
                 var lotInfo = uctlLotData.LotInfo;
-                lotInfo.Date = dateTimePicker.Value.ToString("yyyy-MM-dd");
 
-                if (uctlLotData.LotInfo.AppendToLot)
+                var intermediateFilePath = Path.GetDirectoryName(inputFilePath) + "\\temp_.bak";
+
+                if (CsvHelper.OutputAlreadyPresent(lotInfo.Id, outputFolderPath, ref outputFilePath))
                 {
-                    lotOutputFilePath = CsvHelper.GetExistingOutputFileName(lotInfo.ID, outputFolderPath);
-                    var lastLine = File.ReadLines(lotOutputFilePath).Last();
-                    var splitLine = lastLine.Split(';');
-                    var lastMeasurementIndex = splitLine[0];
-                    Misc.MakeTemporaryFileWithStandardizedContents(inputFilePath, intermediateFilePath, lotInfo.Date, Int32.Parse(lastMeasurementIndex));
+                    var result = MessageBox.Show("Pentru lotul selectat exista deja masuratori. Noile masuratori se vor adauga celor existente. Doriti sa Continuati?", "Continuare Lot", MessageBoxButtons.YesNo);
+                    if (result != DialogResult.Yes)
+                        return;
 
-                    Misc.AppendOneFileToAnother(intermediateFilePath, lotOutputFilePath);
+                    lotInfo.AppendToLot = true;
+                }
+
+                if (lotInfo.AppendToLot)
+                {
+                    var lastMeasurementIndex = GetLastMeasurementIndex(outputFilePath);
+                    startMeasurementIndex = Int32.Parse(lastMeasurementIndex) + 1;
                 }
                 else
                 {
-                    lotOutputFilePath = CsvHelper.MakeOutputFilePath(outputFolderPath, DateTime.Now, lotInfo.ID);
-
-                    CsvHelper.InitializeOutputFile(lotOutputFilePath, CsvHelper.CreateMeasurementFileHeader(lotInfo));
-                    Misc.MakeTemporaryFileWithStandardizedContents(inputFilePath, intermediateFilePath, lotInfo.Date, 0);
-
-                    Misc.AppendOneFileToAnother(intermediateFilePath, lotOutputFilePath);
+                    outputFilePath = CsvHelper.CalculateOutputFilePath(outputFolderPath, DateTime.Now, lotInfo.Id);
+                    CsvHelper.InitializeOutputFileContents(outputFilePath, lotInfo.MakeMeasurementFileHeader());
                 }
 
+                Misc.MakeTemporaryFileWithStandardizedContents(inputFilePath, intermediateFilePath, lotInfo.Date, startMeasurementIndex);
+                Misc.AppendOneFileToAnother(intermediateFilePath, outputFilePath);
+
                 MessageBox.Show("Datele au fost importate in fisierul: " + Environment.NewLine + Environment.NewLine +
-                    lotOutputFilePath, "Conversie Completa", MessageBoxButtons.OK, MessageBoxIcon.None);
+                    outputFilePath, "Conversie Terminata", MessageBoxButtons.OK, MessageBoxIcon.None);
 
                 File.Delete(intermediateFilePath);
 
             }
             catch (Exception ex)
             {
-
             }
             finally
             {
@@ -89,6 +94,14 @@ namespace ScalesAutomation
                 dateTimePicker.Value = DateTime.Now;
             }
 
+        }
+
+        private static string GetLastMeasurementIndex(string outputFilePath)
+        {
+            var lastLine = File.ReadLines(outputFilePath).Last();
+            var splitLine = lastLine.Split(';');
+            var lastMeasurementIndex = splitLine[0];
+            return lastMeasurementIndex;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

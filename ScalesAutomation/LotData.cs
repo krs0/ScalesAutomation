@@ -121,7 +121,7 @@ namespace ScalesAutomation
 
         }
 
-        public bool CheckInputControls()
+        public bool AreInputControlsValid()
         {
             bool inputsAreValid = true;
 
@@ -172,7 +172,6 @@ namespace ScalesAutomation
 
         void InitializeGuiBackendFromXml()
         {
-            // Get Catalogue file path
             var catalogFilePath = Settings.Default.CatalogFilePath;
             if (!CsvHelper.IsAbsolutePath(catalogFilePath))
                 catalogFilePath = Path.Combine(Misc.AssemblyPath, catalogFilePath);

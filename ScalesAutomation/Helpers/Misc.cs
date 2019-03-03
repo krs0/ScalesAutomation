@@ -53,9 +53,6 @@ namespace ScalesAutomation
         {
             try
             {
-                var currentMeasurement = "";
-                initialIndex++; // new index should be greater than last measurements index
-
                 // read all csv file contents and split it in a list
                 string contents = File.ReadAllText(inputFilePath);
                 contents = contents.TrimEnd('\r', '\n');
@@ -64,7 +61,7 @@ namespace ScalesAutomation
                 // modify each line to include index and date
                 for (var i = 0; i < fileAsList.Length; i++)
                 {
-                    currentMeasurement = fileAsList[i];
+                    var currentMeasurement = fileAsList[i];
                     fileAsList[i] = (i + initialIndex).ToString() + ';' + currentMeasurement + ';' + "";
                 }
 
@@ -84,10 +81,12 @@ namespace ScalesAutomation
         }
 
         /// <summary>// remove trailing kg from string </summary>
-        public static void RemoveTrailingKg(ref string rawValue)
+        public static string RemoveTrailingKg(string rawValue)
         {
             if (!string.IsNullOrEmpty(rawValue))
                 rawValue = rawValue.Remove(rawValue.Length - 2);
+
+            return rawValue;
         }
     }
 }

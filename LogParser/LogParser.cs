@@ -85,7 +85,7 @@ namespace LogParser
             normalizedMeasurementsFilePath = Path.Combine(logFolderPath, logFileName + ".out");
             outMeasurementsFilePath = Path.Combine(logFolderPath, logFileName + ".meas");
 
-            CsvHelper.InitializeOutputFile(outMeasurementsFilePath, CsvHelper.CreateMeasurementFileHeader(lotInfo));
+            CsvHelper.InitializeOutputFileContents(outMeasurementsFilePath, lotInfo.MakeMeasurementFileHeader());
 
             var normalizedMeasurements = ReadAndNormalizeMeasurements(logFilePath, lotInfo.ZeroThreshold);
             RemoveFakeMeasurements(normalizedMeasurements);

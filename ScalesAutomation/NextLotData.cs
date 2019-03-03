@@ -16,6 +16,18 @@ namespace ScalesAutomation
             InitializeComponent();
         }
 
+        public LotInfo GetLotInfo()
+        {
+            return uctlLotData.LotInfo;
+        }
+
+        #region "Events"
+
+        private void NextLotData_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            WindowClosed();
+        }
+
         private void btnApply_Click(object sender, EventArgs e)
         {
             ApplyClicked();
@@ -27,14 +39,7 @@ namespace ScalesAutomation
             this.Close();
         }
 
-        private void NextLotData_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            WindowClosed();
-        }
+        #endregion
 
-        public LotInfo GetLotInfo()
-        {
-            return uctlLotData.LotInfo;
-        }
     }
 }

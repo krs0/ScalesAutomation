@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Windows.Forms;
-using log4net;
-using System.Reflection;
-using System.Threading;
 using System.Collections.Generic;
 using System.Data;
-using ScalesAutomation.Properties;
 using System.IO;
+using System.Reflection;
+using System.Threading;
+using System.Windows.Forms;
+using log4net;
+using ScalesAutomation.Properties;
+using Timer = System.Windows.Forms.Timer;
 
 namespace ScalesAutomation
 {
@@ -14,26 +15,26 @@ namespace ScalesAutomation
     {
         public SynchronizedCollection<Measurement> Measurements;
 
-        bool stopPressed;
+        private bool stopPressed;
 
-        readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        System.Windows.Forms.Timer timer;
-        DataTable dataTable = new DataTable();
+        private Timer timer;
+        private readonly DataTable dataTable = new DataTable();
 
-        MySerialReader readPort;
-        MySerialWriter writePort;
-        Thread writeThread;
+        private MySerialReader readPort;
+        private MySerialWriter writePort;
+        private Thread writeThread;
 
-        bool simulationEnabled;
-        CsvHelper csvHelper;
+        private readonly bool simulationEnabled;
+        private CsvHelper csvHelper;
 
-        double zeroThreshold;
-        double measurementTollerance;
-        double netWeight;
+        private double zeroThreshold;
+        private double measurementTolerance;
+        private double netWeight;
 
-        LotInfo lotInfo;
-        NextLotData nextLotData = null;
+        private LotInfo lotInfo;
+        private NextLotData nextLotData;
 
         public ScalesAutomation()
         {
@@ -45,6 +46,11 @@ namespace ScalesAutomation
 
             CreateTimer();
 
+        }
+
+        public bool IsStopPressed()
+        {
+            return stopPressed;
         }
 
         #region "Events"
@@ -123,8 +129,8 @@ namespace ScalesAutomation
                     {
                         var measurement = Measurements[measurementEndPosition];
                         // Sanity Check at the end with expected value
-                        if (measurement.TotalWeight > (netWeight - measurementTollerance) &&
-                            measurement.TotalWeight < (netWeight + measurementTollerance))
+                        if (measurement.TotalWeight > (netWeight - measurementTolerance) &&
+                            measurement.TotalWeight < (netWeight + measurementTolerance))
                         {
                             validMeasurements.Add(measurement);
                         }
@@ -146,7 +152,7 @@ namespace ScalesAutomation
 
                 // Add all valid measurements to DataTable and excel
                 if (validMeasurements.Count > 0)
-                    AddToDataTableAndExcel(validMeasurements);
+                    AddValidMeasurementToDataTableAndExcel(validMeasurements);
             }
 
             if (dataGridViewMeasurements.RowCount > 0)
@@ -162,40 +168,37 @@ namespace ScalesAutomation
         void btnStart_Click(object sender, EventArgs e)
         {
             stopPressed = false;
+            btnPause.Enabled = false;
 
-            if (!uctlLotData.CheckInputControls()) return;
-
-            // Search for existing Lot
-
+            if (!uctlLotData.AreInputControlsValid()) return;
 
             lotInfo = uctlLotData.LotInfo;
             lotInfo.Date = DateTime.Now.ToString("yyyy-MM-dd");
 
-            // Calculate Tollerance
             netWeight = lotInfo.Package.NetWeight * 1000;
-            measurementTollerance = (netWeight * Settings.Default.MeasurementTollerace) / 100;
+            measurementTolerance = (netWeight * Settings.Default.MeasurementTollerace) / 100;
             zeroThreshold = (netWeight * Settings.Default.ZeroThreshold) / 100;
-
-            btnPause.Enabled = false;
 
             // for each LOT save logs in separate files. (If a log file was already created for a lot reuse it)
             var logFilePath = "";
             var logFolderPath = Misc.AssemblyPath + Settings.Default.LogFolderPath;
-            if (CsvHelper.LogAlreadyPresent(lotInfo.ID, logFolderPath, ref logFilePath))
+            if (CsvHelper.LogAlreadyPresent(lotInfo.Id, logFolderPath, ref logFilePath))
             {
-                DialogResult result = MessageBox.Show("Pentru lotul selectat exista deja masuratori. Doriti sa continuati lotul?", "Continuare Lot", MessageBoxButtons.YesNo);
+                DialogResult result = MessageBox.Show("Pentru lotul selectat exista deja masuratori. Noile masuratori se vor adauga celor existente. Doriti sa Continuati?", "Continuare Lot", MessageBoxButtons.YesNo);
                 if (result != DialogResult.Yes)
                     return;
 
-                Misc.ChangeLoggingFile(log, logFilePath);
+                log.ChangeLoggingFile(logFilePath);
+                lotInfo.AppendToLot = true;
 
                 log.Info("Button Start Clicked" + Environment.NewLine);
-                log.Info("### Lot " + lotInfo.ID + " Resumed on " + lotInfo.Date + " ###");
+                log.Info("### Lot " + lotInfo.Id + " Resumed on " + lotInfo.Date + " ###");
             }
             else
             {
-                logFilePath = Settings.Default.LogFolderPath + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + "_" + lotInfo.ID + ".log";
-                Misc.ChangeLoggingFile(log, logFilePath);
+                logFilePath = Settings.Default.LogFolderPath + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + "_" + lotInfo.Id + ".log";
+                log.ChangeLoggingFile(logFilePath);
+                lotInfo.AppendToLot = false;
 
                 log.Info("Button Start Clicked" + Environment.NewLine);
                 LogLotInfo(lotInfo);
@@ -203,7 +206,7 @@ namespace ScalesAutomation
 
             var CSVOutputFolderPath = Path.Combine(Misc.AssemblyPath, Settings.Default.CSVOutputPath);
             csvHelper = new CsvHelper();
-            csvHelper.PrepareFile(CSVOutputFolderPath, lotInfo);
+            csvHelper.PrepareOutputFile(CSVOutputFolderPath, lotInfo);
 
             readPort?.Dispose();
             readPort = new MySerialReader(Measurements, zeroThreshold);
@@ -219,7 +222,7 @@ namespace ScalesAutomation
             {
                 writePort?.Dispose();
                 writeThread?.Abort();
-                writeThread = new Thread(new ThreadStart(WriteThread));
+                writeThread = new Thread(WriteThread);
                 writeThread.Start();
             }
 
@@ -312,7 +315,15 @@ namespace ScalesAutomation
 
         #region Private Methods
 
-        void AddToDataTableAndExcel(List<Measurement> validMeasurements)
+        private void InitializeInputControls()
+        {
+            dataTable.Rows.Clear();
+            dataGridViewMeasurements.Refresh();
+            lotInfo = new LotInfo();
+            uctlLotData.InitializeInputControls();
+        }
+
+        private void AddValidMeasurementToDataTableAndExcel(List<Measurement> validMeasurements)
         {
             var nrOfRowsInDataTable = dataTable.Rows.Count;
             for (int i = nrOfRowsInDataTable, j = 0; i < nrOfRowsInDataTable + validMeasurements.Count; i++, j++)
@@ -324,21 +335,13 @@ namespace ScalesAutomation
                 dataTable.Rows.Add(row);
 
                 // Add row to excel
-                csvHelper.WriteLine(row, dataTable.Columns.Count);
+                csvHelper.WriteLineToOutputFile(row, dataTable.Columns.Count);
 
                 log.Info("Measurements Added: " + row["#"] + " - Weight: " + row["Weight"] + " - at: " + row["TimeStamp"]);
             }
         }
 
-        void InitializeInputControls()
-        {
-            dataTable.Rows.Clear();
-            dataGridViewMeasurements.Refresh();
-            lotInfo = new LotInfo();
-            uctlLotData.InitializeInputControls();
-        }
-
-        void CloseSerialCommunication()
+        private void CloseSerialCommunication()
         {
             readPort.Dispose();
 
@@ -349,32 +352,28 @@ namespace ScalesAutomation
             }
         }
 
-        void ReadThread()
+        private void ReadThread()
         {
             readPort = new MySerialReader(Measurements, 5000);
         }
 
-        void WriteThread()
+        private void WriteThread()
         {
             writePort = new MySerialWriter();
         }
 
-        void CreateTimer()
+        private void CreateTimer()
         {
-            timer = new System.Windows.Forms.Timer
+            timer = new Timer
             {
                 Interval = 500,
                 Enabled = true
             };
-            timer.Tick += new EventHandler(timer_Tick);
+            timer.Tick += timer_Tick;
             timer.Start();
         }
 
         #endregion
 
-        public bool IsStopPressed()
-        {
-            return stopPressed;
-        }
     }
 }

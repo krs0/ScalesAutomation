@@ -15,11 +15,8 @@ namespace ScalesAutomation
         public string Date;
         public double ZeroThreshold;
         public bool AppendToLot;
-        public string ID => MakeUniqueLotID();
+        public string Id => MakeUniqueLotId();
 
-        // log file will contain 2 normalizedMeasurements at the top in this order
-        // 2019-01-07 15:59:26,051 INFO Net Weight: 10000
-        // 2019-01-07 15:59:26,051 INFO Zero Threshold: 7500
         public LotInfo ReadLotInfoFromLog(string logFilePath)
         {
             var lotInfoFound = false;
@@ -74,7 +71,7 @@ namespace ScalesAutomation
 
                 if (rawValue.Contains("Kg"))
                 {
-                    Misc.RemoveTrailingKg(ref rawValue);
+                    rawValue = Misc.RemoveTrailingKg(rawValue);
                     double.TryParse(rawValue, out value);
                     value = value * 1000;
                 }
@@ -87,12 +84,57 @@ namespace ScalesAutomation
             }
         }
 
-        public string MakeUniqueLotID()
+        public string MakeUniqueLotId()
         {
             var uniqueID = Lot + "_" + ProductName + "_" + Package.Type;
             uniqueID = uniqueID.Replace(" ", ""); // No spaces in file names
 
             return uniqueID;
+        }
+
+        public string MakeMeasurementFileHeader()
+        {
+            var fileHeader = "#;Cantitatea Cantarita [Cc];Ora;" +
+                             Lot + ";" +
+                             ProductName + ";" +
+                             Package.Type + ";" +
+                             Package.NetWeight + "Kg" + ";" +
+                             Package.Tare + "Kg" + ";" +
+                             Date;
+
+            return fileHeader;
+        }
+
+        public static LotInfo ReadMeasurementFileHeader(string outputFilePath)
+        {
+            var lotInfo = new LotInfo();
+
+            using (var outputFile = new StreamReader(outputFilePath))
+            {
+                var line = outputFile.ReadLine() ?? throw new Exception("Fisierul de masuratori e gol!");
+                {
+                    if (!line.Contains("#;Cantitatea Cantarita [Cc];Ora"))
+                        throw new Exception("Headerul fisierului de masuratori are un format necunoscut!");
+
+
+                    var splitLine = line.Split(';');
+
+                    lotInfo.Lot = splitLine[3];
+                    lotInfo.ProductName = splitLine[4];
+                    lotInfo.Package.Type = splitLine[5];
+
+
+                    var netWeight = Misc.RemoveTrailingKg(splitLine[6]);
+                    double.TryParse(netWeight, out lotInfo.Package.NetWeight);
+
+                    var tare = Misc.RemoveTrailingKg(splitLine[7]);
+                    double.TryParse(tare, out lotInfo.Package.Tare);
+
+                    lotInfo.Date = splitLine[8];
+                }
+            }
+
+            return lotInfo;
         }
     }
 }
