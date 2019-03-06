@@ -21,7 +21,7 @@
       <Value Profile="(Default)">Server\CSVServer\</Value>
     </Setting>
     <Setting Name="SerialTransmissionSimulationPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Logs\TestLot1.log</Value>
+      <Value Profile="(Default)">c:\Home\Krs\Work\Cantar\ScalesAutomation\Distribution\Logs\SerialTransmissionSimulation.log</Value>
     </Setting>
     <Setting Name="SimulationEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -39,7 +39,7 @@
       <Value Profile="(Default)">Logs\</Value>
     </Setting>
     <Setting Name="DataImporterEnabled" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

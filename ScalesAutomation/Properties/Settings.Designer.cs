@@ -97,7 +97,7 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Logs\\TestLot1.log")]
+        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Home\\Krs\\Work\\Cantar\\ScalesAutomation\\Distribution\\Logs\\SerialTransmissionSimulation.log")]
         public string SerialTransmissionSimulationPath {
             get {
                 return ((string)(this["SerialTransmissionSimulationPath"]));
@@ -169,7 +169,7 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool DataImporterEnabled {
             get {
                 return ((bool)(this["DataImporterEnabled"]));

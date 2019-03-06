@@ -65,7 +65,7 @@ namespace ScalesAutomation
 
                 if (lotInfo.AppendToLot)
                 {
-                    var lastMeasurementIndex = GetLastMeasurementIndex(outputFilePath);
+                    var lastMeasurementIndex = CsvHelper.GetLastMeasurementIndex(outputFilePath);
                     startMeasurementIndex = Int32.Parse(lastMeasurementIndex) + 1;
                 }
                 else
@@ -94,14 +94,6 @@ namespace ScalesAutomation
                 dateTimePicker.Value = DateTime.Now;
             }
 
-        }
-
-        private static string GetLastMeasurementIndex(string outputFilePath)
-        {
-            var lastLine = File.ReadLines(outputFilePath).Last();
-            var splitLine = lastLine.Split(';');
-            var lastMeasurementIndex = splitLine[0];
-            return lastMeasurementIndex;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

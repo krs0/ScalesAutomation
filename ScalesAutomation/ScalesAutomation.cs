@@ -28,6 +28,8 @@ namespace ScalesAutomation
 
         private readonly bool simulationEnabled;
         private CsvHelper csvHelper;
+        private readonly string logFolderPath = Path.Combine(Misc.AssemblyPath, Settings.Default.LogFolderPath);
+        private string logFilePath = "";
 
         private double zeroThreshold;
         private double measurementTolerance;
@@ -148,7 +150,7 @@ namespace ScalesAutomation
                 }
 
                 if (stopPressed)
-                    return; // Do not process any more measurements. Stop could be pressed in midde of loop
+                    return; // Do not process any more measurements. Stop could be pressed in middle of loop
 
                 // Add all valid measurements to DataTable and excel
                 if (validMeasurements.Count > 0)
@@ -180,8 +182,6 @@ namespace ScalesAutomation
             zeroThreshold = (netWeight * Settings.Default.ZeroThreshold) / 100;
 
             // for each LOT save logs in separate files. (If a log file was already created for a lot reuse it)
-            var logFilePath = "";
-            var logFolderPath = Misc.AssemblyPath + Settings.Default.LogFolderPath;
             if (CsvHelper.LogAlreadyPresent(lotInfo.Id, logFolderPath, ref logFilePath))
             {
                 DialogResult result = MessageBox.Show("Pentru lotul selectat exista deja masuratori. Noile masuratori se vor adauga celor existente. Doriti sa Continuati?", "Continuare Lot", MessageBoxButtons.YesNo);
@@ -196,7 +196,7 @@ namespace ScalesAutomation
             }
             else
             {
-                logFilePath = Settings.Default.LogFolderPath + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + "_" + lotInfo.Id + ".log";
+                logFilePath = logFolderPath + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + "_" + lotInfo.Id + ".log";
                 log.ChangeLoggingFile(logFilePath);
                 lotInfo.AppendToLot = false;
 
@@ -242,8 +242,8 @@ namespace ScalesAutomation
             log.Info("Package: " + lotInfo.Package.Type);
             log.Info("Net Weight: " + netWeight);
             log.Info("Tare: " + lotInfo.Package.Tare * 1000);
-            log.Info("Zero Threshold: " + zeroThreshold + Environment.NewLine);
-            log.Info("Date: " + lotInfo.Date);
+            log.Info("Zero Threshold: " + zeroThreshold);
+            log.Info("Date: " + lotInfo.Date + Environment.NewLine);
         }
 
         void btnPause_Click(object sender, EventArgs e)
@@ -275,6 +275,7 @@ namespace ScalesAutomation
             InitializeInputControls();
             uctlLotData.EnableInputControls();
 
+            CsvHelper.ParseCurrentLog(logFilePath);
             csvHelper.BackupCurrentCsv(Settings.Default.CSVBackupPath);
             if (csvHelper.IsServerFolderReachable(Settings.Default.CSVServerFolderPath))
                 csvHelper.CopyCurrentCsvToServer(Settings.Default.CSVServerFolderPath);

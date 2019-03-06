@@ -15,7 +15,7 @@ namespace ScalesAutomation
         public string Date;
         public double ZeroThreshold;
         public bool AppendToLot;
-        public string Id => MakeUniqueLotId();
+        public string Id => GetUniqueLotId();
 
         public LotInfo ReadLotInfoFromLog(string logFilePath)
         {
@@ -84,12 +84,12 @@ namespace ScalesAutomation
             }
         }
 
-        public string MakeUniqueLotId()
+        public string GetUniqueLotId()
         {
-            var uniqueID = Lot + "_" + ProductName + "_" + Package.Type;
-            uniqueID = uniqueID.Replace(" ", ""); // No spaces in file names
+            var uniqueId = Lot + "_" + ProductName + "_" + Package.Type;
+            uniqueId = uniqueId.Replace(" ", ""); // No spaces in file names
 
-            return uniqueID;
+            return uniqueId;
         }
 
         public string MakeMeasurementFileHeader()

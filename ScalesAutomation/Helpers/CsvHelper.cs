@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using log4net;
 using System.Reflection;
 using System.Windows.Forms.VisualStyles;
@@ -9,7 +11,7 @@ namespace ScalesAutomation
 {
     public class CsvHelper
     {
-        public static string OutputFileFullPath;
+        public static string OutputFilePath;
         public static string OutputFolderPath;
         public static string OutputFileFullName;
 
@@ -26,15 +28,15 @@ namespace ScalesAutomation
             if (appendToExistingOutputFile) return;
 
             var fileHeader = lotInfo.MakeMeasurementFileHeader();
-            InitializeOutputFileContents(folderPath, fileHeader);
+            InitializeOutputFileContents(OutputFilePath, fileHeader);
         }
 
-        public static string CalculateOutputFilePath(string outputFolderPath, DateTime date, string productInfo)
+        public static string CalculateOutputFilePath(string outputFolderPath, DateTime date, string lotId)
         {
-            OutputFileFullName = date.ToString("yyyy-MM-dd-hh-mm-ss") + "_" + productInfo + ".csv";
-            OutputFileFullPath = Path.Combine(outputFolderPath, OutputFileFullName);
+            OutputFileFullName = date.ToString("yyyy-MM-dd-hh-mm-ss") + "_" + lotId + ".csv";
+            OutputFilePath = Path.Combine(outputFolderPath, OutputFileFullName);
 
-            return OutputFileFullPath;
+            return OutputFilePath;
         }
 
         public static void InitializeOutputFileContents(string outputFilePath, string headerRow)
@@ -57,7 +59,7 @@ namespace ScalesAutomation
         {
             try
             {
-                using (var sw = new StreamWriter(OutputFileFullPath, true))
+                using (var sw = new StreamWriter(OutputFilePath, true))
                 {
                     for (int i = 0; i < iColCount; i++)
                     {
@@ -78,7 +80,7 @@ namespace ScalesAutomation
             }
             catch (Exception ex)
             {
-                log.Error("Cannot write measurement to csv file... " + OutputFileFullPath + ex.Message + Environment.NewLine);
+                log.Error("Cannot write measurement to csv file... " + OutputFilePath + ex.Message + Environment.NewLine);
                 throw;
             }
         }
@@ -87,24 +89,56 @@ namespace ScalesAutomation
         {
             try
             {
-                if (IsServerFolderReachable(serverFolderPath))
-                {
+                if (!IsServerFolderReachable(serverFolderPath)) return;
 
-                    var destinationFilePath = Path.Combine(serverFolderPath, OutputFileFullName);
+                var serverOutputFilePath = Path.Combine(serverFolderPath, OutputFileFullName);
 
-                    File.Copy(OutputFileFullPath, destinationFilePath, true);
-                }
+                File.Copy(OutputFilePath, serverOutputFilePath, true);
             }
             catch (Exception ex)
             {
-                log.Error("Cannot copy file to server:" + OutputFileFullName + " From " + OutputFileFullPath + " to " + serverFolderPath + ex.Message + Environment.NewLine);
+                log.Error("Cannot copy file to server:" + OutputFileFullName + " From " + OutputFilePath + " to " + serverFolderPath + ex.Message + Environment.NewLine);
                 throw;
             }
         }
 
         public void BackupCurrentCsv(string bckFolderPath)
         {
-            FileCopy(OutputFolderPath, bckFolderPath, OutputFileFullName);
+            var backupFileName = OutputFileFullName;
+
+            // For the moment we overwrite our backups, since data is anyway appended and not rewritten. So following lines are commented.
+
+            //if (File.Exists(Path.Combine(bckFolderPath, OutputFileFullName)))
+            //    backupFileName = Path.GetFileNameWithoutExtension(OutputFileFullName) + "_" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".csv";
+                                 
+            FileCopy(OutputFolderPath, bckFolderPath, backupFileName);
+        }
+
+        /// <summary>Launch the legacy application with some options set.</summary>
+        public static void ParseCurrentLog(string logFilePath)
+        {
+            var startInfo = new ProcessStartInfo
+            {
+                CreateNoWindow = false,
+                UseShellExecute = false,
+                FileName = "LogParser.exe",
+                WindowStyle = ProcessWindowStyle.Hidden,
+                Arguments = logFilePath + " " + OutputFolderPath
+            };
+
+            try
+            {
+                // Start the process with the info we specified.
+                // Call WaitForExit and then the using-statement will close.
+                using (var parserProcess = Process.Start(startInfo))
+                {
+                    parserProcess?.WaitForExit();
+                }
+            }
+            catch
+            {
+                // Log error.
+            }
         }
 
         public bool IsServerFolderReachable(string serverFolderPath)
@@ -168,30 +202,38 @@ namespace ScalesAutomation
             return logFileName;
         }
 
+        public static string GetLastMeasurementIndex(string outputFilePath)
+        {
+            var lastLine = File.ReadLines(outputFilePath).Last();
+            var splitLine = lastLine.Split(';');
+            var lastMeasurementIndex = splitLine[0];
+            return lastMeasurementIndex;
+        }
+
         #endregion
 
         #region Private Methods
 
-        private void CalculatePaths(string folderPath, string productInfo, bool appendToExistingLogFile)
+        private void CalculatePaths(string folderPath, string lotId, bool appendToExistingLogFile)
         {
             try
             {
                 OutputFolderPath = folderPath;
 
-                if (appendToExistingLogFile && OutputAlreadyPresent(productInfo, folderPath, ref OutputFileFullPath))
+                if (appendToExistingLogFile && OutputAlreadyPresent(lotId, folderPath, ref OutputFilePath))
                 {
-                    OutputFileFullName = Path.GetFileName(OutputFileFullPath);
+                    OutputFileFullName = Path.GetFileName(OutputFilePath);
                     appendToExistingOutputFile = true;
                 }
                 else
                 {
-                    CalculateOutputFilePath(folderPath, DateTime.Now, productInfo);
+                    CalculateOutputFilePath(folderPath, DateTime.Now, lotId);
                     appendToExistingOutputFile = false;
                 }
             }
             catch (Exception ex)
             {
-                log.Error("Cannot calculate CSV output file Path... " + OutputFileFullPath + ex.Message + Environment.NewLine);
+                log.Error("Cannot calculate CSV output file Path... " + OutputFilePath + ex.Message + Environment.NewLine);
                 throw;
             }
         }

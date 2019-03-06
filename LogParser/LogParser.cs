@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Linq;
 using System.Windows.Forms;
 using System.IO;
-using System.Windows.Forms.VisualStyles;
 using LogParser.Properties;
 using ScalesAutomation;
 
@@ -49,10 +48,11 @@ namespace LogParser
         LotInfo lotInfo;
 
         string logFolderPath = Settings.Default.LogFolderPath;
-        string outputFolderPath = Settings.Default.OutputFolderPath;
-        string outFileName = "";
-        string outMeasurementsFilePath = "";
+        string outputFolderPath = Settings.Default.LogFolderPath;
+        string outputFileName = "";
+        string outputFilePath = "";
         string normalizedMeasurementsFilePath = "";
+        private int startingMeasurementIndex = 1; // 1 if new file, will be recalculated if output file already exists
 
         public LogParser()
         {
@@ -60,9 +60,38 @@ namespace LogParser
             lotInfo = new LotInfo();
         }
 
-        public void Initialize(string logFolderPath)
+        public void Initialize(string logFolderPath, string outputFolderPath)
         {
             this.logFolderPath = logFolderPath;
+            this.outputFolderPath = outputFolderPath;
+        }
+
+        public void ParseLog(string logFilePath)
+        {
+            lotInfo = lotInfo.ReadLotInfoFromLog(logFilePath);
+
+            // we rewrite whole logs. no appending
+            if (!CsvHelper.OutputAlreadyPresent(lotInfo.GetUniqueLotId(), outputFolderPath, ref outputFilePath))
+            {
+                var logFileName = Path.GetFileNameWithoutExtension(logFilePath);
+                outputFilePath = Path.Combine(outputFolderPath, logFileName + ".csv");
+            }
+            else
+            {
+                //startingMeasurementIndex = int.Parse(CsvHelper.GetLastMeasurementIndex(outputFilePath));
+            }
+
+            CsvHelper.InitializeOutputFileContents(outputFilePath, lotInfo.MakeMeasurementFileHeader());
+
+            var normalizedMeasurements = ReadAndNormalizeMeasurements(logFilePath, lotInfo.ZeroThreshold);
+            RemoveFakeMeasurements(normalizedMeasurements);
+            // normalizedMeasurementsFilePath = Path.Combine(outputFolderPath, logFileName + ".out");
+            // SaveListToFile(normalizedMeasurements, normalizedMeasurementsFilePath); // Generic list save does not work
+
+            var finalMeasurements = ExtractFinalMeasurements(normalizedMeasurements, lotInfo.Package.NetWeight);
+            AddPositionToEachMeasurement(finalMeasurements, startingMeasurementIndex);
+            SaveListToFile(finalMeasurements, outputFilePath);
+
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -73,26 +102,6 @@ namespace LogParser
             {
                 ParseLog(logFilePath);
             }
-        }
-
-        private void ParseLog(string logFilePath)
-        {
-            lotInfo = lotInfo.ReadLotInfoFromLog(logFilePath);
-
-            var logFileName = Path.GetFileNameWithoutExtension(logFilePath);
-
-            normalizedMeasurementsFilePath = Path.Combine(logFolderPath, logFileName + ".out");
-            outMeasurementsFilePath = Path.Combine(logFolderPath, logFileName + ".meas");
-
-            CsvHelper.InitializeOutputFileContents(outMeasurementsFilePath, lotInfo.MakeMeasurementFileHeader());
-
-            var normalizedMeasurements = ReadAndNormalizeMeasurements(logFilePath, lotInfo.ZeroThreshold);
-            RemoveFakeMeasurements(normalizedMeasurements);
-            // SaveListToFile(normalizedMeasurements, normalizedMeasurementsFilePath); // Generic list save does not work
-
-            var finalMeasurements = ExtractFinalMeasurements(normalizedMeasurements, lotInfo.Package.NetWeight);
-            SaveListToFile(finalMeasurements, outMeasurementsFilePath);
-
         }
 
         private static List<MeasurementInfo> ExtractFinalMeasurements(List<MeasurementInfo> normalizedMeasurements, double netWeight)
@@ -135,10 +144,6 @@ namespace LogParser
             }
 
             finalMeasurements.Reverse();
-            for (int i = 0; i < finalMeasurements.Count; i++)
-            {
-                finalMeasurements[i].Position = i + 1;
-            }
 
             return finalMeasurements;
         }
@@ -248,6 +253,14 @@ namespace LogParser
             return isZeroGlitch;
         }
 
+        private static void AddPositionToEachMeasurement(List<MeasurementInfo> finalMeasurements, int startingIndex)
+        {
+            for (var i = 0; i < finalMeasurements.Count; i++)
+            {
+                finalMeasurements[i].Position = startingIndex + i + 1;
+            }
+        }
+
         private void SaveListToFile<T>(List<T> list, string filePath)
         {
             using (var file = new StreamWriter(filePath, append: true))
@@ -338,7 +351,6 @@ namespace LogParser
         }
 
         #endregion
-
 
     }
 }
