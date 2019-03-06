@@ -26,7 +26,6 @@ namespace LogParser
                 
                 logParser.Initialize(Path.GetDirectoryName(args[0]), args[1]);
                 logParser.ParseLog(args[0]);
-                Application.Run();
             }
         }
     }

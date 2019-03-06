@@ -52,7 +52,7 @@ namespace LogParser
         string outputFileName = "";
         string outputFilePath = "";
         string normalizedMeasurementsFilePath = "";
-        private int startingMeasurementIndex = 1; // 1 if new file, will be recalculated if output file already exists
+        private int startingMeasurementIndex = 0;
 
         public LogParser()
         {
@@ -104,7 +104,8 @@ namespace LogParser
             }
         }
 
-        private static List<MeasurementInfo> ExtractFinalMeasurements(List<MeasurementInfo> normalizedMeasurements, double netWeight)
+        private static List<MeasurementInfo> ExtractFinalMeasurements(List<MeasurementInfo> normalizedMeasurements,
+            double netWeight)
         {
             var measurementsDetected = false;
             var stableMeasurementFound = false;
@@ -215,10 +216,10 @@ namespace LogParser
                     var splitLine = line.Split(' ');
 
                     var measurementInfo = new MeasurementInfo();
-                    measurementInfo.Time = splitLine[1];
-                    measurementInfo.IsStable = (splitLine[5] == "T");
+                    measurementInfo.Time = splitLine[0];
+                    measurementInfo.IsStable = (splitLine[4] == "T");
 
-                    int.TryParse(splitLine[8], out var measurement);
+                    int.TryParse(splitLine[7], out var measurement);
                     if (measurement < zeroThreshold)
                         measurement = 0;
                     measurementInfo.Measurement = measurement;
@@ -340,8 +341,8 @@ namespace LogParser
         private void RenameOutputFile(string outputFilePath)
         {
             var fileHeader = ReadLotInfoFromFirstLine(outputFilePath);
-            var productName = fileHeader[2].Split(new[] { "Product Name:  " }, StringSplitOptions.None)[1];
-            var package = fileHeader[3].Split(new[] { "Package:  " }, StringSplitOptions.None)[1];
+            var productName = fileHeader[2].Split(new[] {"Product Name:  "}, StringSplitOptions.None)[1];
+            var package = fileHeader[3].Split(new[] {"Package:  "}, StringSplitOptions.None)[1];
 
             var outputFileName = Path.GetFileNameWithoutExtension(outputFilePath);
             var newOutputFileName = outputFileName + "_" + productName + "_" + package;
@@ -352,5 +353,42 @@ namespace LogParser
 
         #endregion
 
+        #region "Temporary code for converting old date format to new shorter format"
+
+        private void btnRemoveDate_Click(object sender, EventArgs e)
+        {
+            var logFilePaths = GetListOfFiles(logFolderPath, "*.log");
+
+            foreach (var logFilePath in logFilePaths)
+            {
+                RemoveDate(logFilePath);
+            }
+
+        }
+
+        void RemoveDate(string logFilePath)
+        {
+            var fileAsList = new List<string>();
+
+            using (var logFile = new StreamReader(logFilePath))
+            {
+                string line;
+                while ((line = logFile.ReadLine()) != null)
+                {
+                    if (line.Contains(" - W: "))
+                        line = line.Substring(11);
+
+                    fileAsList.Add(line);
+                }
+            }
+
+            using (var logFile = new StreamWriter(logFilePath))
+            {
+                foreach (var line in fileAsList)
+                    logFile.WriteLine(line);
+            }
+
+            #endregion
+        }
     }
 }

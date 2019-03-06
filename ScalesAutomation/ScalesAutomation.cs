@@ -177,7 +177,7 @@ namespace ScalesAutomation
             lotInfo = uctlLotData.LotInfo;
             lotInfo.Date = DateTime.Now.ToString("yyyy-MM-dd");
 
-            netWeight = lotInfo.Package.NetWeight * 1000;
+            netWeight = lotInfo.Package.NetWeight;
             measurementTolerance = (netWeight * Settings.Default.MeasurementTollerace) / 100;
             zeroThreshold = (netWeight * Settings.Default.ZeroThreshold) / 100;
 
@@ -240,8 +240,8 @@ namespace ScalesAutomation
             log.Info("Lot: " + lotInfo.Lot);
             log.Info("Product Name: " + lotInfo.ProductName);
             log.Info("Package: " + lotInfo.Package.Type);
-            log.Info("Net Weight: " + netWeight);
-            log.Info("Tare: " + lotInfo.Package.Tare * 1000);
+            log.Info("Net Weight: " + lotInfo.Package.NetWeight);
+            log.Info("Tare: " + lotInfo.Package.Tare);
             log.Info("Zero Threshold: " + zeroThreshold);
             log.Info("Date: " + lotInfo.Date + Environment.NewLine);
         }

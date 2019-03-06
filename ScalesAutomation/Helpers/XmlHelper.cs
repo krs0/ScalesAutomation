@@ -31,10 +31,12 @@ namespace ScalesAutomation
                     var strNetWeight = element.Elements("NetWeight").First().Value.Replace(",", ".");
                     strNetWeight = Regex.Replace(strNetWeight, "Kg", "", RegexOptions.IgnoreCase);
                     Double.TryParse(strNetWeight, out packageDetails.NetWeight);
+                    packageDetails.NetWeight *= 1000;
 
                     var strTare = element.Elements("PackageTare").First().Value.Replace(",", ".");
                     strTare = Regex.Replace(strTare, "Kg", "", RegexOptions.IgnoreCase);
                     Double.TryParse(strTare, out packageDetails.Tare);
+                    packageDetails.Tare *= 1000;
 
                     packageDetails.TotalWeight = packageDetails.NetWeight + packageDetails.Tare;
 

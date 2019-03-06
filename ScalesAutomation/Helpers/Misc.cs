@@ -83,10 +83,27 @@ namespace ScalesAutomation
         /// <summary>// remove trailing kg from string </summary>
         public static string RemoveTrailingKg(string rawValue)
         {
-            if (!string.IsNullOrEmpty(rawValue))
+
+            if (!string.IsNullOrEmpty(rawValue) && rawValue.Contains("Kg"))
                 rawValue = rawValue.Remove(rawValue.Length - 2);
 
             return rawValue;
+        }
+
+        public static double GetValueInGrams(string value)
+        {
+            double outputValue;
+
+            if (value.Contains("Kg"))
+            {
+                value = RemoveTrailingKg(value);
+                double.TryParse(value, out outputValue);
+                outputValue *= 1000;
+            }
+            else
+                double.TryParse(value, out outputValue);
+
+            return outputValue;
         }
     }
 }

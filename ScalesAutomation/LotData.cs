@@ -72,8 +72,8 @@ namespace ScalesAutomation
             LotInfo.Package.NetWeight = PackageDefinition.NetWeight;
             LotInfo.Package.TotalWeight = PackageDefinition.TotalWeight;
 
-            txtPackageTare.Text = LotInfo.Package.Tare + "Kg";
-            txtNominalWeight.Text = LotInfo.Package.TotalWeight + "Kg";
+            txtPackageTare.Text = LotInfo.Package.Tare / 1000 + "Kg";
+            txtNominalWeight.Text = LotInfo.Package.TotalWeight / 1000 + "Kg";
         }
 
         void txtPackageTare_Validated(object sender, EventArgs e)
@@ -84,9 +84,9 @@ namespace ScalesAutomation
                 return;
             }
 
-            Double.TryParse(Regex.Replace(txtPackageTare.Text, "Kg", "", RegexOptions.IgnoreCase), out LotInfo.Package.Tare);
+            LotInfo.Package.Tare = Misc.GetValueInGrams(txtPackageTare.Text);
             LotInfo.Package.TotalWeight = LotInfo.Package.NetWeight + LotInfo.Package.Tare;
-            txtNominalWeight.Text = LotInfo.Package.TotalWeight + "Kg";
+            txtNominalWeight.Text = LotInfo.Package.TotalWeight / 1000 + "Kg";
         }
 
         void txtPackageTare_KeyPress(object sender, KeyPressEventArgs e)
@@ -115,7 +115,7 @@ namespace ScalesAutomation
             txtLot.Text = LotInfo.Lot;
             cbProduct.SelectedItem = LotInfo.ProductName;
             cbPackage.SelectedItem = LotInfo.Package.Type;
-            txtPackageTare.Text = (LotInfo.Package.Tare != 0) ? LotInfo.Package.Tare + "Kg" : "";
+            txtPackageTare.Text = (LotInfo.Package.Tare != 0) ? LotInfo.Package.Tare / 1000 + "Kg" : "";
 
             // Tare validated() event will fill Nominal Weight
 

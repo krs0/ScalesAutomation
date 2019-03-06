@@ -14,9 +14,9 @@ namespace ScalesAutomation
     public struct Package
     {
         public String Type;
-        public Double Tare;
-        public Double NetWeight;
-        public Double TotalWeight; // = NetWeight + Tare
+        public Double Tare; //grams
+        public Double NetWeight; //grams
+        public Double TotalWeight; // = NetWeight + Tare grams
     }
 
 

@@ -13,7 +13,7 @@ namespace ScalesAutomation
         public string ProductName;
         public Package Package;
         public string Date;
-        public double ZeroThreshold;
+        public double ZeroThreshold; //grams
         public bool AppendToLot;
         public string Id => GetUniqueLotId();
 
@@ -66,21 +66,10 @@ namespace ScalesAutomation
 
             double GetLotInfoValueDouble(StreamReader file, string attributeName)
             {
-                double value;
                 var rawValue = GetLotInfoValueString(file, attributeName);
+                var valueInGrams = Misc.GetValueInGrams(rawValue);
 
-                if (rawValue.Contains("Kg"))
-                {
-                    rawValue = Misc.RemoveTrailingKg(rawValue);
-                    double.TryParse(rawValue, out value);
-                    value = value * 1000;
-                }
-                else
-                {
-                    double.TryParse(rawValue, out value);
-                }
-
-                return value;
+                return valueInGrams;
             }
         }
 
@@ -98,8 +87,8 @@ namespace ScalesAutomation
                              Lot + ";" +
                              ProductName + ";" +
                              Package.Type + ";" +
-                             Package.NetWeight + "Kg" + ";" +
-                             Package.Tare + "Kg" + ";" +
+                             Package.NetWeight + ";" +
+                             Package.Tare + ";" +
                              Date;
 
             return fileHeader;
@@ -123,12 +112,11 @@ namespace ScalesAutomation
                     lotInfo.ProductName = splitLine[4];
                     lotInfo.Package.Type = splitLine[5];
 
+                    var netWeight = splitLine[6];
+                    lotInfo.Package.NetWeight = Misc.GetValueInGrams(netWeight);
 
-                    var netWeight = Misc.RemoveTrailingKg(splitLine[6]);
-                    double.TryParse(netWeight, out lotInfo.Package.NetWeight);
-
-                    var tare = Misc.RemoveTrailingKg(splitLine[7]);
-                    double.TryParse(tare, out lotInfo.Package.Tare);
+                    var tare = splitLine[7];
+                    lotInfo.Package.Tare = Misc.GetValueInGrams(tare);
 
                     lotInfo.Date = splitLine[8];
                 }
