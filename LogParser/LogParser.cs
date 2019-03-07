@@ -306,18 +306,17 @@ namespace LogParser
 
             using (var csvFile = new StreamReader(csvFilePath))
             {
-                string line;
-                line = csvFile.ReadLine();
-                var splittedLine = line.Split(';');
+                var line = csvFile.ReadLine();
+                var splitLine = line?.Split(';');
 
-                lotInfoHeader.Add(splittedLine[8] + " INFO  ### Lot Info ###");
-                lotInfoHeader.Add(splittedLine[8] + " INFO  Lot:  " + splittedLine[3]);
-                lotInfoHeader.Add(splittedLine[8] + " INFO  Product Name:  " + splittedLine[4]);
-                lotInfoHeader.Add(splittedLine[8] + " INFO  Package:  " + splittedLine[5]);
-                lotInfoHeader.Add(splittedLine[8] + " INFO  Net Weight:  " + splittedLine[6]);
-                lotInfoHeader.Add(splittedLine[8] + " INFO  Tare:  " + splittedLine[7]);
-                lotInfoHeader.Add(splittedLine[8] + " INFO  Zero Threshold:  " + "Kg");
-                lotInfoHeader.Add(splittedLine[8] + " INFO  Date:  " + splittedLine[8]);
+                lotInfoHeader.Add(splitLine[8] + " INFO  ### Lot Info ###");
+                lotInfoHeader.Add(splitLine[8] + " INFO  Lot: " + splitLine[3]);
+                lotInfoHeader.Add(splitLine[8] + " INFO  Product Name: " + splitLine[4]);
+                lotInfoHeader.Add(splitLine[8] + " INFO  Package: " + splitLine[5]);
+                lotInfoHeader.Add(splitLine[8] + " INFO  Net Weight: " + Misc.GetValueInGrams(splitLine[6]));
+                lotInfoHeader.Add(splitLine[8] + " INFO  Tare: " + Misc.GetValueInGrams(splitLine[7]));
+                lotInfoHeader.Add(splitLine[8] + " INFO  Zero Threshold: ");
+                lotInfoHeader.Add(splitLine[8] + " INFO  Date: " + splitLine[8]);
 
             }
 
@@ -341,8 +340,8 @@ namespace LogParser
         private void RenameOutputFile(string outputFilePath)
         {
             var fileHeader = ReadLotInfoFromFirstLine(outputFilePath);
-            var productName = fileHeader[2].Split(new[] {"Product Name:  "}, StringSplitOptions.None)[1];
-            var package = fileHeader[3].Split(new[] {"Package:  "}, StringSplitOptions.None)[1];
+            var productName = fileHeader[2].Split(new[] {"Product Name: "}, StringSplitOptions.None)[1];
+            var package = fileHeader[3].Split(new[] {"Package: "}, StringSplitOptions.None)[1];
 
             var outputFileName = Path.GetFileNameWithoutExtension(outputFilePath);
             var newOutputFileName = outputFileName + "_" + productName + "_" + package;
@@ -375,7 +374,7 @@ namespace LogParser
                 string line;
                 while ((line = logFile.ReadLine()) != null)
                 {
-                    if (line.Contains(" - W: "))
+                    if (line.StartsWith("2019-"))
                         line = line.Substring(11);
 
                     fileAsList.Add(line);

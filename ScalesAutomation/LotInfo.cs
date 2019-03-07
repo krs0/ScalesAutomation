@@ -76,7 +76,7 @@ namespace ScalesAutomation
         public string GetUniqueLotId()
         {
             var uniqueId = Lot + "_" + ProductName + "_" + Package.Type;
-            uniqueId = uniqueId.Replace(" ", ""); // No spaces in file names
+            //uniqueId = uniqueId.Replace(" ", ""); // No spaces in file names
 
             return uniqueId;
         }
