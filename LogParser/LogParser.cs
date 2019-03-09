@@ -89,6 +89,7 @@ namespace LogParser
             // SaveListToFile(normalizedMeasurements, normalizedMeasurementsFilePath); // Generic list save does not work
 
             var finalMeasurements = ExtractFinalMeasurements(normalizedMeasurements, lotInfo.Package.NetWeight);
+            RemoveLastMeasurementIfNotInTolerance(finalMeasurements);
             AddPositionToEachMeasurement(finalMeasurements, startingMeasurementIndex);
             SaveListToFile(finalMeasurements, outputFilePath);
 
@@ -104,22 +105,31 @@ namespace LogParser
             }
         }
 
-        private static List<MeasurementInfo> ExtractFinalMeasurements(List<MeasurementInfo> normalizedMeasurements,
-            double netWeight)
+        private static List<MeasurementInfo> ExtractFinalMeasurements(List<MeasurementInfo> normalizedMeasurements, double netWeight)
         {
             var measurementsDetected = false;
             var stableMeasurementFound = false;
             var finalMeasurements = new List<MeasurementInfo>();
+            var potentialMeasurementIndex = 0;
+            var firstNonZeroIndex = 0;
+
+            var tolerance = Settings.Default.ConfidenceLevel;
 
             for (var i = normalizedMeasurements.Count - 1; i >= 0; i--)
             {
-                var l = normalizedMeasurements[i];
+                var currentMeasurement = normalizedMeasurements[i];
 
-                if (l.Measurement == 0)
+                if (currentMeasurement.Measurement == 0)
                 {
                     if (measurementsDetected && !stableMeasurementFound)
                     {
-                        finalMeasurements.Add(new MeasurementInfo(finalMeasurements.Count + 1, "", true, netWeight)); // Invent an appropriate unstable measurement
+                        if (potentialMeasurementIndex > 0)
+                        {
+                            finalMeasurements.Add(normalizedMeasurements[potentialMeasurementIndex]);
+                            potentialMeasurementIndex = 0;
+                        }
+                        else
+                            finalMeasurements.Add(new MeasurementInfo(finalMeasurements.Count + 1, "", true, netWeight)); // Invent an appropriate unstable measurement
                     }
 
                     measurementsDetected = false;
@@ -130,16 +140,36 @@ namespace LogParser
                     if (stableMeasurementFound) continue;
 
                     if (!measurementsDetected)
+                    {
                         measurementsDetected = true;
+                        firstNonZeroIndex = i;
+                    }
 
                     // find the "first" aka last 4 stable measurements
-                    if (!l.IsStable || i <= 3) continue;
+                    if (!currentMeasurement.IsStable || i <= 4) continue;
 
-                    // find if stable more than 4
-                    if (normalizedMeasurements[i - 1].IsStable && normalizedMeasurements[i - 2].IsStable && normalizedMeasurements[i - 3].IsStable)
+                    // find if stable more than 3
+                    if (normalizedMeasurements[i - 1].IsStable && normalizedMeasurements[i - 2].IsStable)
                     {
-                        stableMeasurementFound = true;
-                        finalMeasurements.Add(normalizedMeasurements[i - 1]);
+                        if (potentialMeasurementIndex == 0)
+                        {
+                            if (normalizedMeasurements[i - 3].IsStable && normalizedMeasurements[i - 4].IsStable)
+                            {
+                                if (firstNonZeroIndex - i < 10)
+                                    potentialMeasurementIndex = i - 2 ;
+                                else if (firstNonZeroIndex - i < 15)
+                                    potentialMeasurementIndex = i - 2;
+                                else if (firstNonZeroIndex - i < 20)
+                                    potentialMeasurementIndex = i - 2;
+                            }
+                        }
+
+                        if (IsWithinSkewedTolerance(currentMeasurement.Measurement, netWeight, tolerance))
+                        {
+                            stableMeasurementFound = true;
+                            finalMeasurements.Add(normalizedMeasurements[i - 1]);
+                            potentialMeasurementIndex = 0;
+                        }
                     }
                 }
             }
@@ -147,6 +177,31 @@ namespace LogParser
             finalMeasurements.Reverse();
 
             return finalMeasurements;
+        }
+
+        private static bool IsWithinTolerance(double measuredValue, double nominalValue, int toleranceInPercentage)
+        {
+            var toleranceInterval = nominalValue - nominalValue * toleranceInPercentage / 100;
+            var toleranceHigh = nominalValue + toleranceInterval;
+            var toleranceLow = nominalValue - toleranceInterval;
+
+            return ((measuredValue > toleranceLow) && (measuredValue < toleranceHigh));
+        }
+
+        private static bool IsWithinSkewedTolerance(double measuredValue, double nominalValue, int toleranceInPercentage)
+        {
+            var toleranceHigh = nominalValue + (nominalValue - nominalValue * toleranceInPercentage / 100);
+            var toleranceLow = nominalValue - (nominalValue - nominalValue * (toleranceInPercentage + 1) / 100); // skewed to catch more lower
+
+            return ((measuredValue > toleranceLow) && (measuredValue < toleranceHigh));
+        }
+
+        private void RemoveLastMeasurementIfNotInTolerance(List<MeasurementInfo> finalMeasurements)
+        {
+            if (!IsWithinSkewedTolerance(finalMeasurements.Last().Measurement, lotInfo.Package.NetWeight, Settings.Default.ConfidenceLevel))
+            {
+                finalMeasurements.RemoveAt(finalMeasurements.Count - 1);
+            }
         }
 
         // find fake intervals (less than 20 measurements > 0)

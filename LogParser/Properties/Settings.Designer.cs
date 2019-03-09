@@ -46,5 +46,17 @@ namespace LogParser.Properties {
                 this["OutputFolderPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("97")]
+        public byte ConfidenceLevel {
+            get {
+                return ((byte)(this["ConfidenceLevel"]));
+            }
+            set {
+                this["ConfidenceLevel"] = value;
+            }
+        }
     }
 }
