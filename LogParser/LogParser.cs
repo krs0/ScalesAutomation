@@ -49,10 +49,8 @@ namespace LogParser
 
         string logFolderPath = Settings.Default.LogFolderPath;
         string outputFolderPath = Settings.Default.LogFolderPath;
-        string outputFileName = "";
         string outputFilePath = "";
-        string normalizedMeasurementsFilePath = "";
-        private int startingMeasurementIndex = 0;
+        int startingMeasurementIndex = 0;
 
         public LogParser()
         {

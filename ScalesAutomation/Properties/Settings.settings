@@ -2,6 +2,15 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ScalesAutomation.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
+	<setting name="DataImporterEnabled" serializeAs="String">
+		<value>False</value>
+    </setting>
+    <setting name="SimulationEnabled" serializeAs="String">
+        <value>True</value>
+    </setting>
+    <setting name="SerialTransmissionSimulationPath" serializeAs="String">
+        <value>c:\Home\Krs\Work\Cantar\ScalesAutomation\Distribution\Logs\SerialTransmissionSimulation.log</value>
+    </setting>
     <Setting Name="ReadCOMPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">COM5</Value>
     </Setting>
@@ -11,6 +20,9 @@
     <Setting Name="CatalogFilePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">CatalogProduse.xml</Value>
     </Setting>
+	<setting name="LogFolderPath" serializeAs="String">
+	  <value>Logs\</value>
+    </setting>
     <Setting Name="CSVOutputPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">CSVOutput\</Value>
     </Setting>
@@ -20,12 +32,6 @@
     <Setting Name="CSVServerFolderPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">Server\CSVServer\</Value>
     </Setting>
-    <Setting Name="SerialTransmissionSimulationPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">c:\Home\Krs\Work\Cantar\ScalesAutomation\Distribution\Logs\SerialTransmissionSimulation.log</Value>
-    </Setting>
-    <Setting Name="SimulationEnabled" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
     <Setting Name="MeasurementTollerace" Type="System.Double" Scope="User">
       <Value Profile="(Default)">3</Value>
     </Setting>
@@ -34,12 +40,6 @@
     </Setting>
     <Setting Name="ZeroThreshold" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">75</Value>
-    </Setting>
-    <Setting Name="LogFolderPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Logs\</Value>
-    </Setting>
-    <Setting Name="DataImporterEnabled" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>
