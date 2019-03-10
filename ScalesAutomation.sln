@@ -80,9 +80,10 @@ Global
 		UpdateAssemblyVersion = True
 		UpdateAssemblyFileVersion = True
 		UpdateAssemblyInfoVersion = True
+		ShouldCreateLogs = True
 		AdvancedSettingsExpanded = True
-		AssemblyVersionSettings = None.None.None.None
-		AssemblyFileVersionSettings = None.None.DateStamp.TimeStamp
+		AssemblyVersionSettings = IncrementOnDemand.IncrementOnDemand.None.None
+		AssemblyFileVersionSettings = IncrementOnDemand.IncrementOnDemand.DateStamp.TimeStamp
 		UpdatePackageVersion = False
 		AssemblyInfoVersionSemVerSettings = AssemblyVersion.NoneWithAutoReset.ReleaseCandidate
 		AssemblyInfoVersionType = SemVer1

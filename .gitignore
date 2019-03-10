@@ -270,3 +270,5 @@ ModelManifest.xml
 /Distribution/Logs/log4net.xml
 /Eurocas
 /Distribution/log4net.xml
+/Distribution/Server/CSVServer
+/Resources
