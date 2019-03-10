@@ -14,8 +14,6 @@ namespace LogParser
     {
         readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        // TODO: CrLa - Add code to save to .csv
-
         class MeasurementInfo
         {
             public int Position;

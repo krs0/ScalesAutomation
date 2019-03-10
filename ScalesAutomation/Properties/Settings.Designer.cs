@@ -25,6 +25,43 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DataImporterEnabled {
+            get {
+                return ((bool)(this["DataImporterEnabled"]));
+            }
+            set {
+                this["DataImporterEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SimulationEnabled {
+            get {
+                return ((bool)(this["SimulationEnabled"]));
+            }
+            set {
+                this["SimulationEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Home\\Krs\\Work\\Cantar\\ScalesAutomation\\Distribution\\Logs\\SerialTransmissionSimu" +
+            "lation.log")]
+        public string SerialTransmissionSimulationPath {
+            get {
+                return ((string)(this["SerialTransmissionSimulationPath"]));
+            }
+            set {
+                this["SerialTransmissionSimulationPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("COM5")]
         public string ReadCOMPort {
             get {
@@ -56,6 +93,18 @@ namespace ScalesAutomation.Properties {
             }
             set {
                 this["CatalogFilePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Logs\\")]
+        public string LogFolderPath {
+            get {
+                return ((string)(this["LogFolderPath"]));
+            }
+            set {
+                this["LogFolderPath"] = value;
             }
         }
         
@@ -97,30 +146,6 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Home\\Krs\\Work\\Cantar\\ScalesAutomation\\Distribution\\Logs\\SerialTransmissionSimulation.log")]
-        public string SerialTransmissionSimulationPath {
-            get {
-                return ((string)(this["SerialTransmissionSimulationPath"]));
-            }
-            set {
-                this["SerialTransmissionSimulationPath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool SimulationEnabled {
-            get {
-                return ((bool)(this["SimulationEnabled"]));
-            }
-            set {
-                this["SimulationEnabled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("3")]
         public double MeasurementTollerace {
             get {
@@ -152,30 +177,6 @@ namespace ScalesAutomation.Properties {
             }
             set {
                 this["ZeroThreshold"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Logs\\")]
-        public string LogFolderPath {
-            get {
-                return ((string)(this["LogFolderPath"]));
-            }
-            set {
-                this["LogFolderPath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool DataImporterEnabled {
-            get {
-                return ((bool)(this["DataImporterEnabled"]));
-            }
-            set {
-                this["DataImporterEnabled"] = value;
             }
         }
     }

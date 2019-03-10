@@ -95,6 +95,7 @@
     <Compile Include="Serial\SerialWriter.cs" />
     <Compile Include="Serial\SerialReader.cs" />
     <Compile Include="Helpers\XmlHelper.cs" />
+    <Compile Include="Settings.cs" />
     <EmbeddedResource Include="DataImporter.resx">
       <DependentUpon>DataImporter.cs</DependentUpon>
     </EmbeddedResource>
