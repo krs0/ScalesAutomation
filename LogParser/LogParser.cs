@@ -108,6 +108,7 @@ namespace LogParser
             var finalMeasurements = new List<MeasurementInfo>();
             var potentialMeasurementIndex = 0;
             var firstNonZeroIndex = 0;
+            MeasurementInfo bestFit = new MeasurementInfo();
 
             var tolerance = Settings.Default.ConfidenceLevel;
 
@@ -125,7 +126,13 @@ namespace LogParser
                             potentialMeasurementIndex = 0;
                         }
                         else
-                            finalMeasurements.Add(new MeasurementInfo(finalMeasurements.Count + 1, "", true, netWeight)); // Invent an appropriate unstable measurement
+                        {
+                            // mark measurement as not stable by chainging milliseconds time to 42
+                            bestFit.Time = bestFit.Time.Split(',')[0] + ",42";
+                            finalMeasurements.Add(bestFit);
+                        }
+
+                        bestFit = new MeasurementInfo();
                     }
 
                     measurementsDetected = false;
@@ -134,6 +141,12 @@ namespace LogParser
                 else
                 {
                     if (stableMeasurementFound) continue;
+
+                    if (IsBetterFit(currentMeasurement, bestFit, netWeight))
+                    {
+                        bestFit = currentMeasurement;
+                    }
+                    
 
                     if (!measurementsDetected)
                     {
@@ -165,6 +178,7 @@ namespace LogParser
                             stableMeasurementFound = true;
                             finalMeasurements.Add(normalizedMeasurements[i - 1]);
                             potentialMeasurementIndex = 0;
+                            bestFit = new MeasurementInfo();
                         }
                     }
                 }
@@ -190,6 +204,16 @@ namespace LogParser
             var toleranceLow = nominalValue - (nominalValue - nominalValue * (toleranceInPercentage + 1) / 100); // skewed to catch more lower
 
             return ((measuredValue > toleranceLow) && (measuredValue < toleranceHigh));
+        }
+
+        private static bool IsBetterFit(MeasurementInfo currentMeasurement, MeasurementInfo bestFit, double netWeight)
+        {
+            if (Math.Abs(currentMeasurement.Measurement - netWeight) < Math.Abs(bestFit.Measurement - netWeight))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private void RemoveLastMeasurementIfNotInTolerance(List<MeasurementInfo> finalMeasurements)

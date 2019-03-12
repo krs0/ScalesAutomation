@@ -335,10 +335,10 @@ namespace ScalesAutomation
                 row["TimeStamp"] = DateTime.Now.ToString("HH:mm:ss");
                 dataTable.Rows.Add(row);
 
-                // Add row to excel
-                csvHelper.WriteLineToOutputFile(row, dataTable.Columns.Count);
+                // Add row to excel: TODO: CRLa - do not write in output file since it will be overwritten by parser anyway
+                // csvHelper.WriteLineToOutputFile(row, dataTable.Columns.Count);
 
-                log.Info("Measurements Added: " + row["#"] + " - Weight: " + row["Weight"] + " - at: " + row["TimeStamp"]);
+                log.Info("Measurement Detected: " + row["#"] + " - Weight: " + row["Weight"] + " - at: " + row["TimeStamp"]);
             }
         }
 
