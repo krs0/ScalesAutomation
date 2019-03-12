@@ -2,10 +2,10 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ScalesAutomation.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-  <Setting Name="DataImporterEnabled" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+    <Setting Name="DataImporterEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
-  <Setting Name="SimulationEnabled" Type="System.Boolean" Scope="User">
+    <Setting Name="SimulationEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="SerialTransmissionSimulationPath" Type="System.String" Scope="User">
@@ -20,7 +20,7 @@
     <Setting Name="CatalogFilePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">CatalogProduse.xml</Value>
     </Setting>
-	<Setting Name="LogFolderPath" Type="System.String" Scope="User">
+    <Setting Name="LogFolderPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">Logs\</Value>
     </Setting>
     <Setting Name="CSVOutputPath" Type="System.String" Scope="User">

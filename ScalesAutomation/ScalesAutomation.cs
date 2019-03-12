@@ -376,5 +376,10 @@ namespace ScalesAutomation
 
         #endregion
 
+        private void ScalesAutomation_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(!btnStart.Enabled)
+                btnStopLot_Click(sender, e);
+        }
     }
 }

@@ -150,6 +150,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ScalesAutomation";
             this.Text = "Automatizare Cantar Bilanciai";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ScalesAutomation_FormClosing);
             this.Load += new System.EventHandler(this.ScalesAutomation_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMeasurements)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.measurementBindingSource)).EndInit();
