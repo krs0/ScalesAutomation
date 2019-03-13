@@ -75,7 +75,6 @@ namespace ScalesAutomation
                     }
 
                     sw.Write(sw.NewLine);
-                    sw.Close();
                 }
             }
             catch (Exception ex)

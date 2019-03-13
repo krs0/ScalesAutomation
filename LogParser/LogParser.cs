@@ -101,6 +101,16 @@ namespace LogParser
             }
         }
 
+        /// <summary>
+        /// This method goes through normalized measurements from back to front and
+        /// detects / decides what were the measurements for each interval between consecutive zeroes.
+        /// Zero measurements are usually triggers for reseting variables (if beginning) or
+        /// adding a measurement to the final list (if ending a series of measurements).
+        /// There are 3 things detected:
+        /// Stable measurements within tolerance. Once this is detected we add it to list and noting more is done on that interval.
+        /// Stable measurements not within tolerance. First potential candidate: a stable measurement close to scale unloading, but does not fit within tolerance.
+        /// Best Guesses: Continously, independent if Stable or not we compare each measurement to the desired net weght. This is used when nothing stable is found.
+        /// </summary>
         private static List<MeasurementInfo> ExtractFinalMeasurements(List<MeasurementInfo> normalizedMeasurements, double netWeight)
         {
             var measurementsDetected = false;
@@ -301,8 +311,6 @@ namespace LogParser
 
                     normalizedMeasurements.Add(measurementInfo);
                 }
-
-                logFile.Close();
             }
 
             return normalizedMeasurements;
@@ -342,11 +350,7 @@ namespace LogParser
             using (var file = new StreamWriter(filePath, append: true))
             {
                 foreach (var element in list)
-                {
                     file.WriteLine(element);
-                }
-
-                file.Close();
             }
         }
 

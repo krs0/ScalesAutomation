@@ -46,7 +46,6 @@ namespace ScalesAutomation
                 if (!lotInfoFound)
                     log.Error("No Lot Info found!");
 
-                file.Close();
             }
 
             return lotInfo;
