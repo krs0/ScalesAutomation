@@ -122,7 +122,7 @@ namespace ScalesAutomation
                 UseShellExecute = false,
                 FileName = "LogParser.exe",
                 WindowStyle = ProcessWindowStyle.Hidden,
-                Arguments = logFilePath + " " + OutputFolderPath
+                Arguments = "\"" + logFilePath + "\" " + OutputFolderPath
             };
 
             try

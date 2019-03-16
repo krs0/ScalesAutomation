@@ -228,10 +228,11 @@ namespace LogParser
 
         private void RemoveLastMeasurementIfNotInTolerance(List<MeasurementInfo> finalMeasurements)
         {
+            if (finalMeasurements?.Count() == 0)
+                return;
+
             if (!IsWithinSkewedTolerance(finalMeasurements.Last().Measurement, lotInfo.Package.NetWeight, Settings.Default.ConfidenceLevel))
-            {
                 finalMeasurements.RemoveAt(finalMeasurements.Count - 1);
-            }
         }
 
         // find fake intervals (less than 20 measurements > 0)
