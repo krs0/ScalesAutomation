@@ -33,7 +33,7 @@ namespace ScalesAutomation
 
         public static string CalculateOutputFilePath(string outputFolderPath, DateTime date, string lotId)
         {
-            OutputFileFullName = date.ToString("yyyy-MM-dd-hh-mm-ss") + "_" + lotId + ".csv";
+            OutputFileFullName = date.ToString("yyyy-MM-dd-HH-mm-ss") + "_" + lotId + ".csv";
             OutputFilePath = Path.Combine(outputFolderPath, OutputFileFullName);
 
             return OutputFilePath;
@@ -108,13 +108,13 @@ namespace ScalesAutomation
             // For the moment we overwrite our backups, since data is anyway appended and not rewritten. So following lines are commented.
 
             //if (File.Exists(Path.Combine(bckFolderPath, OutputFileFullName)))
-            //    backupFileName = Path.GetFileNameWithoutExtension(OutputFileFullName) + "_" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".csv";
+            //    backupFileName = Path.GetFileNameWithoutExtension(OutputFileFullName) + "_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".csv";
                                  
             FileCopy(OutputFolderPath, bckFolderPath, backupFileName);
         }
 
         /// <summary>Launch the legacy application with some options set.</summary>
-        public static void ParseCurrentLog(string logFilePath)
+        public void ParseCurrentLog(string logFilePath)
         {
             var startInfo = new ProcessStartInfo
             {
@@ -129,6 +129,7 @@ namespace ScalesAutomation
             {
                 // Start the process with the info we specified.
                 // Call WaitForExit and then the using-statement will close.
+                log.Info("Starting parser with arguments: " + startInfo.Arguments );
                 using (var parserProcess = Process.Start(startInfo))
                 {
                     parserProcess?.WaitForExit();
