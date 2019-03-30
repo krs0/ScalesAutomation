@@ -33,7 +33,7 @@ namespace ScalesAutomation
         private void btnImport_Click(object sender, System.EventArgs e)
         {
 
-            var outputFolderPath = Settings.Default.CSVServerFolderPath;
+            var outputFolderPath = Settings.Default.DataImporterOutputPath;
             var outputFilePath = "";
             var startMeasurementIndex = 1;
 

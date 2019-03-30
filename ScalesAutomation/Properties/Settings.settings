@@ -29,9 +29,6 @@
     <Setting Name="CSVBackupPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">CSVBackup\</Value>
     </Setting>
-    <Setting Name="CSVServerFolderPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Server\CSVServer\</Value>
-    </Setting>
     <Setting Name="MeasurementTollerace" Type="System.Double" Scope="User">
       <Value Profile="(Default)">3</Value>
     </Setting>
@@ -40,6 +37,12 @@
     </Setting>
     <Setting Name="ZeroThreshold" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">75</Value>
+    </Setting>
+    <Setting Name="CSVServerFolderPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Server\Cantariri_Automate\</Value>
+    </Setting>
+    <Setting Name="DataImporterOutputPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Server\Cantariri_Manuale\</Value>
     </Setting>
   </Settings>
 </SettingsFile>

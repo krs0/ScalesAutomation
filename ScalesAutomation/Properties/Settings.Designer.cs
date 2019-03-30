@@ -134,18 +134,6 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Server\\CSVServer\\")]
-        public string CSVServerFolderPath {
-            get {
-                return ((string)(this["CSVServerFolderPath"]));
-            }
-            set {
-                this["CSVServerFolderPath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("3")]
         public double MeasurementTollerace {
             get {
@@ -170,13 +158,37 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        [global::System.Configuration.DefaultSettingValueAttribute("75")]
         public int ZeroThreshold {
             get {
                 return ((int)(this["ZeroThreshold"]));
             }
             set {
                 this["ZeroThreshold"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server\\Cantariri_Automate\\")]
+        public string CSVServerFolderPath {
+            get {
+                return ((string)(this["CSVServerFolderPath"]));
+            }
+            set {
+                this["CSVServerFolderPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server\\Cantariri_Manuale\\")]
+        public string DataImporterOutputPath {
+            get {
+                return ((string)(this["DataImporterOutputPath"]));
+            }
+            set {
+                this["DataImporterOutputPath"] = value;
             }
         }
     }
