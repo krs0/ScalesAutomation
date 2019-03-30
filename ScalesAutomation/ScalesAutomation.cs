@@ -196,7 +196,7 @@ namespace ScalesAutomation
             }
             else
             {
-                logFilePath = logFolderPath + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + "_" + lotInfo.Id + ".log";
+                logFilePath = logFolderPath + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "_" + lotInfo.Id + ".log";
                 log.ChangeLoggingFile(logFilePath);
                 lotInfo.AppendToLot = false;
 
