@@ -59,7 +59,9 @@ namespace LogParser
         public void Initialize(string logFolderPath, string outputFolderPath)
         {
             this.logFolderPath = logFolderPath;
+//            log.Info("logFolderPath = " + this.logFolderPath);
             this.outputFolderPath = outputFolderPath;
+//            log.Info("outputFolderPath = " + this.outputFolderPath);
         }
 
         public void ParseLog(string logFilePath)

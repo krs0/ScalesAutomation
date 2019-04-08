@@ -24,7 +24,7 @@ namespace LogParser
             {
                 var logParser = new LogParser();
                 
-                logParser.Initialize(Path.GetDirectoryName(args[0]), args[1]);
+                logParser.Initialize(Path.GetDirectoryName(args[0]), Path.GetDirectoryName(args[1]));
                 logParser.ParseLog(args[0]);
             }
         }
