@@ -44,5 +44,8 @@
     <Setting Name="DataImporterOutputPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">Server\Cantariri_Manuale\</Value>
     </Setting>
+    <Setting Name="ScaleType" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Constalaris</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
