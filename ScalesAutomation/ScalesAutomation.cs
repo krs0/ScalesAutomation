@@ -255,7 +255,6 @@ namespace ScalesAutomation
             btnStopLot.Enabled = true;
 
             CloseSerialCommunication();
-
         }
 
         void btnStopLot_Click(object sender, EventArgs e)

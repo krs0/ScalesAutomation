@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO.Ports;
@@ -19,6 +19,7 @@ namespace ScalesAutomation
         System.Windows.Forms.Timer timer;
 
         SynchronizedCollection<Measurement> rawMeasurements;
+        byte SerialPackageLength = 0; // package length (row length) transmitted by the scales
         double zeroThreshold;
         Queue<byte> recievedData = new Queue<byte>();
         int requiredConsecutiveStableMeasurements;
@@ -36,6 +37,11 @@ namespace ScalesAutomation
             lastAddedMeasurement.TotalWeight = -1;
 
             requiredConsecutiveStableMeasurements = Settings.Default.ConsecutiveStableMeasurements;
+
+            if(Settings.Default.ScaleType == "Bilanciai")
+                SerialPackageLength = 8;
+            else
+                SerialPackageLength = 17;
 
             CreateTimer();
 
@@ -139,10 +145,13 @@ namespace ScalesAutomation
 
                     busy = true;
 
-                    byte[] data = new byte[serialPort.BytesToRead];
-                    // log.Info("Bytes To Read: " + serialPort.BytesToRead.ToString() + Environment.NewLine);
+                    log.Info("Bytes To Read: " + serialPort.BytesToRead.ToString() + Environment.NewLine);
 
-                    serialPort.Read(data, 0, data.Length);
+                    if(serialPort.BytesToRead < SerialPackageLength) return;
+
+                    byte[] data = new byte[serialPort.BytesToRead];
+                    var bytesRed = serialPort.Read(data, 0, data.Length);
+                    log.Info("Bytes Read: " + bytesRed.ToString() + Environment.NewLine);
 
                     data.ToList().ForEach(b => recievedData.Enqueue(b));
 
@@ -168,16 +177,36 @@ namespace ScalesAutomation
 
         void InitializeTransmission()
         {
-            serialPort = new SerialPort(Settings.Default.ReadCOMPort, 4800, Parity.Even, 7, StopBits.Two);
+            var scaleType = Settings.Default.ScaleType;
 
-            if (!serialPort.IsOpen)
+            if (scaleType == "Bilanciai")
+                serialPort = new SerialPort(Settings.Default.ReadCOMPort, 4800, Parity.Even, 7, StopBits.Two);
+            else if (scaleType == "Constalaris")
+                serialPort = new SerialPort(Settings.Default.ReadCOMPort, 9600, Parity.None, 8, StopBits.One);
+            else
+                log.Error("Model cantar incorect: " + scaleType + " - Modelele suportate sunt: Bilanciai sau Constalaris");
+
+            if(!serialPort.IsOpen)
             {
-                serialPort.Open();
-                EnableCyclicTransmission();
-                serialPort.DataReceived += serialPort_DataReceived;
+                try
+                {
+                    serialPort.Open();
+
+                    if(scaleType == "Bilanciai")
+                        EnableCyclicTransmission(); // we need to write a command for Bilanciai to start sending data
+
+                    serialPort.DataReceived += serialPort_DataReceived;
+                }
+                catch(Exception ex)
+                {
+                    log.Error("Nu se poate initializa legatura cu cantarul pe portul: " + serialPort.PortName + ". Verificati conexiunea cu cantarul, sau valoarea portului COM");
+                }
             }
         }
 
+        /// <summary>
+        /// Sends over serial an Enable Cyclic Transmission package. Valid only for Bilanciai Scales.
+        /// </summary>
         void EnableCyclicTransmission()
         {
             byte[] txBuffer = PrepareCyclicTransmissionPackage();
@@ -189,6 +218,10 @@ namespace ScalesAutomation
             Thread.Sleep(10);
         }
 
+        /// <summary>
+        /// Preapare Initialize Cycling transmission Package for Bilanciai Scales
+        /// </summary>
+        /// <returns>Initialize Cycling Transmission Package</returns>
         byte[] PrepareCyclicTransmissionPackage()
         {
             byte[] txBuffer = new byte[3];
@@ -207,15 +240,29 @@ namespace ScalesAutomation
             var measurement = new Measurement();
             byte[] packageAsByteArray = new byte[] { };
 
-            // Determine if we have a "package" in the queue
+            // Determine if we have a full "package" in the queue
             // ToDo: CrLa - Here we could lose data. change to while and test
-            if (recievedData.Count >= 8)
+            if(recievedData.Count >= SerialPackageLength)
             {
-                var package = Enumerable.Range(0, 8).Select(i => recievedData.Dequeue());
-                var packageAsIntArray = TransformByteEnumerationToIntArray(package, ref packageAsByteArray);
+                if(Settings.Default.ScaleType == "Bilanciai")
+                {
+                    var package = Enumerable.Range(0, SerialPackageLength).Select(i => recievedData.Dequeue());
+                    var packageAsIntArray = TransformByteEnumerationToIntArray(package, ref packageAsByteArray);
 
-                measurement.IsStable = (packageAsIntArray[1] == 0 ? true : false);
-                measurement.TotalWeight = packageAsIntArray[6] + packageAsIntArray[5] * 10 + packageAsIntArray[4] * 100 + packageAsIntArray[3] * 1000 + packageAsIntArray[2] * 10000;
+                    measurement.IsStable = (packageAsIntArray[1] == 0 ? true : false);
+                    measurement.TotalWeight = packageAsIntArray[6] + packageAsIntArray[5] * 10 + packageAsIntArray[4] * 100 + packageAsIntArray[3] * 1000 + packageAsIntArray[2] * 10000;
+                }
+                else
+                {
+                    var package = Enumerable.Range(0, SerialPackageLength).Select(i => recievedData.Dequeue());
+                    var packageAsIntArray = TransformByteEnumerationToIntArray(package, ref packageAsByteArray);
+
+                    measurement.IsStable = (package.ElementAt(1) == 84 ? true : false); // if second element is T (from ST) than its stable
+                    measurement.TotalWeight = packageAsIntArray[12] + packageAsIntArray[11] * 10 + packageAsIntArray[10] * 100 + packageAsIntArray[8] * 1000;
+                    if(packageAsIntArray[7] != -1) // if tens for Kg is a valid number (if not used is space that was previously converted to -1)
+                        measurement.TotalWeight += packageAsIntArray[7] * 10000;
+                }
+
                 measurement.TimeStamp = DateTime.Now;
 
                 // Logging long format
@@ -234,12 +281,30 @@ namespace ScalesAutomation
         void DiscardAllBytesUntilStart()
         {
             var queueCount = recievedData.Count;
-            for (var i = 0; i < queueCount; i++)
+            bool CRDetected = false;
+
+            if(Settings.Default.ScaleType == "Bilanciai")
             {
-                if (recievedData.ElementAt(0) != 0x24)
-                    recievedData.Dequeue();
-                else
-                    break;
+                for(var i = 0; i < queueCount; i++)
+                {
+                    if(recievedData.ElementAt(0) != 0x24)
+                        recievedData.Dequeue();
+                    else
+                        break;
+                }
+            }
+            else // discard all data util start of transmission package. (discard everything until CR LF found)
+            {
+                for(var i = 0; i < queueCount; i++)
+                {
+                    if(!(recievedData.ElementAt(0) == 10)) // untill LF -> discard
+                        recievedData.Dequeue();
+                    else // if LF found, discard LF as well and break
+                    {
+                        recievedData.Dequeue();
+                        break;
+                    }
+                }
             }
         }
 
