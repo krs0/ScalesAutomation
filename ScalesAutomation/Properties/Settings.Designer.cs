@@ -12,7 +12,7 @@ namespace ScalesAutomation.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.4.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -37,7 +37,7 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SimulationEnabled {
             get {
                 return ((bool)(this["SimulationEnabled"]));
@@ -74,7 +74,7 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("COM6")]
+        [global::System.Configuration.DefaultSettingValueAttribute("COM5")]
         public string WriteCOMPort {
             get {
                 return ((string)(this["WriteCOMPort"]));
@@ -86,7 +86,7 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("CatalogProduse.xml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("CatalogProduseEurocas.xml")]
         public string CatalogFilePath {
             get {
                 return ((string)(this["CatalogFilePath"]));

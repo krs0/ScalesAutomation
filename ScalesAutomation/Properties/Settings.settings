@@ -6,7 +6,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SimulationEnabled" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SerialTransmissionSimulationPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">c:\Home\Krs\Work\Cantar\ScalesAutomation\Distribution\Logs\SerialTransmissionSimulation.log</Value>
@@ -15,10 +15,10 @@
       <Value Profile="(Default)">COM5</Value>
     </Setting>
     <Setting Name="WriteCOMPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">COM6</Value>
+      <Value Profile="(Default)">COM5</Value>
     </Setting>
     <Setting Name="CatalogFilePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CatalogProduse.xml</Value>
+      <Value Profile="(Default)">CatalogProduseEurocas.xml</Value>
     </Setting>
     <Setting Name="LogFolderPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">Logs\</Value>
