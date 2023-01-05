@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO.Ports;
@@ -47,65 +47,24 @@ namespace ScalesAutomation
             var timeout = 100;
             var finalized = false;
 
-            try
+            while(timeout > 0)
             {
-
-                while(timeout > 0)
+                if(!busy)
                 {
-                    if(!busy)
-                    {
-                        if(serialPort != null)
-                        {
-                            serialPort.DtrEnable = false;
-                            serialPort.RtsEnable = false;
-                            serialPort.DataReceived -= serialPort_DataReceived;
-                            Thread.Sleep(200);
-                            if(serialPort.IsOpen)
-                            {
-                                serialPort.DiscardInBuffer();
-                                serialPort.DiscardOutBuffer();
-                                serialPort.Close();
-                            }
+                    SerialPortClose();
+                    finalized = true;
 
-                            serialPort.Dispose();
-
-                            finalized = true;
-                        }
-
-                        break;
-                    }
-                    else
-                    {
-                        Thread.Sleep(10);
-                        timeout -= 10;
-                    }
+                    break;
                 }
-
-                if(!finalized)
+                else
                 {
-                    if(serialPort != null)
-                    {
-                        serialPort.DtrEnable = false;
-                        serialPort.RtsEnable = false;
-                        serialPort.DataReceived -= serialPort_DataReceived;
-                        Thread.Sleep(200);
-                        if(serialPort.IsOpen)
-                        {
-                            serialPort.DiscardInBuffer();
-                            serialPort.DiscardOutBuffer();
-                            serialPort.Close();
-                        }
-
-                        serialPort.Dispose();
-                    }
+                    Thread.Sleep(10);
+                    timeout -= 10;
                 }
             }
 
-            catch(Exception ex) 
-            {
-                log.Error("Cannot Dispose of serial port:" + ex.Message + Environment.NewLine);
-                throw;
-            }
+            if(!finalized)
+                SerialPortClose();
         }
 
         #endregion
@@ -322,6 +281,35 @@ namespace ScalesAutomation
             };
             timer.Tick += new EventHandler(timer_Tick);
             timer.Start();
+        }
+
+        private void SerialPortClose()
+        {
+            try
+            {
+                if(serialPort != null)
+                {
+                    serialPort.DtrEnable = false;
+                    serialPort.RtsEnable = false;
+                    serialPort.DataReceived -= serialPort_DataReceived;
+
+                    Thread.Sleep(200);
+
+                    if(serialPort.IsOpen)
+                    {
+                        serialPort.DiscardInBuffer();
+                        serialPort.DiscardOutBuffer();
+                        serialPort.Close();
+                    }
+
+                    serialPort.Dispose();
+                }
+            }
+            catch(Exception ex)
+            {
+                log.Error("Cannot Dispose of serial port:" + ex.Message + Environment.NewLine);
+                throw;
+            }
         }
 
         #endregion
