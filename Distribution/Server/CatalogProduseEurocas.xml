@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Product>
+		<Name>Rhapsody Apricot - Crema cu Caise 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Caramel - Crema cu Caramel 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Chocolate - Crema cu Ciocolata 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Coconut - Crema cu Cocos 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Coffee - Crema cu Cafea 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Lemon - Crema cu Lamaie 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Royal - Crema cu Aroma Sampanie 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Sourcherry - Crema cu Visine 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Strawberry - Crema cu Capsuni 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Vanilla - Crema cu Vanilie 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Dulce de Leche - Crema Lapte si Caramel 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Glazura Alba Premium 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Glazura Cacao Premium 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Glazura cu Aroma Capsuni Premium 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Glazura Caramel Premium 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Glazura Neutra Premium 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Glazura cu Aroma de Zmeura Premium 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Glazura cu Aroma Portocale Premium 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Glazura cu Aroma de Kiwi Premium 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Glazura cu Aroma Lamaie Premium 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Glazura cu Aroma Afine Premium 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>White Joy Crema Tartinabila Alba 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Dark Creole Chocolate 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Dolce Avellana - Crema Tartinabila cu Cacao si Alune Padure 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Dolce Buonissima - Crema Tartinabila cu Pasta de Alune 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Dolce Crunchy Cream - Crema Tartinabila cu Cacao Alune Biscuiti 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Dolce Pistachio - Crema Tartinabila cu Fistic 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Dolce Crunchy cu Gust de Caramel Sarat si Biscuiti 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Dolce White Crunchy - Crema Tartinabila Alba cu Bucati de Biscuiti 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Chocobake - Crema Tartinabila Termostabila 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Umplutura de Zmeura 50% - 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Umplutura de Mere 85% - 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Umplutura de Coacaze Negre 50% - 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Umplutura de Capsuni 50% - 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Umplutura Caise 50% - 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Umplutura de Visine 50% - 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Cuburi de Portocale Confiate 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Cuburi Mixte de Fructe Confiate 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Cirese Rosii Confiate 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Amarene Confiate 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>0.09</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Macarons - Jumatati 72 Buc</Name>
+		<Package>Cutie plastic capac</Package>
+		<PackageTare>0.055</PackageTare>
+		<NetWeight>0.23</NetWeight>
+	</Product>
+	<Product>
+		<Name>Macarons - Jumatati 24 Buc</Name>
+		<Package>Caserola</Package>
+		<PackageTare>0.015</PackageTare>
+		<NetWeight>0.094</NetWeight>
+	</Product>
+	<Product>
+		<Name>Coji Tarte Ovale 67mm - 40 Buc</Name>
+		<Package>Caserola</Package>
+		<PackageTare>0.03</PackageTare>
+		<NetWeight>0.48</NetWeight>
+	</Product>
+	<Product>
+		<Name>Coji Tarte Rotunde 44mm - 25 Buc</Name>
+		<Package>Caserola</Package>
+		<PackageTare>0.015</PackageTare>
+		<NetWeight>0.26</NetWeight>
+	</Product>
+	<Product>
+		<Name>Coji Tarte Rotunde 74mm - 24 Buc</Name>
+		<Package>Caserola</Package>
+		<PackageTare>0.05</PackageTare>
+		<NetWeight>0.7</NetWeight>
+	</Product>
+	<Product>
+		<Name>Coji Tarte Rotunde Horeca - 44mm - 25 Buc</Name>
+		<Package>Caserola</Package>
+		<PackageTare>0.015</PackageTare>
+		<NetWeight>0.25</NetWeight>
+	</Product>
+	<Product>
+		<Name>Coji de Eclere - 160mm - 12 Buc</Name>
+		<Package>Caserola</Package>
+		<PackageTare>0.05</PackageTare>
+		<NetWeight>0.16</NetWeight>
+	</Product>
+	<Product>
+		<Name>Arahide Caramelizate 1Kg</Name>
+		<Package>Punga Eurocas PE cu poliester metalizat</Package>
+		<PackageTare>0.025</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Cacao Alcalinizata Eurocas 20/22 - 1Kg</Name>
+		<Package>Punga Eurocas PE cu poliester metalizat</Package>
+		<PackageTare>0.025</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Dropsuri Termostabile 1Kg</Name>
+		<Package>Punga Eurocas PE cu poliester metalizat</Package>
+		<PackageTare>0.025</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Cuvertura Ciocolata Alba 1Kg</Name>
+		<Package>Punga Eurocas PE cu poliester metalizat</Package>
+		<PackageTare>0.025</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Decor Cofetarie - Paiete 1Kg</Name>
+		<Package>Punga Eurocas PE cu poliester metalizat</Package>
+		<PackageTare>0.025</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Cuvertura Roz cu Gust de Capsuni 1Kg</Name>
+		<Package>Punga Eurocas PE cu poliester metalizat</Package>
+		<PackageTare>0.025</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Cuvertura Galbena cu Gust de Lamaie 1Kg</Name>
+		<Package>Punga Eurocas PE cu poliester metalizat</Package>
+		<PackageTare>0.025</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Cuvertura Portocalie cu Gust de Portocale 1Kg</Name>
+		<Package>Punga Eurocas PE cu poliester metalizat</Package>
+		<PackageTare>0.025</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Cuvertura Rosie cu Gust de Vanilie 1Kg</Name>
+		<Package>Punga Eurocas PE cu poliester metalizat</Package>
+		<PackageTare>0.025</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Cuvertura Albastra cu Gust de Vanilie 1Kg</Name>
+		<Package>Punga Eurocas PE cu poliester metalizat</Package>
+		<PackageTare>0.025</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Cuvertura Ciocolata 70% - 1Kg</Name>
+		<Package>Punga Eurocas PE cu poliester metalizat</Package>
+		<PackageTare>0.025</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Cuvertura Ciocolata Neagra 53% – 1Kg</Name>
+		<Package>Punga Eurocas PE cu poliester metalizat</Package>
+		<PackageTare>0.025</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Cuvertura Ciocolata Lapte 33% - 1Kg</Name>
+		<Package>Punga Eurocas PE cu poliester metalizat</Package>
+		<PackageTare>0.025</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Ciocolata Neagra Belgiana 71% - 10Kg</Name>
+		<Package>Cutie Eurocas 10Kg</Package>
+		<PackageTare>0.39</PackageTare>
+		<NetWeight>10</NetWeight>
+	</Product>
+	<Product>
+		<Name>Ciocolata Neagra Belgiana 52% - 10Kg</Name>
+		<Package>Cutie Eurocas 10Kg</Package>
+		<PackageTare>0.39</PackageTare>
+		<NetWeight>10</NetWeight>
+	</Product>
+	<Product>
+		<Name>Ciocolata Belgiana cu Lapte 33% - 10Kg</Name>
+		<Package>Cutie Eurocas 10Kg</Package>
+		<PackageTare>0.39</PackageTare>
+		<NetWeight>10</NetWeight>
+	</Product>
+	<Product>
+		<Name>Vanilla Dream 1Kg</Name>
+		<Package>Punga Eurocas PE cu poliester metalizat</Package>
+		<PackageTare>0.025</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Vanilla Lane Praf Crema Termostabila Aroma Naturala Vanilie 1Kg</Name>
+		<Package>Punga Eurocas PE cu poliester metalizat</Package>
+		<PackageTare>0.025</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Dark Soft Cake Mix - Premix Blat Spongios 1Kg</Name>
+		<Package>Punga Eurocas PE cu poliester metalizat</Package>
+		<PackageTare>0.025</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Sweet Snow - Produs pentru Decor Termostabil 1Kg</Name>
+		<Package>Punga Eurocas PE cu poliester metalizat</Package>
+		<PackageTare>0.025</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Umplutura Nuca 40% 1Kg</Name>
+		<Package>Punga Eurocas PE cu poliester metalizat</Package>
+		<PackageTare>0.025</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+	<Product>
+		<Name>Fulgi de Cocos 800g</Name>
+		<Package>Punga Eurocas PE cu poliester metalizat</Package>
+		<PackageTare>0.025</PackageTare>
+		<NetWeight>0.8</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rahat Pentru Patiserie Eurocas - 1Kg</Name>
+		<Package>Cutie plastic capac</Package>
+		<PackageTare>0.055</PackageTare>
+		<NetWeight>1</NetWeight>
+	</Product>
+</catalog>
