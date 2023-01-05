@@ -241,17 +241,9 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 /CSVBackup
-/Resources/Bilanciai D410 Advanced User.pdf
-/Resources/Bilanciai EV2001 English Manual.pdf
-/Resources/Bilanciai D450 Advanced User.pdf
-/Resources/Scales Icon.png
-/Resources/Scales Setup - Docklite ASCII.png
-/Resources/Scales Setup - Docklite HEX.png
 /Recorded Data
 /Distribution/CSVBackup
 /Distribution/CSVOutput
-/Resources/SORTIMENTE-TARA.xlsx
-/Resources/BAZA-METROLOGIE_SEPTEMBRIE-2017-CRISTI.xls
 /Distribution/Server/CSVServer/2018-05-09-090653_666_GUT66-grasimetartinabila66%_CutieMargarita-20Kg.csv
 /Distribution/Server/CSVServer/2018-05-09-090144_9999_GUT66-grasimetartinabila66%_CutieMargarita-20Kg.csv
 /Distribution/Server/CSVServer/2018-05-09-085458_24234324234_GUT66-grasimetartinabila66%_CutieMargarita-20Kg.csv
@@ -265,13 +257,11 @@ ModelManifest.xml
 /Distribution/Server/CSVServer/2018-03-04-072149_1211_Gut80-MargarinaCreme_Cutie_20Kg.csv
 /Distribution/Server/CSVServer/2018-03-04-072129_1235_Gut80-MargarinaCreme_Cutie_20Kg.csv
 /Distribution/Server/CSVServer/2018-03-04-072100_1234_Gut80-MargarinaCreme_Cutie_20Kg.csv
-/Resources/Documentation.txt
 /Distribution/Manual - Automatizare Cantar.pdf
 /Distribution/Logs/log4net.xml
 /Eurocas
 /Distribution/log4net.xml
 /Distribution/Server/CSVServer
-/Resources
 /Distribution/LogParser.exe.lastcodeanalysissucceeded
 /Distribution/LogParser.exe.CodeAnalysisLog.xml
 /Distribution/_Importer Metrologie v2.1.zip
