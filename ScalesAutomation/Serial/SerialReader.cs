@@ -6,6 +6,8 @@ using log4net;
 using System.Reflection;
 using System.Threading;
 using ScalesAutomation.Properties;
+using System.Collections.Concurrent;
+using System.Collections;
 
 namespace ScalesAutomation
 {
@@ -21,7 +23,7 @@ namespace ScalesAutomation
         SynchronizedCollection<Measurement> rawMeasurements;
         byte SerialPackageLength = 0; // package length (row length) transmitted by the scales
         double zeroThreshold;
-        Queue<byte> recievedData = new Queue<byte>();
+        ConcurrentQueue<byte> recievedData = new ConcurrentQueue<byte>();
         int requiredConsecutiveStableMeasurements;
         bool busy;
         Measurement lastAddedMeasurement;
@@ -50,7 +52,7 @@ namespace ScalesAutomation
 
         public void Dispose()
         {
-            var timeout = 100;
+            var timeout = 1000;
             var finalized = false;
 
             while(timeout > 0)
@@ -119,7 +121,7 @@ namespace ScalesAutomation
                     {
                         stableCounter++;
 
-                        if (stableCounter == requiredConsecutiveStableMeasurements - 1) // Starts at 0
+                        if (stableCounter == requiredConsecutiveStableMeasurements - 1) // Add measurement only once when stableCounter is just right, ignore consecutive stable measurements. (Starts at 0).
                         {
                             Measurements.Add(currentMeasurement);
                             lastAddedMeasurement = currentMeasurement;
@@ -139,31 +141,51 @@ namespace ScalesAutomation
         {
             Thread myThread = new System.Threading.Thread(delegate ()
             {
-                try
+                lock(this)
                 {
-                    if (!serialPort.IsOpen) return;
+                    try
+                    {
+                        if(!serialPort.IsOpen) return;
 
-                    busy = true;
+                        busy = true;
 
-                    log.Info("Bytes To Read: " + serialPort.BytesToRead.ToString() + Environment.NewLine);
+                        //log.Debug("Bytes To Read: " + serialPort.BytesToRead.ToString() + Environment.NewLine);
 
-                    if(serialPort.BytesToRead < SerialPackageLength) return;
+                        if(serialPort.BytesToRead < 2 * SerialPackageLength) return;
 
-                    byte[] data = new byte[serialPort.BytesToRead];
-                    var bytesRed = serialPort.Read(data, 0, data.Length);
-                    log.Info("Bytes Read: " + bytesRed.ToString() + Environment.NewLine);
+                        if(Settings.Default.ScaleType == "Bilanciai")
+                        {
+                            byte[] data = new byte[serialPort.BytesToRead];
+                            var bytesRed = serialPort.Read(data, 0, data.Length);
+                            log.Info("Bytes Read: " + bytesRed.ToString() + Environment.NewLine);
 
-                    data.ToList().ForEach(b => recievedData.Enqueue(b));
+                            data.ToList().ForEach(b => recievedData.Enqueue(b));
 
-                    DiscardAllBytesUntilStart();
+                            DiscardAllBytesUntilStart();
 
-                    AddToRawMeasurements();
+                            AddToRawMeasurements();
+                        }
+                        if(Settings.Default.ScaleType == "Constalaris")
+                        {
+                            var readData = serialPort.ReadLine();
+                            if(readData == null || readData.Count() != SerialPackageLength - 1) return; // discard wrong packages
 
-                    busy = false;
-                }
-                catch (Exception ex)
-                {
-                    log.Error("DataReceived: " + ex.Message + Environment.NewLine);
+                            log.Info("Recieved Data: " + readData + Environment.NewLine);
+
+                            readData.ToList().ForEach(b => recievedData.Enqueue(Convert.ToByte(b)));
+                            log.Debug("Recieved Data size: " + recievedData.Count.ToString() + Environment.NewLine);
+
+                            AddToRawMeasurements();
+
+                            while(recievedData.TryDequeue(out byte item)) { }
+                        }
+
+                        busy = false;
+                    }
+                    catch(Exception ex)
+                    {
+                        log.Error("DataReceived: " + ex.Message + Environment.NewLine);
+                    }
                 }
             });
 
@@ -185,6 +207,9 @@ namespace ScalesAutomation
                 serialPort = new SerialPort(Settings.Default.ReadCOMPort, 9600, Parity.None, 8, StopBits.One);
             else
                 log.Error("Model cantar incorect: " + scaleType + " - Modelele suportate sunt: Bilanciai sau Constalaris");
+
+            serialPort.ReadTimeout = 1000;
+            serialPort.ReceivedBytesThreshold = SerialPackageLength;
 
             if(!serialPort.IsOpen)
             {
@@ -240,71 +265,71 @@ namespace ScalesAutomation
             var measurement = new Measurement();
             byte[] packageAsByteArray = new byte[] { };
 
-            // Determine if we have a full "package" in the queue
-            // ToDo: CrLa - Here we could lose data. change to while and test
-            if(recievedData.Count >= SerialPackageLength)
+            try
             {
-                if(Settings.Default.ScaleType == "Bilanciai")
+                // Determine if we have a full "package" in the queue
+                // ToDo: CrLa - Here we could lose data. change to while and test
+                if(recievedData.Count >= SerialPackageLength - 1)
                 {
-                    var package = Enumerable.Range(0, SerialPackageLength).Select(i => recievedData.Dequeue());
+                    //var package = Enumerable.Range(0, SerialPackageLength-1).Select(i => recievedData.Dequeue()); // Old version of code
+                    var package = new List<byte>();
+                    for(int i = 0; i < SerialPackageLength - 2; i++)
+                    {
+                        recievedData.TryDequeue(out byte val);
+                        package.Add(val);
+                    }
                     var packageAsIntArray = TransformByteEnumerationToIntArray(package, ref packageAsByteArray);
 
-                    measurement.IsStable = (packageAsIntArray[1] == 0 ? true : false);
-                    measurement.TotalWeight = packageAsIntArray[6] + packageAsIntArray[5] * 10 + packageAsIntArray[4] * 100 + packageAsIntArray[3] * 1000 + packageAsIntArray[2] * 10000;
+                    if(Settings.Default.ScaleType == "Bilanciai")
+                    {
+                        measurement.IsStable = (packageAsIntArray[1] == 0 ? true : false);
+                        measurement.TotalWeight = packageAsIntArray[6] + packageAsIntArray[5] * 10 + packageAsIntArray[4] * 100 + packageAsIntArray[3] * 1000 + packageAsIntArray[2] * 10000;
+                    }
+                    else
+                    {
+                        measurement.IsStable = (package.ElementAt(1) == 84 ? true : false); // if second element is T (from ST) than its stable
+                        measurement.TotalWeight = packageAsIntArray[12] + packageAsIntArray[11] * 10 + packageAsIntArray[10] * 100 + packageAsIntArray[8] * 1000;
+                        if(packageAsIntArray[7] != -1) // if tens for Kg is a valid number (if not used is space that was previously converted to -1)
+                            measurement.TotalWeight += packageAsIntArray[7] * 10000;
+                    }
+
+                    measurement.TimeStamp = DateTime.Now;
+
+                    // Logging long format
+                    // log.Info("Package Received: " + BitConverter.ToString(packageAsByteArray) + "  Stable: " + (measurement.IsStable ? "T" : "F") + " - Weight: " + measurement.TotalWeight);
+
+                    // Logging short format
+                    log.Info("S: " + (measurement.IsStable ? "T" : "F") + " - W: " + measurement.TotalWeight);
+
+                    // Everything up to ZeroThreshold grams is converted to 0
+                    ApplyZeroThresholdCorrection(ref measurement);
+
+                    rawMeasurements.Add(measurement);
                 }
-                else
-                {
-                    var package = Enumerable.Range(0, SerialPackageLength).Select(i => recievedData.Dequeue());
-                    var packageAsIntArray = TransformByteEnumerationToIntArray(package, ref packageAsByteArray);
-
-                    measurement.IsStable = (package.ElementAt(1) == 84 ? true : false); // if second element is T (from ST) than its stable
-                    measurement.TotalWeight = packageAsIntArray[12] + packageAsIntArray[11] * 10 + packageAsIntArray[10] * 100 + packageAsIntArray[8] * 1000;
-                    if(packageAsIntArray[7] != -1) // if tens for Kg is a valid number (if not used is space that was previously converted to -1)
-                        measurement.TotalWeight += packageAsIntArray[7] * 10000;
-                }
-
-                measurement.TimeStamp = DateTime.Now;
-
-                // Logging long format
-                // log.Info("Package Received: " + BitConverter.ToString(packageAsByteArray) + "  Stable: " + (measurement.IsStable ? "T" : "F") + " - Weight: " + measurement.TotalWeight);
-
-                // Logging short format
-                log.Info("S: " + (measurement.IsStable ? "T" : "F") + " - W: " + measurement.TotalWeight);
-
-                // Everything up to ZeroThreshold grams is converted to 0
-                ApplyZeroThresholdCorrection(ref measurement);
-
-                rawMeasurements.Add(measurement);
+            }
+            catch(Exception ex)
+            {
+                throw;
             }
         }
 
         void DiscardAllBytesUntilStart()
         {
             var queueCount = recievedData.Count;
-            bool CRDetected = false;
 
-            if(Settings.Default.ScaleType == "Bilanciai")
+            try
             {
                 for(var i = 0; i < queueCount; i++)
                 {
                     if(recievedData.ElementAt(0) != 0x24)
-                        recievedData.Dequeue();
+                        recievedData.TryDequeue(out byte readValue);
                     else
                         break;
                 }
             }
-            else // discard all data util start of transmission package. (discard everything until CR LF found)
+            catch (Exception ex)
             {
-                for(var i = 0; i < queueCount; i++)
-                {
-                    if(!(recievedData.ElementAt(0) == 10)) // untill LF -> discard
-                        recievedData.Dequeue();
-                    else // if LF found, discard LF as well and break
-                    {
-                        recievedData.Dequeue();
-                        break;
-                    }
-                }
+                throw;
             }
         }
 
