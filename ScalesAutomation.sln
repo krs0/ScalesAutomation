@@ -1,17 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScalesAutomation", "ScalesAutomation\ScalesAutomation.csproj", "{E8A96C8C-1490-4BE1-81DD-509D94409D38}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{C1A43D78-EBCE-4585-BF93-DD9957827578}"
-	ProjectSection(SolutionItems) = preProject
-		Resources\Bilanciai EV2001 English Manual.pdf = Resources\Bilanciai EV2001 English Manual.pdf
-		Resources\CatalogProduse.xml = Resources\CatalogProduse.xml
-		Resources\Recorded Transmission.txt = Resources\Recorded Transmission.txt
-		Resources\SerialTransmissionSimulation.txt = Resources\SerialTransmissionSimulation.txt
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Distribution", "Distribution", "{9F857F83-2670-4027-B0B4-BD5298C1B37F}"
 	ProjectSection(SolutionItems) = preProject
@@ -22,17 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Distribution", "Distributio
 		Distribution\ScalesAutomation.exe = Distribution\ScalesAutomation.exe
 		Distribution\ScalesAutomation.exe.config = Distribution\ScalesAutomation.exe.config
 		Distribution\SerialTransmissionSimulation.txt = Distribution\SerialTransmissionSimulation.txt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logs", "Logs", "{B770A26A-946D-40AE-8FC6-B30170020132}"
-	ProjectSection(SolutionItems) = preProject
-		Distribution\Logs\ScalesAutomation.log = Distribution\Logs\ScalesAutomation.log
-		Distribution\Logs\ScalesAutomationRolling.log = Distribution\Logs\ScalesAutomationRolling.log
-		Distribution\Logs\TestLot1.log = Distribution\Logs\TestLot1.log
-		Distribution\Logs\TestLot2.log = Distribution\Logs\TestLot2.log
-		Distribution\Logs\TestLot3.log = Distribution\Logs\TestLot3.log
-		Distribution\Logs\TestLot4.log = Distribution\Logs\TestLot4.log
-		Distribution\Logs\TestLot5.log = Distribution\Logs\TestLot5.log
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{440DCCB1-63CC-4049-9356-B42BC911BD09}"

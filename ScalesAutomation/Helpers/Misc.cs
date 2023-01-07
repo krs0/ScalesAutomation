@@ -73,7 +73,7 @@ namespace ScalesAutomation
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 MessageBox.Show("Nu se poate deschide fisierul .csv: " + inputFilePath + Environment.NewLine + "Inchideti fisierul deschis in Excel si mai incercati odata.");
                 throw;

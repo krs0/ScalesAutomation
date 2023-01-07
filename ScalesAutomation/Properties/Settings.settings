@@ -2,14 +2,8 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ScalesAutomation.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="DataImporterEnabled" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="SimulationEnabled" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="SerialTransmissionSimulationPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">c:\Home\Krs\Work\Cantar\ScalesAutomation\Distribution\Logs\SerialTransmissionSimulation.log</Value>
+    <Setting Name="ScaleType" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Constalaris</Value>
     </Setting>
     <Setting Name="ReadCOMPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">COM5</Value>
@@ -17,7 +11,7 @@
     <Setting Name="WriteCOMPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">COM5</Value>
     </Setting>
-    <Setting Name="CatalogFilePath" Type="System.String" Scope="User">
+    <Setting Name="ProductCatalogFilePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">CatalogProduseEurocas.xml</Value>
     </Setting>
     <Setting Name="LogFolderPath" Type="System.String" Scope="User">
@@ -29,23 +23,29 @@
     <Setting Name="CSVBackupPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">CSVBackup\</Value>
     </Setting>
-    <Setting Name="MeasurementTollerace" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">3</Value>
-    </Setting>
-    <Setting Name="ConsecutiveStableMeasurements" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">2</Value>
+    <Setting Name="CSVServerFolderPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Server\Cantariri_Automate\</Value>
     </Setting>
     <Setting Name="ZeroThreshold" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="CSVServerFolderPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Server\Cantariri_Automate\</Value>
+    <Setting Name="ConsecutiveStableMeasurements" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="MeasurementTollerace" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
+    <Setting Name="DataImporterEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="DataImporterOutputPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">Server\Cantariri_Manuale\</Value>
     </Setting>
-    <Setting Name="ScaleType" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Constalaris</Value>
+    <Setting Name="SimulationEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="SerialTransmissionSimulationPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">d:\temp\Krs\ScalesAutomation\out\Logs\SerialTransmissionSimulation.log</Value>
     </Setting>
   </Settings>
 </SettingsFile>

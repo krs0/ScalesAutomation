@@ -48,7 +48,7 @@ namespace ScalesAutomation
                     csvFile.Write(headerRow + csvFile.NewLine);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // log.Error("Error creating CSV File... " + CsvFileFullPath + ex.Message + Environment.NewLine);
                 throw;
@@ -176,7 +176,7 @@ namespace ScalesAutomation
                     result = true;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

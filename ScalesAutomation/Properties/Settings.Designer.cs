@@ -25,38 +25,13 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool DataImporterEnabled {
+        [global::System.Configuration.DefaultSettingValueAttribute("Constalaris")]
+        public string ScaleType {
             get {
-                return ((bool)(this["DataImporterEnabled"]));
+                return ((string)(this["ScaleType"]));
             }
             set {
-                this["DataImporterEnabled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool SimulationEnabled {
-            get {
-                return ((bool)(this["SimulationEnabled"]));
-            }
-            set {
-                this["SimulationEnabled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Home\\Krs\\Work\\Cantar\\ScalesAutomation\\Distribution\\Logs\\SerialTransmissionSimu" +
-            "lation.log")]
-        public string SerialTransmissionSimulationPath {
-            get {
-                return ((string)(this["SerialTransmissionSimulationPath"]));
-            }
-            set {
-                this["SerialTransmissionSimulationPath"] = value;
+                this["ScaleType"] = value;
             }
         }
         
@@ -87,12 +62,12 @@ namespace ScalesAutomation.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("CatalogProduseEurocas.xml")]
-        public string CatalogFilePath {
+        public string ProductCatalogFilePath {
             get {
-                return ((string)(this["CatalogFilePath"]));
+                return ((string)(this["ProductCatalogFilePath"]));
             }
             set {
-                this["CatalogFilePath"] = value;
+                this["ProductCatalogFilePath"] = value;
             }
         }
         
@@ -134,25 +109,13 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3")]
-        public double MeasurementTollerace {
+        [global::System.Configuration.DefaultSettingValueAttribute("Server\\Cantariri_Automate\\")]
+        public string CSVServerFolderPath {
             get {
-                return ((double)(this["MeasurementTollerace"]));
+                return ((string)(this["CSVServerFolderPath"]));
             }
             set {
-                this["MeasurementTollerace"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2")]
-        public int ConsecutiveStableMeasurements {
-            get {
-                return ((int)(this["ConsecutiveStableMeasurements"]));
-            }
-            set {
-                this["ConsecutiveStableMeasurements"] = value;
+                this["CSVServerFolderPath"] = value;
             }
         }
         
@@ -170,13 +133,37 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Server\\Cantariri_Automate\\")]
-        public string CSVServerFolderPath {
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int ConsecutiveStableMeasurements {
             get {
-                return ((string)(this["CSVServerFolderPath"]));
+                return ((int)(this["ConsecutiveStableMeasurements"]));
             }
             set {
-                this["CSVServerFolderPath"] = value;
+                this["ConsecutiveStableMeasurements"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public double MeasurementTollerace {
+            get {
+                return ((double)(this["MeasurementTollerace"]));
+            }
+            set {
+                this["MeasurementTollerace"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DataImporterEnabled {
+            get {
+                return ((bool)(this["DataImporterEnabled"]));
+            }
+            set {
+                this["DataImporterEnabled"] = value;
             }
         }
         
@@ -194,13 +181,25 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Constalaris")]
-        public string ScaleType {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SimulationEnabled {
             get {
-                return ((string)(this["ScaleType"]));
+                return ((bool)(this["SimulationEnabled"]));
             }
             set {
-                this["ScaleType"] = value;
+                this["SimulationEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("d:\\temp\\Krs\\ScalesAutomation\\out\\Logs\\SerialTransmissionSimulation.log")]
+        public string SerialTransmissionSimulationPath {
+            get {
+                return ((string)(this["SerialTransmissionSimulationPath"]));
+            }
+            set {
+                this["SerialTransmissionSimulationPath"] = value;
             }
         }
     }

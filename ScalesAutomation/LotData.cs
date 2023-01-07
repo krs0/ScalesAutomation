@@ -172,11 +172,11 @@ namespace ScalesAutomation
 
         void InitializeGuiBackendFromXml()
         {
-            var catalogFilePath = Settings.Default.CatalogFilePath;
-            if (!CsvHelper.IsAbsolutePath(catalogFilePath))
-                catalogFilePath = Path.Combine(Misc.AssemblyPath, catalogFilePath);
+            var productCatalogFilePath = Settings.Default.ProductCatalogFilePath;
+            if (!CsvHelper.IsAbsolutePath(productCatalogFilePath))
+                productCatalogFilePath = Path.Combine(Misc.AssemblyPath, productCatalogFilePath);
 
-            XmlHandler.ReadCatalogue(catalogFilePath);
+            XmlHandler.ReadCatalogue(productCatalogFilePath);
 
             foreach (var product in XmlHandler.Catalogue)
             {

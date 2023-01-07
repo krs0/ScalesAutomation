@@ -83,7 +83,7 @@ namespace ScalesAutomation
                 File.Delete(intermediateFilePath);
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
             finally

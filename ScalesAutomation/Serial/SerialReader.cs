@@ -168,9 +168,9 @@ namespace ScalesAutomation
                         if(Settings.Default.ScaleType == "Constalaris")
                         {
                             var readData = serialPort.ReadLine();
-                            if(readData == null || readData.Count() != SerialPackageLength - 1) return; // discard wrong packages
+                            log.Debug("Recieved Data: " + readData + Environment.NewLine);
 
-                            log.Info("Recieved Data: " + readData + Environment.NewLine);
+                            if(readData == null || readData.Count() != SerialPackageLength - 1) return; // discard wrong packages
 
                             readData.ToList().ForEach(b => recievedData.Enqueue(Convert.ToByte(b)));
                             log.Debug("Recieved Data size: " + recievedData.Count.ToString() + Environment.NewLine);
@@ -222,7 +222,7 @@ namespace ScalesAutomation
 
                     serialPort.DataReceived += serialPort_DataReceived;
                 }
-                catch(Exception ex)
+                catch(Exception)
                 {
                     log.Error("Nu se poate initializa legatura cu cantarul pe portul: " + serialPort.PortName + ". Verificati conexiunea cu cantarul, sau valoarea portului COM");
                 }
@@ -307,7 +307,7 @@ namespace ScalesAutomation
                     rawMeasurements.Add(measurement);
                 }
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 throw;
             }
@@ -327,7 +327,7 @@ namespace ScalesAutomation
                         break;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

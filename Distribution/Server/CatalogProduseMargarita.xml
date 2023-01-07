@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Product>
+		<Name>GUT 60 - Grasime tartinabila 60%</Name>
+		<Package>Cutie Margarita - 20 Kg</Package>
+		<PackageTare>0.392</PackageTare>
+		<NetWeight>20</NetWeight>
+	</Product>
+	<Product>
+		<Name>GUT 60 - Grasime tartinabila 60%</Name>
+		<Package>Cutie Alba - 20 Kg</Package>
+		<PackageTare>0.392</PackageTare>
+		<NetWeight>20</NetWeight>
+	</Product>
+	<Product>
+		<Name>GUT 60 - Grasime tartinabila 60%</Name>
+		<Package>Cutie Eurocas - 20 Kg</Package>
+		<PackageTare>0.382</PackageTare>
+		<NetWeight>20</NetWeight>
+	</Product>
+	<Product>
+		<Name>GUT 66 - Grasime tartinabila 66%</Name>
+		<Package>Cutie Margarita - 20 Kg</Package>
+		<PackageTare>0.392</PackageTare>
+		<NetWeight>20</NetWeight>
+	</Product>
+	<Product>
+		<Name>GUT 66 - Grasime tartinabila 66%</Name>
+		<Package>Cutie Alba - 20 Kg</Package>
+		<PackageTare>0.392</PackageTare>
+		<NetWeight>20</NetWeight>
+	</Product>
+	<Product>
+		<Name>GUT 66 - Grasime tartinabila 66%</Name>
+		<Package>Cutie Eurocas - 20 Kg</Package>
+		<PackageTare>0.382</PackageTare>
+		<NetWeight>20</NetWeight>
+	</Product>
+	<Product>
+		<Name>GUT 80 - Margarina pentru creme</Name>
+		<Package>Cutie Margarita - 20 Kg</Package>
+		<PackageTare>0.392</PackageTare>
+		<NetWeight>20</NetWeight>
+	</Product>
+	<Product>
+		<Name>GUT 80 - Margarina pentru creme</Name>
+		<Package>Cutie Alba - 20 Kg</Package>
+		<PackageTare>0.392</PackageTare>
+		<NetWeight>20</NetWeight>
+	</Product>
+	<Product>
+		<Name>GUT 80 - Margarina pentru creme</Name>
+		<Package>Cutie Eurocas - 20 Kg</Package>
+		<PackageTare>0.382</PackageTare>
+		<NetWeight>20</NetWeight>
+	</Product>
+	<Product>
+		<Name>GUT 80 - Margarina pentru creme</Name>
+		<Package>Galeata - 10 Kg</Package>
+		<PackageTare>0.32</PackageTare>
+		<NetWeight>10</NetWeight>
+	</Product>
+	<Product>
+		<Name>GUT 80 - Margarina pentru creme</Name>
+		<Package>Cutie Alba - 10 Kg</Package>
+		<PackageTare>0.27</PackageTare>
+		<NetWeight>10</NetWeight>
+	</Product>
+	<Product>
+		<Name>MARGARINA GUT 80 aromat - Margarina pentru creme</Name>
+		<Package>Cutie Eurocas - 20 Kg</Package>
+		<PackageTare>0.382</PackageTare>
+		<NetWeight>20</NetWeight>
+	</Product>
+	<Product>
+		<Name>MARGARINA SUPERIO - Margarina pentru creme</Name>
+		<Package>Cutie Eurocas - 20 Kg</Package>
+		<PackageTare>0.382</PackageTare>
+		<NetWeight>20</NetWeight>
+	</Product>
+	<Product>
+		<Name>MARGARINA SUPERIO - Margarina pentru creme</Name>
+		<Package>Galeata - 10 Kg</Package>
+		<PackageTare>0.32</PackageTare>
+		<NetWeight>10</NetWeight>
+	</Product>
+	<Product>
+		<Name>MARGARINA SUPERIO - Margarina pentru creme</Name>
+		<Package>Cutie Alba - 10 Kg</Package>
+		<PackageTare>0.27</PackageTare>
+		<NetWeight>10</NetWeight>
+	</Product>
+	<Product>
+		<Name>Amestec de grasimi IRIS 100% - Grasime de palmier si cocos</Name>
+		<Package>Cutie Margarita - 20 Kg</Package>
+		<PackageTare>0.392</PackageTare>
+		<NetWeight>20</NetWeight>
+	</Product>
+	<Product>
+		<Name>Ulei rafinat de palmier</Name>
+		<Package>Cutie Margarita - 20 Kg</Package>
+		<PackageTare>0.392</PackageTare>
+		<NetWeight>20</NetWeight>
+	</Product>
+	<Product>
+		<Name>Margarina aluat si creme 80%</Name>
+		<Package>Cutie Margarita - 20 Kg</Package>
+		<PackageTare>0.392</PackageTare>
+		<NetWeight>20</NetWeight>
+	</Product>
+	<Product>
+		<Name>Margarina aluat si creme 80%</Name>
+		<Package>Cutie Eurocas - 20 Kg</Package>
+		<PackageTare>0.382</PackageTare>
+		<NetWeight>20</NetWeight>
+	</Product>
+	<Product>
+		<Name>Frying Fat - Grasime palmier pentru prajire</Name>
+		<Package>Cutie Alba - 20 Kg</Package>
+		<PackageTare>0.392</PackageTare>
+		<NetWeight>20</NetWeight>
+	</Product>
+	<Product>
+		<Name>Frying Fat - Grasime palmier pentru prajire</Name>
+		<Package>Cutie Eurocas - 20 Kg</Package>
+		<PackageTare>0.382</PackageTare>
+		<NetWeight>20</NetWeight>
+	</Product>
+	<Product>
+		<Name>Frying Fat - Grasime palmier pentru prajire</Name>
+		<Package>Cutie Alba - 10 Kg</Package>
+		<PackageTare>0.27</PackageTare>
+		<NetWeight>10</NetWeight>
+	</Product>
+	<Product>
+		<Name>Margarita soft - Uleiuri in amestesc de palmier si floarea soarelui</Name>
+		<Package>Cutie Eurocas - 20 Kg</Package>
+		<PackageTare>0.382</PackageTare>
+		<NetWeight>20</NetWeight>
+	</Product>
+	<Product>
+		<Name>Margarita soft - Uleiuri in amestesc de palmier si floarea soarelui</Name>
+		<Package>Galeata - 10 Kg</Package>
+		<PackageTare>0.32</PackageTare>
+		<NetWeight>10</NetWeight>
+	</Product>
+	<Product>
+		<Name>MARGARINA FINEO life - Margarina pentru creme</Name>
+		<Package>Cutie Eurocas - 20 Kg</Package>
+		<PackageTare>0.382</PackageTare>
+		<NetWeight>20</NetWeight>
+	</Product>
+	<Product>
+		<Name>MARGARINA FINEO life - Margarina pentru creme</Name>
+		<Package>Cutie Kolb-Hk - 20 Kg</Package>
+		<PackageTare>0.512</PackageTare>
+		<NetWeight>20</NetWeight>
+	</Product>
+	<Product>
+		<Name>MARGARINA FINEO GOLD - Margarina pentru creme</Name>
+		<Package>Galeata - 10 Kg</Package>
+		<PackageTare>0.32</PackageTare>
+		<NetWeight>10</NetWeight>
+	</Product>
+	<Product>
+		<Name>MARGARINA FINEO GOLD - Margarina pentru creme</Name>
+		<Package>Cutie Alba - 10 Kg</Package>
+		<PackageTare>0.27</PackageTare>
+		<NetWeight>10</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Vanilla - Crema gata de utilizat - vanilie</Name>
+		<Package>Galeata - 12 Kg</Package>
+		<PackageTare>0.32</PackageTare>
+		<NetWeight>12</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Vanilla - Crema gata de utilizat - vanilie</Name>
+		<Package>Galeata - 6 Kg</Package>
+		<PackageTare>0.19</PackageTare>
+		<NetWeight>6</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Chocolate - Crema gata de utilizat ciocolata</Name>
+		<Package>Galeata - 12 Kg</Package>
+		<PackageTare>0.32</PackageTare>
+		<NetWeight>12</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Chocolate - Crema gata de utilizat ciocolata</Name>
+		<Package>Galeata - 6 Kg</Package>
+		<PackageTare>0.19</PackageTare>
+		<NetWeight>6</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Caramel - Crema gata de utilizat caramel</Name>
+		<Package>Galeata - 12 Kg</Package>
+		<PackageTare>0.32</PackageTare>
+		<NetWeight>12</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Caramel - Crema gata de utilizat caramel</Name>
+		<Package>Galeata - 6 Kg</Package>
+		<PackageTare>0.19</PackageTare>
+		<NetWeight>6</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Coffee - Crema gata de utilizat cafea</Name>
+		<Package>Galeata - 12 Kg</Package>
+		<PackageTare>0.32</PackageTare>
+		<NetWeight>12</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Coffee - Crema gata de utilizat cafea</Name>
+		<Package>Galeata - 6 Kg</Package>
+		<PackageTare>0.19</PackageTare>
+		<NetWeight>6</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Lemon - Crema gata de utilizat lamaie</Name>
+		<Package>Galeata - 12 Kg</Package>
+		<PackageTare>0.32</PackageTare>
+		<NetWeight>12</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Lemon - Crema gata de utilizat lamaie</Name>
+		<Package>Galeata - 6 Kg</Package>
+		<PackageTare>0.19</PackageTare>
+		<NetWeight>6</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Royal - Crema gata de utilizat cu aroma de sampanie</Name>
+		<Package>Galeata - 12 Kg</Package>
+		<PackageTare>0.32</PackageTare>
+		<NetWeight>12</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Royal - Crema gata de utilizat cu aroma de sampanie</Name>
+		<Package>Galeata - 6 Kg</Package>
+		<PackageTare>0.19</PackageTare>
+		<NetWeight>6</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Sour Cherry - Crema gata de utilizat - visine</Name>
+		<Package>Galeata - 12 Kg</Package>
+		<PackageTare>0.32</PackageTare>
+		<NetWeight>12</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Sour Cherry - Crema gata de utilizat - visine</Name>
+		<Package>Galeata - 6 Kg</Package>
+		<PackageTare>0.19</PackageTare>
+		<NetWeight>6</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Apricots - Crema gata de utilizat - caise</Name>
+		<Package>Galeata - 12 Kg</Package>
+		<PackageTare>0.32</PackageTare>
+		<NetWeight>12</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Apricots - Crema gata de utilizat - caise</Name>
+		<Package>Galeata - 6 Kg</Package>
+		<PackageTare>0.19</PackageTare>
+		<NetWeight>6</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Strawberries - Crema gata de utilizat - Capsuni</Name>
+		<Package>Galeata - 12 Kg</Package>
+		<PackageTare>0.32</PackageTare>
+		<NetWeight>12</NetWeight>
+	</Product>
+	<Product>
+		<Name>Rhapsody Strawberries - Crema gata de utilizat - Capsuni</Name>
+		<Package>Galeata - 6 Kg</Package>
+		<PackageTare>0.19</PackageTare>
+		<NetWeight>6</NetWeight>
+	</Product>
+</catalog>
