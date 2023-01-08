@@ -40,10 +40,6 @@ TestResult.xml
 [Rr]eleasePS/
 dlldata.c
 
-# DNX
-project.lock.json
-artifacts/
-
 *_i.c
 *_p.c
 *_i.h
@@ -69,9 +65,6 @@ artifacts/
 *.svclog
 *.scc
 
-# Chutzpah Test files
-_Chutzpah*
-
 # Visual C++ cache files
 ipch/
 *.aps
@@ -88,11 +81,6 @@ ipch/
 *.vspx
 *.sap
 
-# TFS 2012 Local Workspace
-$tf/
-
-# Guidance Automation Toolkit
-*.gpState
 
 # ReSharper is a .NET coding add-in
 _ReSharper*/
@@ -102,23 +90,8 @@ _ReSharper*/
 # JustCode is a .NET coding add-in
 .JustCode
 
-# TeamCity is a build add-in
-_TeamCity*
-
 # DotCover is a Code Coverage Tool
 *.dotCover
-
-# NCrunch
-_NCrunch_*
-.*crunch*.local.xml
-nCrunchTemp_*
-
-# MightyMoose
-*.mm.*
-AutoTest.Net/
-
-# Web workbench (sass)
-.sass-cache/
 
 # Installshield output folder
 [Ee]xpress/
@@ -132,19 +105,6 @@ DocProject/Help/*.hhk
 DocProject/Help/*.hhp
 DocProject/Help/Html2
 DocProject/Help/html
-
-# Click-Once directory
-publish/
-
-# Publish Web Output
-*.[Pp]ublish.xml
-*.azurePubxml
-
-# TODO: Un-comment the next line if you do not want to checkin
-# your web deploy settings because they may include unencrypted
-# passwords
-#*.pubxml
-*.publishproj
 
 # NuGet Packages
 *.nupkg
@@ -176,21 +136,6 @@ BundleArtifacts/
 # but keep track of directories ending in .cache
 !*.[Cc]ache/
 
-# Others
-ClientBin/
-[Ss]tyle[Cc]op.*
-~$*
-*~
-*.dbmdl
-*.dbproj.schemaview
-*.pfx
-*.publishsettings
-node_modules/
-orleans.codegen.cs
-
-# RIA/Silverlight projects
-Generated_Code/
-
 # Backup & report files from converting an old project file
 # to a newer Visual Studio version. Backup files are not needed,
 # because we have git ;-)
@@ -203,65 +148,4 @@ UpgradeLog*.htm
 *.mdf
 *.ldf
 
-# Business Intelligence projects
-*.rdl.data
-*.bim.layout
-*.bim_*.settings
-
-# Microsoft Fakes
-FakesAssemblies/
-
-# GhostDoc plugin setting file
-*.GhostDoc.xml
-
-# Node.js Tools for Visual Studio
-.ntvs_analysis.dat
-
-# Visual Studio 6 build log
-*.plg
-
-# Visual Studio 6 workspace options file
-*.opt
-
-# Visual Studio LightSwitch build output
-**/*.HTMLClient/GeneratedArtifacts
-**/*.DesktopClient/GeneratedArtifacts
-**/*.DesktopClient/ModelManifest.xml
-**/*.Server/GeneratedArtifacts
-**/*.Server/ModelManifest.xml
-_Pvt_Extensions
-
-# LightSwitch generated files
-GeneratedArtifacts/
-ModelManifest.xml
-
-# Paket dependency manager
-.paket/paket.exe
-
-# FAKE - F# Make
-.fake/
-/CSVBackup
-/Recorded Data
-/Distribution/CSVBackup
-/Distribution/CSVOutput
-/Distribution/Server/CSVServer/2018-05-09-090653_666_GUT66-grasimetartinabila66%_CutieMargarita-20Kg.csv
-/Distribution/Server/CSVServer/2018-05-09-090144_9999_GUT66-grasimetartinabila66%_CutieMargarita-20Kg.csv
-/Distribution/Server/CSVServer/2018-05-09-085458_24234324234_GUT66-grasimetartinabila66%_CutieMargarita-20Kg.csv
-/Distribution/Server/CSVServer/2018-05-09-080934_12345_GUT66-grasimetartinabila66%_CutieMargarita-20Kg.csv
-/Distribution/Server/CSVServer/2018-05-09-080615_123456_GUT66-grasimetartinabila66%_CutieMargarita-20Kg.csv
-/Distribution/Server/CSVServer/2018-04-25-034713_345435_MARGARINAFINEOlife-margarinapentrucreme_CutieEurocas-20Kg.csv
-/Distribution/Server/CSVServer/2018-04-06-032837_12345_GUT80-margarinapentrucreme_CutieEurocas-20Kg.csv
-/Distribution/Server/CSVServer/2018-04-06-031954_3456_GUT80-margarinăpentrucreme_CutieEurocas-20Kg.csv
-/Distribution/Server/CSVServer/2018-03-26-124635_565_Gut80-MargarinaCreme_Cutie_20Kg.csv
-/Distribution/Server/CSVServer/2018-03-04-072149_1236_Gut80-MargarinaCreme_Cutie_20Kg.csv
-/Distribution/Server/CSVServer/2018-03-04-072149_1211_Gut80-MargarinaCreme_Cutie_20Kg.csv
-/Distribution/Server/CSVServer/2018-03-04-072129_1235_Gut80-MargarinaCreme_Cutie_20Kg.csv
-/Distribution/Server/CSVServer/2018-03-04-072100_1234_Gut80-MargarinaCreme_Cutie_20Kg.csv
-/Distribution/Manual - Automatizare Cantar.pdf
-/Distribution/Logs/log4net.xml
-/Eurocas
-/Distribution/log4net.xml
-/Distribution/Server/CSVServer
-/Distribution/LogParser.exe.lastcodeanalysissucceeded
-/Distribution/LogParser.exe.CodeAnalysisLog.xml
-/Distribution/_Importer Metrologie v2.1.zip
+Resources/Metrologie - Exemple/

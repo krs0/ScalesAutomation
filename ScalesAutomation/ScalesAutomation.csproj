@@ -37,6 +37,10 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
   </PropertyGroup>
+  <PropertyGroup>
+    <CodeAnalysisLogFile>$(IntermediateOutputPath)$(TargetFileName).CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisSucceededFile>$(IntermediateOutputPath)$(TargetFileName).lastcodeanalysissucceeded</CodeAnalysisSucceededFile>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
@@ -50,7 +54,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\out\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -168,7 +172,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(OutDir)CatalogProduseMargarita.xml" "$(OutDir)Server\CatalogProduseMargarita.xml"
-copy /Y "$(OutDir)CatalogProduseEurocas.xml" "$(OutDir)Server\CatalogProduseEurocas.xml"</PostBuildEvent>
+copy /Y "$(OutDir)CatalogProduseEurocas.xml" "$(OutDir)Server\CatalogProduseEurocas.xml"
+copy /Y "$(OutDir)..\Resources\CentralizatorMasuratori.xlsm" "$(OutDir)Server\CentralizatorMasuratori.xlsm"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
