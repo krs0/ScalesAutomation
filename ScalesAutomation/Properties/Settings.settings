@@ -8,9 +8,6 @@
     <Setting Name="ReadCOMPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">COM5</Value>
     </Setting>
-    <Setting Name="WriteCOMPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">COM5</Value>
-    </Setting>
     <Setting Name="ProductCatalogFilePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">CatalogProduseEurocas.xml</Value>
     </Setting>
@@ -46,6 +43,9 @@
     </Setting>
     <Setting Name="SerialTransmissionSimulationPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">d:\temp\Krs\ScalesAutomation\out\Logs\SerialTransmissionSimulation.log</Value>
+    </Setting>
+    <Setting Name="WriteCOMPortForSimulation" Type="System.String" Scope="User">
+      <Value Profile="(Default)">COM6</Value>
     </Setting>
   </Settings>
 </SettingsFile>

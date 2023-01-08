@@ -49,18 +49,6 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("COM5")]
-        public string WriteCOMPort {
-            get {
-                return ((string)(this["WriteCOMPort"]));
-            }
-            set {
-                this["WriteCOMPort"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("CatalogProduseEurocas.xml")]
         public string ProductCatalogFilePath {
             get {
@@ -200,6 +188,18 @@ namespace ScalesAutomation.Properties {
             }
             set {
                 this["SerialTransmissionSimulationPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("COM6")]
+        public string WriteCOMPortForSimulation {
+            get {
+                return ((string)(this["WriteCOMPortForSimulation"]));
+            }
+            set {
+                this["WriteCOMPortForSimulation"] = value;
             }
         }
     }

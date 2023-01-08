@@ -16,7 +16,15 @@ namespace ScalesAutomation
 
         public MySerialWriter()
         {
-            serialPort = new SerialPort(Settings.Default.WriteCOMPort, 4800, Parity.Even, 7, StopBits.Two);
+            var scaleType = Settings.Default.ScaleType;
+
+            if(scaleType == "Bilanciai")
+                serialPort = new SerialPort(Settings.Default.WriteCOMPortForSimulation, 4800, Parity.Even, 7, StopBits.Two);
+            else if(scaleType == "Constalaris")
+                serialPort = new SerialPort(Settings.Default.WriteCOMPortForSimulation, 9600, Parity.None, 8, StopBits.One);
+            else
+                log.Error("Model cantar incorect: " + scaleType + " - Modelele suportate sunt: Bilanciai sau Constalaris");
+
             Thread.Sleep(100);
 
             if (!serialPort.IsOpen)

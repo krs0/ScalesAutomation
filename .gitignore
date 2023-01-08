@@ -150,3 +150,9 @@ UpgradeLog*.htm
 *.ldf
 
 Resources/Metrologie - Exemple/
+
+*.lastcodeanalysissucceeded
+
+LogParser/.CodeAnalysisLog.xml
+
+out/
