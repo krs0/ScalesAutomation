@@ -232,18 +232,6 @@ namespace ScalesAutomation
 
         }
 
-        private void LogLotInfo(LotInfo lotInfo)
-        {
-            log.Info("### Lot Info ###");
-            log.Info("Lot: " + lotInfo.Lot);
-            log.Info("Product Name: " + lotInfo.ProductName);
-            log.Info("Package: " + lotInfo.Package.Type);
-            log.Info("Net Weight: " + lotInfo.Package.NetWeight);
-            log.Info("Tare: " + lotInfo.Package.Tare);
-            log.Info("Zero Threshold: " + zeroThreshold);
-            log.Info("Date: " + lotInfo.Date + Environment.NewLine);
-        }
-
         void btnPause_Click(object sender, EventArgs e)
         {
             log.Info("Button Pause Clicked" + Environment.NewLine);
@@ -319,6 +307,18 @@ namespace ScalesAutomation
             dataGridViewMeasurements.Refresh();
             lotInfo = new LotInfo();
             uctlLotData.InitializeInputControls();
+        }
+
+        private void LogLotInfo(LotInfo lotInfo)
+        {
+            log.Info("### Lot Info ###");
+            log.Info("Lot: " + lotInfo.Lot);
+            log.Info("Product Name: " + lotInfo.ProductName);
+            log.Info("Package: " + lotInfo.Package.Type);
+            log.Info("Net Weight: " + lotInfo.Package.NetWeight);
+            log.Info("Tare: " + lotInfo.Package.Tare);
+            log.Info("Zero Threshold: " + zeroThreshold);
+            log.Info("Date: " + lotInfo.Date + Environment.NewLine);
         }
 
         private void AddValidMeasurementToDataTableAndExcel(List<Measurement> validMeasurements)

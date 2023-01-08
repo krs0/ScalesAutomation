@@ -59,6 +59,10 @@ namespace ScalesAutomation
             cbPackage.SelectedIndex = -1;
             txtPackageTare.Text = "";
             txtNominalWeight.Text = "";
+
+            // if only one package select it automatically and also its Tare will be automatically selected.
+            if (cbPackage.Items.Count == 1)
+                cbPackage.SelectedIndex = 0;
         }
 
         void cbPackage_SelectedIndexChanged(object sender, EventArgs e)
