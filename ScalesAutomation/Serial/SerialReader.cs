@@ -291,6 +291,8 @@ namespace ScalesAutomation
                         measurement.TotalWeight = packageAsIntArray[12] + packageAsIntArray[11] * 10 + packageAsIntArray[10] * 100 + packageAsIntArray[8] * 1000;
                         if(packageAsIntArray[7] != -1) // if tens for Kg is a valid number (if not used is space that was previously converted to -1)
                             measurement.TotalWeight += packageAsIntArray[7] * 10000;
+                        if(package.ElementAt(7) == 45) // if negative measurement sent (Tare)
+                            measurement.TotalWeight = 0;
                     }
 
                     measurement.TimeStamp = DateTime.Now;
