@@ -219,7 +219,9 @@ namespace ScalesAutomation
             if (simulationEnabled)
             {
                 writePort?.Dispose();
+#pragma warning disable SYSLIB0006
                 writeThread?.Abort();
+#pragma warning restore SYSLIB0006
                 writeThread = new Thread(WriteThread);
                 writeThread.Start();
             }
@@ -346,7 +348,10 @@ namespace ScalesAutomation
             if (simulationEnabled)
             {
                 writePort?.Dispose();
+#pragma warning disable SYSLIB0006
                 writeThread?.Abort();
+#pragma warning restore SYSLIB0006
+
             }
         }
 

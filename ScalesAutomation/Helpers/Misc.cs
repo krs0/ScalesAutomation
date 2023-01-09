@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace ScalesAutomation
 {
-    static class Misc
+    public static class Misc
     {
         public static void ChangeLoggingFile(this ILog log, string newFileName)
         {
@@ -33,10 +33,7 @@ namespace ScalesAutomation
         {
             get
             {
-                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                UriBuilder uri = new UriBuilder(codeBase);
-                string path = Uri.UnescapeDataString(uri.Path);
-                return Path.GetDirectoryName(path);
+                return Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
             }
         }
 

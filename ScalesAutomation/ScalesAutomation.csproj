@@ -1,161 +1,45 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E8A96C8C-1490-4BE1-81DD-509D94409D38}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ScalesAutomation</RootNamespace>
+    <TargetFramework>net6.0-windows</TargetFramework>
+	<SelfContained>false</SelfContained>
+    <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+    <UseWindowsForms>true</UseWindowsForms>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<RootNamespace>ScalesAutomation</RootNamespace>
     <AssemblyName>ScalesAutomation</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ShouldCreateLogs>True</ShouldCreateLogs>
-    <AdvancedSettingsExpanded>True</AdvancedSettingsExpanded>
-    <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
+	<AssemblyVersion>2.4.0.0</AssemblyVersion>
+	<UpdateAssemblyVersion>False</UpdateAssemblyVersion>
     <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
     <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
-    <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
-    <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
-    <AssemblyVersion>2.4.0.0</AssemblyVersion>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
+	<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
+	<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
-  <PropertyGroup>
-    <CodeAnalysisLogFile>$(IntermediateOutputPath)$(TargetFileName).CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisSucceededFile>$(IntermediateOutputPath)$(TargetFileName).lastcodeanalysissucceeded</CodeAnalysisSucceededFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\out\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>3</WarningLevel>
-    <AssemblyInfoVersionSemVerSettings>AssemblyVersion.NoneWithAutoReset.ReleaseCandidate</AssemblyInfoVersionSemVerSettings>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\out\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>3</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>Scales.ico</ApplicationIcon>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="log4net, Version=2.0.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.15\lib\net45\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
+  
+	<PropertyGroup>    
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+		<GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
+		<ProduceReferenceAssemblyInOutDir>true</ProduceReferenceAssemblyInOutDir>
+	</PropertyGroup>
+  
+   <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.15" />
+	<PackageReference Include="System.IO.Ports" Version="7.0.0" />
+	<PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
+	<PackageReference Include="System.ServiceModel.Primitives" Version="4.10.0" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\CsvHelper.cs" />
-    <Compile Include="Definitions.cs" />
-    <Compile Include="Helpers\Misc.cs" />
-    <Compile Include="DataImporter.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DataImporter.Designer.cs">
-      <DependentUpon>DataImporter.cs</DependentUpon>
-    </Compile>
-    <Compile Include="LotData.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="LotData.Designer.cs">
-      <DependentUpon>LotData.cs</DependentUpon>
-    </Compile>
-    <Compile Include="LotInfo.cs" />
-    <Compile Include="NextLotData.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="NextLotData.Designer.cs">
-      <DependentUpon>NextLotData.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ScalesAutomation.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ScalesAutomation.Designer.cs">
-      <DependentUpon>ScalesAutomation.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serial\SerialWriter.cs" />
-    <Compile Include="Serial\SerialReader.cs" />
-    <Compile Include="Helpers\XmlHelper.cs" />
-    <Compile Include="Settings.cs" />
-    <EmbeddedResource Include="DataImporter.resx">
-      <DependentUpon>DataImporter.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LotData.resx">
-      <DependentUpon>LotData.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NextLotData.resx">
-      <DependentUpon>NextLotData.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ScalesAutomation.resx">
-      <DependentUpon>ScalesAutomation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
+  
     <None Include="log4net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\ScalesAutomation.datasource" />
     <None Include="Properties\DataSources\ScalesAutomation.measurement.datasource" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
+   
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -163,26 +47,19 @@
   <ItemGroup>
     <Content Include="Scales.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(OutDir)..\Resources\CentralizatorMasuratori.xlsm" "$(OutDir)Server\CentralizatorMasuratori.xlsm"
-copy /Y "$(OutDir)..\Resources\CatalogProduseMargarita.xml" "$(OutDir)CatalogProduseMargarita.xml"
-copy /Y "$(OutDir)..\Resources\CatalogProduseEurocas.xml" "$(OutDir)CatalogProduseEurocas.xml"
-copy /Y "$(OutDir)CatalogProduseMargarita.xml" "$(OutDir)Server\CatalogProduseMargarita.xml"
-copy /Y "$(OutDir)CatalogProduseEurocas.xml" "$(OutDir)Server\CatalogProduseEurocas.xml"</PostBuildEvent>
+  
+   <PropertyGroup>
+    <PostBuildEvent>copy /Y "$(OutDir)..\..\Resources\CentralizatorMasuratori.xlsm" "$(OutDir)..\Server\CentralizatorMasuratori.xlsm"
+copy /Y "$(OutDir)..\..\Resources\CatalogProduseMargarita.xml" "$(OutDir)CatalogProduseMargarita.xml"
+copy /Y "$(OutDir)..\..\Resources\CatalogProduseEurocas.xml" "$(OutDir)CatalogProduseEurocas.xml"
+copy /Y "$(OutDir)CatalogProduseMargarita.xml" "$(OutDir)..\Server\CatalogProduseMargarita.xml"
+copy /Y "$(OutDir)CatalogProduseEurocas.xml" "$(OutDir)..\Server\CatalogProduseEurocas.xml"
+</PostBuildEvent>
+    <StartupObject></StartupObject>
+    <IsPublishable>False</IsPublishable>
+    <BaseOutputPath>..\out\</BaseOutputPath>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <ApplicationIcon>Scales.ico</ApplicationIcon>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
