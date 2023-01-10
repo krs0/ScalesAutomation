@@ -83,8 +83,9 @@ namespace ScalesAutomation
                 File.Delete(intermediateFilePath);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                MessageBox.Show("S-a detectat o eroare: " + ex.Message, "Eroare", MessageBoxButtons.OK);
             }
             finally
             {

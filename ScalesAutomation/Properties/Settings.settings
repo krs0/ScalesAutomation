@@ -1,4 +1,4 @@
-﻿<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='utf-8'?>
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ScalesAutomation.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
@@ -36,7 +36,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="DataImporterOutputPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Server\Cantariri_Manuale\</Value>
+      <Value Profile="(Default)">..\Server\Cantariri_Manuale\</Value>
     </Setting>
     <Setting Name="SimulationEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
