@@ -34,21 +34,35 @@
 	<PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
 	<PackageReference Include="System.ServiceModel.Primitives" Version="4.10.0" />
   </ItemGroup>
-  <ItemGroup>
   
-    <None Include="log4net.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+  <ItemGroup>
+    <None Include="log4net.config"> <CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\ScalesAutomation.datasource" />
     <None Include="Properties\DataSources\ScalesAutomation.measurement.datasource" />
-   
   </ItemGroup>
+  
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  
   <ItemGroup>
     <Content Include="Scales.ico" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   
    <PropertyGroup>
@@ -64,5 +78,19 @@ copy /Y "$(OutDir)CatalogProduseEurocas.xml" "$(OutDir)..\Server\CatalogProduseE
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <ApplicationIcon>Scales.ico</ApplicationIcon>
   </PropertyGroup>
+  
+  	<Target Name="MakeMyDir" AfterTargets="Build">
+		<MakeDir Directories="$(OutDir)CSVBackup" />
+		<MakeDir Directories="$(OutDir)CSVOutput" />
+		<MakeDir Directories="$(OutDir)Logs" />
+	</Target>
+  
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+     <DebugType>none</DebugType>
+   </PropertyGroup>
+  
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+     <DebugType>none</DebugType>
+   </PropertyGroup>
 
 </Project>
