@@ -262,7 +262,10 @@ namespace ScalesAutomation
             InitializeInputControls();
             uctlLotData.EnableInputControls();
 
-            csvHelper.ParseCurrentLog(logFilePath);
+            // parse logs only for Bilanciai
+            if(!(Settings.Default.ScaleType == "Constalaris"))
+                csvHelper.ParseCurrentLog(logFilePath);
+
             csvHelper.BackupCurrentCsv(Settings.Default.CSVBackupPath);
             if (csvHelper.IsServerFolderReachable(Settings.Default.CSVServerFolderPath))
                 csvHelper.CopyCurrentCsvToServer(Settings.Default.CSVServerFolderPath);
@@ -334,8 +337,9 @@ namespace ScalesAutomation
                 row["TimeStamp"] = DateTime.Now.ToString("HH:mm:ss");
                 dataTable.Rows.Add(row);
 
-                // Add row to excel: TODO: CRLa - do not write in output file since it will be overwritten by parser anyway
-                // csvHelper.WriteLineToOutputFile(row, dataTable.Columns.Count);
+                // Add row to excel: - do not write in output file when using parser (Bilanciai), because it will be overwritten by parser anyway
+                if(Settings.Default.ScaleType == "Constalaris")
+                    csvHelper.WriteLineToOutputFile(row, dataTable.Columns.Count);
 
                 log.Info("Measurement Detected: " + row["#"] + " - Weight: " + row["Weight"] + " - at: " + row["TimeStamp"]);
             }

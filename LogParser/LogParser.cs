@@ -111,7 +111,7 @@ namespace LogParser
         /// There are 3 things detected:
         /// Stable measurements within tolerance. Once this is detected we add it to list and noting more is done on that interval.
         /// Stable measurements not within tolerance. First potential candidate: a stable measurement close to scale unloading, but does not fit within tolerance.
-        /// Best Guesses: Continously, independent if Stable or not we compare each measurement to the desired net weght. This is used when nothing stable is found.
+        /// Best Guesses: Continously, independent if Stable or not we compare each measurement to the desired net weight. This is used when nothing stable is found.
         /// </summary>
         private static List<MeasurementInfo> ExtractFinalMeasurements(List<MeasurementInfo> normalizedMeasurements, double netWeight)
         {

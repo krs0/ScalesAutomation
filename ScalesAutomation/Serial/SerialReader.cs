@@ -157,7 +157,7 @@ namespace ScalesAutomation
                         {
                             byte[] data = new byte[serialPort.BytesToRead];
                             var bytesRed = serialPort.Read(data, 0, data.Length);
-                            log.Info("Bytes Read: " + bytesRed.ToString() + Environment.NewLine);
+                            log.Debug("Bytes Read: " + bytesRed.ToString() + Environment.NewLine);
 
                             data.ToList().ForEach(b => recievedData.Enqueue(b));
 
