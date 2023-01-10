@@ -31,6 +31,14 @@
 		<GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
 		<ProduceReferenceAssemblyInOutDir>false</ProduceReferenceAssemblyInOutDir>
 	</PropertyGroup>
+  
+  	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  	  <DebugType>full</DebugType>
+  	</PropertyGroup>
+  
+  	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  	  <DebugType>full</DebugType>
+  	</PropertyGroup>
 	
   <ItemGroup>
     <None Include="packages.config" />
@@ -52,13 +60,5 @@
   <ItemGroup>
     <ProjectReference Include="..\ScalesAutomation\ScalesAutomation.csproj" />
   </ItemGroup>
-  
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-     <DebugType>none</DebugType>
-   </PropertyGroup>
-  
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-     <DebugType>none</DebugType>
-   </PropertyGroup>
 
 </Project>

@@ -79,18 +79,18 @@ copy /Y "$(OutDir)CatalogProduseEurocas.xml" "$(OutDir)..\Server\CatalogProduseE
     <ApplicationIcon>Scales.ico</ApplicationIcon>
   </PropertyGroup>
   
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+     <DebugType>full</DebugType>
+   </PropertyGroup>
+  
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+     <DebugType>full</DebugType>
+   </PropertyGroup>
+  
   	<Target Name="MakeMyDir" AfterTargets="Build">
 		<MakeDir Directories="$(OutDir)CSVBackup" />
 		<MakeDir Directories="$(OutDir)CSVOutput" />
 		<MakeDir Directories="$(OutDir)Logs" />
 	</Target>
-  
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-     <DebugType>none</DebugType>
-   </PropertyGroup>
-  
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-     <DebugType>none</DebugType>
-   </PropertyGroup>
 
 </Project>
