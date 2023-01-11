@@ -1,2 +1,2 @@
-robocopy *.* .\out\release\ .\Distribution\ScalesAutomation\
+robocopy *.* .\out\Release\ .\Distribution\ScalesAutomation\
 robocopy *.* .\out\Server\ .\Distribution\Server\ 

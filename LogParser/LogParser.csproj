@@ -12,7 +12,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	<RootNamespace>LogParser</RootNamespace>
     <AssemblyName>LogParser</AssemblyName>
-	<AssemblyVersion>2.4.0.0</AssemblyVersion>
+	<AssemblyVersion>2.4.1.0</AssemblyVersion>
 	<IsPublishable>False</IsPublishable>
 	<BaseOutputPath>..\out\</BaseOutputPath>
 	<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
@@ -30,6 +30,7 @@
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
 		<ProduceReferenceAssemblyInOutDir>false</ProduceReferenceAssemblyInOutDir>
+		<FileVersion>2.4.1.0</FileVersion>
 	</PropertyGroup>
   
   	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
