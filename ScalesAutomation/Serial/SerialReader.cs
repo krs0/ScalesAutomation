@@ -23,6 +23,7 @@ namespace ScalesAutomation
         SynchronizedCollection<Measurement> rawMeasurements;
         byte SerialPackageLength = 0; // package length (row length) transmitted by the scales
         double zeroThreshold;
+        double userTare; // Tare entered by the user in GUI. We need it here to check with the Tare received from scale.
         ConcurrentQueue<byte> recievedData = new ConcurrentQueue<byte>();
         int requiredConsecutiveStableMeasurements;
         bool busy;
@@ -31,19 +32,25 @@ namespace ScalesAutomation
 
         #region Public Methods
 
-        public MySerialReader(SynchronizedCollection<Measurement> measurements, double zeroThreshold)
+        public MySerialReader(SynchronizedCollection<Measurement> measurements, double zeroThreshold, double userTare)
         {
             Measurements = measurements;
             rawMeasurements = new SynchronizedCollection<Measurement>();
             this.zeroThreshold = zeroThreshold;
+            this.userTare= userTare;
             lastAddedMeasurement.TotalWeight = -1;
 
             requiredConsecutiveStableMeasurements = Settings.Default.ConsecutiveStableMeasurements;
 
-            if(Settings.Default.ScaleType == "Bilanciai")
-                SerialPackageLength = 8;
-            else
-                SerialPackageLength = 17;
+            switch(Settings.Default.ScaleType)
+            {
+                case "Bilanciai":
+                    SerialPackageLength = 8;
+                    break;
+                case "Constalaris":
+                    SerialPackageLength = 17;
+                    break;
+            }
 
             CreateTimer();
 
@@ -280,19 +287,27 @@ namespace ScalesAutomation
                     }
                     var packageAsIntArray = TransformByteEnumerationToIntArray(package, ref packageAsByteArray);
 
-                    if(Settings.Default.ScaleType == "Bilanciai")
+                    switch(Settings.Default.ScaleType)
                     {
-                        measurement.IsStable = (packageAsIntArray[1] == 0 ? true : false);
-                        measurement.TotalWeight = packageAsIntArray[6] + packageAsIntArray[5] * 10 + packageAsIntArray[4] * 100 + packageAsIntArray[3] * 1000 + packageAsIntArray[2] * 10000;
-                    }
-                    else
-                    {
-                        measurement.IsStable = (package.ElementAt(1) == 84 ? true : false); // if second element is T (from ST) than its stable
-                        measurement.TotalWeight = packageAsIntArray[12] + packageAsIntArray[11] * 10 + packageAsIntArray[10] * 100 + packageAsIntArray[8] * 1000;
-                        if(packageAsIntArray[7] != -1) // if tens for Kg is a valid number (if not used is space that was previously converted to -1)
-                            measurement.TotalWeight += packageAsIntArray[7] * 10000;
-                        if(package.ElementAt(7) == 45) // if negative measurement sent (Tare)
-                            measurement.TotalWeight = 0;
+                        case "Bilanciai":
+                            measurement.IsStable = (packageAsIntArray[1] == 0 ? true : false);
+                            measurement.TotalWeight = packageAsIntArray[6] + packageAsIntArray[5] * 10 + packageAsIntArray[4] * 100 + packageAsIntArray[3] * 1000 + packageAsIntArray[2] * 10000;
+                            break;
+                        case "Constalaris":
+                            measurement.IsStable = (package.ElementAt(1) == 84 ? true : false); // if second element is T (from ST) than its stable
+                            measurement.TotalWeight = packageAsIntArray[12] + packageAsIntArray[11] * 10 + packageAsIntArray[10] * 100 + packageAsIntArray[8] * 1000;
+                            if(packageAsIntArray[7] != -1) // if tens for Kg is a valid number (if not used is space that was previously converted to -1)
+                                measurement.TotalWeight += packageAsIntArray[7] * 10000;
+                            if(package.ElementAt(7) == 45) // if negative measurement sent (this is actually Tare) set to 0
+                            {
+                                // sanity check for Tare that is the same as in GUI... but only silent error in log!
+                                var tareOnScale = measurement.TotalWeight;
+                                if(tareOnScale != this.userTare)
+                                    log.Error(String.Format("Error: Tara raportata de cantar: {0} nu este aceiasi cu tara setata in GUI: {1}!", tareOnScale, this.userTare));
+
+                                measurement.TotalWeight = 0; // report as 0 measurement (to match Bialnciai)
+                            }
+                            break;
                     }
 
                     measurement.TimeStamp = DateTime.Now;

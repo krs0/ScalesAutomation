@@ -207,9 +207,9 @@ namespace ScalesAutomation
             csvHelper.PrepareOutputFile(CSVOutputFolderPath, lotInfo);
 
             readPort?.Dispose();
-            readPort = new MySerialReader(Measurements, zeroThreshold);
+            readPort = new MySerialReader(Measurements, zeroThreshold, lotInfo.Package.Tare);
 
-            // Code for Start Reading in a new Thread
+            // Example Code for Start Reading in a new Thread. Not used actually.
             //readThread?.Abort();
             //readThread = new Thread(new ThreadStart(ReadThread));
             //readThread.Start();
@@ -359,10 +359,11 @@ namespace ScalesAutomation
             }
         }
 
-        private void ReadThread()
-        {
-            readPort = new MySerialReader(Measurements, 5000);
-        }
+        // Example function for Reading in a separate thread (not used).
+        //private void ReadThread()
+        //{
+        //    readPort = new MySerialReader(Measurements, 5000, 0);
+        //}
 
         private void WriteThread()
         {
