@@ -208,6 +208,12 @@ namespace ScalesAutomation
 
             readPort?.Dispose();
             readPort = new MySerialReader(Measurements, zeroThreshold, lotInfo.Package.Tare);
+            if(!readPort.Initialize())
+            {
+                MessageBox.Show($"Nu a putut fi creata o legatura cu cantarul.{Environment.NewLine}" +
+                    $"Verificati setarea ReadCOMport din ScalesAutomation.dll.config, si restartati aplicatia.", "Initializare Esuata", MessageBoxButtons.OK);
+                return;
+            }
 
             // Example Code for Start Reading in a new Thread. Not used actually.
             //readThread?.Abort();

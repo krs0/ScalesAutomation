@@ -50,11 +50,17 @@ namespace ScalesAutomation
                 case "Constalaris":
                     SerialPackageLength = 17;
                     break;
-            }
+            }   
+        }
 
+        public bool Initialize()
+        {
             CreateTimer();
 
-            InitializeTransmission();
+            if(!InitializeTransmission())
+                return false;
+
+            return true;
         }
 
         public void Dispose()
@@ -204,16 +210,17 @@ namespace ScalesAutomation
 
         #region Private Methods
 
-        void InitializeTransmission()
+        bool InitializeTransmission()
         {
             var scaleType = Settings.Default.ScaleType;
 
-            if (scaleType == "Bilanciai")
+            if(scaleType == "Bilanciai")
                 serialPort = new SerialPort(Settings.Default.ReadCOMPort, 4800, Parity.Even, 7, StopBits.Two);
-            else if (scaleType == "Constalaris")
+            else if(scaleType == "Constalaris")
                 serialPort = new SerialPort(Settings.Default.ReadCOMPort, 9600, Parity.None, 8, StopBits.One);
             else
-                log.Error("Model cantar incorect: " + scaleType + " - Modelele suportate sunt: Bilanciai sau Constalaris");
+                throw new Exception(String.Format($"Model cantar incorect: {0} - Modelele suportate sunt: Bilanciai sau Constalaris.{Environment.NewLine}" +
+                    "Verifica setarea ScaleType in ScalesAutomation.dll.config!", scaleType));
 
             serialPort.ReadTimeout = 1000;
             serialPort.ReceivedBytesThreshold = SerialPackageLength;
@@ -222,18 +229,21 @@ namespace ScalesAutomation
             {
                 try
                 {
-                    serialPort.Open();
+                    serialPort?.Open();
 
                     if(scaleType == "Bilanciai")
                         EnableCyclicTransmission(); // we need to write a command for Bilanciai to start sending data
 
                     serialPort.DataReceived += serialPort_DataReceived;
                 }
-                catch(Exception)
+                catch(Exception ex)
                 {
-                    log.Error("Nu se poate initializa legatura cu cantarul pe portul: " + serialPort.PortName + ". Verificati conexiunea cu cantarul, sau valoarea portului COM");
+                    log.Error(ex.Message);
+                    return false;
                 }
             }
+
+            return true;
         }
 
         /// <summary>
