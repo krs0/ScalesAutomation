@@ -94,5 +94,5 @@ jobs:
         files: |
           *.config
 
-    - name: Create Publish
-      run: dotnet publish --no-build -c Release -O ./Distribution
+   # - name: Create Publish
+   #  run: dotnet publish --no-build -c Release -O ./Distribution
