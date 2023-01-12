@@ -19,9 +19,9 @@ namespace LogParser
             public int Position;
             public string Time;
             public bool IsStable;
-            public double Measurement;
+            public int Measurement;
 
-            public MeasurementInfo(int position, string time, bool isStable, double measurement)
+            public MeasurementInfo(int position, string time, bool isStable, int measurement)
             {
                 Position = position;
                 Time = time;
@@ -113,7 +113,7 @@ namespace LogParser
         /// Stable measurements not within tolerance. First potential candidate: a stable measurement close to scale unloading, but does not fit within tolerance.
         /// Best Guesses: Continously, independent if Stable or not we compare each measurement to the desired net weight. This is used when nothing stable is found.
         /// </summary>
-        private static List<MeasurementInfo> ExtractFinalMeasurements(List<MeasurementInfo> normalizedMeasurements, double netWeight)
+        private static List<MeasurementInfo> ExtractFinalMeasurements(List<MeasurementInfo> normalizedMeasurements, int netWeight)
         {
             var measurementsDetected = false;
             var stableMeasurementFound = false;
@@ -201,7 +201,7 @@ namespace LogParser
             return finalMeasurements;
         }
 
-        private static bool IsWithinTolerance(double measuredValue, double nominalValue, int toleranceInPercentage)
+        private static bool IsWithinTolerance(int measuredValue, int nominalValue, int toleranceInPercentage)
         {
             var toleranceInterval = nominalValue - nominalValue * toleranceInPercentage / 100;
             var toleranceHigh = nominalValue + toleranceInterval;
@@ -210,15 +210,15 @@ namespace LogParser
             return ((measuredValue > toleranceLow) && (measuredValue < toleranceHigh));
         }
 
-        private static bool IsWithinSkewedTolerance(double measuredValue, double nominalValue, int toleranceInPercentage)
+        private static bool IsWithinSkewedTolerance(int measuredValue, int nominalValue, int toleranceInPercentage)
         {
-            var toleranceHigh = nominalValue + (nominalValue - nominalValue * toleranceInPercentage / 100);
-            var toleranceLow = nominalValue - (nominalValue - nominalValue * (toleranceInPercentage + 1) / 100); // skewed to catch more lower
+            var toleranceHigh = nominalValue + (nominalValue - (int)(nominalValue * toleranceInPercentage / 100));
+            var toleranceLow = nominalValue - (nominalValue - (int)(nominalValue * (toleranceInPercentage + 1) / 100)); // skewed to catch more lower
 
             return ((measuredValue > toleranceLow) && (measuredValue < toleranceHigh));
         }
 
-        private static bool IsBetterFit(MeasurementInfo currentMeasurement, MeasurementInfo bestFit, double netWeight)
+        private static bool IsBetterFit(MeasurementInfo currentMeasurement, MeasurementInfo bestFit, int netWeight)
         {
             if (Math.Abs(currentMeasurement.Measurement - netWeight) < Math.Abs(bestFit.Measurement - netWeight))
             {
@@ -290,7 +290,7 @@ namespace LogParser
         // read all lines containing measurements from the log file,
         // save info in a list of structs
         // and change all measurements below threshold to ZERO
-        private static List<MeasurementInfo> ReadAndNormalizeMeasurements(string logFilePath, double zeroThreshold)
+        private static List<MeasurementInfo> ReadAndNormalizeMeasurements(string logFilePath, int zeroThreshold)
         {
             var normalizedMeasurements = new List<MeasurementInfo>();
 

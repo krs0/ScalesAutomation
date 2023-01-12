@@ -22,8 +22,9 @@ namespace ScalesAutomation
 
         SynchronizedCollection<Measurement> rawMeasurements;
         byte SerialPackageLength = 0; // package length (row length) transmitted by the scales
-        double zeroThreshold;
-        double userTare; // Tare entered by the user in GUI. We need it here to check with the Tare received from scale.
+        int zeroThreshold;
+        int userTare; // Tare entered by the user in GUI. We need it here to check with the Tare received from scale.
+        bool tareIsSet;
         ConcurrentQueue<byte> recievedData = new ConcurrentQueue<byte>();
         int requiredConsecutiveStableMeasurements;
         bool busy;
@@ -32,12 +33,13 @@ namespace ScalesAutomation
 
         #region Public Methods
 
-        public MySerialReader(SynchronizedCollection<Measurement> measurements, double zeroThreshold, double userTare)
+        public MySerialReader(SynchronizedCollection<Measurement> measurements, int zeroThreshold, int userTare, bool tareIsSet)
         {
             Measurements = measurements;
             rawMeasurements = new SynchronizedCollection<Measurement>();
             this.zeroThreshold = zeroThreshold;
-            this.userTare= userTare;
+            this.userTare = userTare;
+            this.tareIsSet = tareIsSet;
             lastAddedMeasurement.TotalWeight = -1;
 
             requiredConsecutiveStableMeasurements = Settings.Default.ConsecutiveStableMeasurements;
@@ -330,6 +332,10 @@ namespace ScalesAutomation
 
                     // Everything up to ZeroThreshold grams is converted to 0
                     ApplyZeroThresholdCorrection(ref measurement);
+
+                    // automatically substract Tare if not set on Scale
+                    if(!tareIsSet)
+                        measurement.TotalWeight = measurement.TotalWeight - userTare;
 
                     rawMeasurements.Add(measurement);
                 }

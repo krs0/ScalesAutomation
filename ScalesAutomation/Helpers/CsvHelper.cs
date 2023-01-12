@@ -64,14 +64,10 @@ namespace ScalesAutomation
                     for (int i = 0; i < iColCount; i++)
                     {
                         if (!Convert.IsDBNull(row[i]))
-                        {
                             sw.Write(row[i].ToString());
-                        }
 
                         if (i < iColCount - 1)
-                        {
                             sw.Write(";");
-                        }
                     }
 
                     sw.Write(sw.NewLine);

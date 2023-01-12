@@ -13,7 +13,8 @@ namespace ScalesAutomation
         public string ProductName;
         public Package Package;
         public string Date;
-        public double ZeroThreshold; //grams
+        public int ZeroThreshold; //grams
+        public bool TareIsSet; // This should be set by user when package Tare is setup on Scale
         public bool AppendToLot;
         public string Id => GetUniqueLotId();
 
@@ -33,9 +34,9 @@ namespace ScalesAutomation
                         lotInfo.Lot = GetLotInfoValueString(file, "Lot");
                         lotInfo.ProductName = GetLotInfoValueString(file, "Product Name");
                         lotInfo.Package.Type = GetLotInfoValueString(file, "Package");
-                        lotInfo.Package.NetWeight = GetLotInfoValueDouble(file, "Net Weight");
-                        lotInfo.Package.Tare = GetLotInfoValueDouble(file, "Tare");
-                        lotInfo.ZeroThreshold = GetLotInfoValueDouble(file, "Zero Threshold");
+                        lotInfo.Package.NetWeight = GetLotInfoValue(file, "Net Weight");
+                        lotInfo.Package.Tare = GetLotInfoValue(file, "Tare");
+                        lotInfo.ZeroThreshold = GetLotInfoValue(file, "Zero Threshold");
                         lotInfo.Date = GetLotInfoValueString(file, "Date");
 
                         lotInfoFound = true;
@@ -63,7 +64,7 @@ namespace ScalesAutomation
 
             }
 
-            double GetLotInfoValueDouble(StreamReader file, string attributeName)
+            int GetLotInfoValue(StreamReader file, string attributeName)
             {
                 var rawValue = GetLotInfoValueString(file, attributeName);
                 var valueInGrams = Misc.GetValueInGrams(rawValue);

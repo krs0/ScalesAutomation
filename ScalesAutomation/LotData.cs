@@ -76,18 +76,12 @@ namespace ScalesAutomation
             LotInfo.Package.NetWeight = PackageDefinition.NetWeight;
             LotInfo.Package.TotalWeight = PackageDefinition.TotalWeight;
 
-            txtPackageTare.Text = LotInfo.Package.Tare / 1000 + "Kg";
+            txtPackageTare.Text = LotInfo.Package.Tare + "g";
             txtNominalWeight.Text = LotInfo.Package.TotalWeight / 1000 + "Kg";
         }
 
         void txtPackageTare_Validated(object sender, EventArgs e)
         {
-            if (txtPackageTare.Text.IndexOf("Kg", StringComparison.InvariantCultureIgnoreCase) == -1)
-            {
-                MessageBox.Show("Tara trebuie sa fie urmata de unitatea de masura. Ex: 20.5Kg" + Environment.NewLine + "Doar Kg sunt suportate ca unitate de masura!");
-                return;
-            }
-
             LotInfo.Package.Tare = Misc.GetValueInGrams(txtPackageTare.Text);
             LotInfo.Package.TotalWeight = LotInfo.Package.NetWeight + LotInfo.Package.Tare;
             txtNominalWeight.Text = LotInfo.Package.TotalWeight / 1000 + "Kg";
@@ -96,6 +90,11 @@ namespace ScalesAutomation
         void txtPackageTare_KeyPress(object sender, KeyPressEventArgs e)
         {
             OnEnterSelectNextControl(e);
+        }
+
+        private void cbPackageTareSet_CheckStateChanged(object sender, EventArgs e)
+        {
+
         }
 
         private void OnEnterSelectNextControl(KeyPressEventArgs e)
@@ -119,7 +118,8 @@ namespace ScalesAutomation
             txtLot.Text = LotInfo.Lot;
             cbProduct.SelectedItem = LotInfo.ProductName;
             cbPackage.SelectedItem = LotInfo.Package.Type;
-            txtPackageTare.Text = (LotInfo.Package.Tare != 0) ? LotInfo.Package.Tare / 1000 + "Kg" : "";
+            txtPackageTare.Text = (LotInfo.Package.Tare != 0) ? LotInfo.Package.Tare.ToString() : "";
+            cbPackageTareSet.Checked = true;
 
             // Tare validated() event will fill Nominal Weight
 
@@ -146,6 +146,7 @@ namespace ScalesAutomation
             cbProduct.Enabled = true;
             cbPackage.Enabled = true;
             txtPackageTare.Enabled = true;
+            cbPackageTareSet.Enabled = true;
             txtNominalWeight.Enabled = false;
         }
 
@@ -156,6 +157,7 @@ namespace ScalesAutomation
             cbPackage.Enabled = false;
             txtPackageTare.Enabled = false;
             txtNominalWeight.Enabled = false;
+            cbPackageTareSet.Enabled = false;
         }
 
         public bool InputControlsEnabled()
@@ -169,6 +171,7 @@ namespace ScalesAutomation
             cbProduct.SelectedIndex = -1;
             cbPackage.SelectedIndex = -1;
             txtPackageTare.Text = "";
+            cbPackageTareSet.Checked = true;
             txtNominalWeight.Text = "";
 
             InitializeLotInfo();

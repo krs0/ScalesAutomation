@@ -28,15 +28,11 @@ namespace ScalesAutomation
 
                     packageDetails.Type = element.Elements("Package").First().Value;
 
-                    var strNetWeight = element.Elements("NetWeight").First().Value.Replace(",", ".");
-                    strNetWeight = Regex.Replace(strNetWeight, "Kg", "", RegexOptions.IgnoreCase);
-                    Double.TryParse(strNetWeight, out packageDetails.NetWeight);
-                    packageDetails.NetWeight *= 1000;
+                    var strNetWeight = element.Elements("NetWeight").First().Value;
+                    packageDetails.NetWeight = Misc.GetValueInGrams(strNetWeight);
 
-                    var strTare = element.Elements("PackageTare").First().Value.Replace(",", ".");
-                    strTare = Regex.Replace(strTare, "Kg", "", RegexOptions.IgnoreCase);
-                    Double.TryParse(strTare, out packageDetails.Tare);
-                    packageDetails.Tare *= 1000;
+                    var strTare = element.Elements("PackageTare").First().Value;
+                    packageDetails.Tare = Misc.GetValueInGrams(strTare);
 
                     packageDetails.TotalWeight = packageDetails.NetWeight + packageDetails.Tare;
 
@@ -53,9 +49,7 @@ namespace ScalesAutomation
         {
             Product? temp = Catalogue.Find(x => x.Name == name);
             if (temp?.Name != null)
-            {
                 temp?.PackageDetails.Add(packageDetails);
-            }
             else
             {
                 var entry = new Product

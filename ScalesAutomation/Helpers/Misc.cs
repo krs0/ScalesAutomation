@@ -87,18 +87,21 @@ namespace ScalesAutomation
             return rawValue;
         }
 
-        public static double GetValueInGrams(string value)
+        // We will never have a non integer value. Grams is the lowest unit.
+        public static int GetValueInGrams(string value)
         {
-            double outputValue;
+            int outputValue;
+            double valueInKg;
 
             if (value.Contains("Kg"))
             {
+                value = value.Replace(",", "."); // only Kg can have "."
                 value = RemoveTrailingKg(value);
-                double.TryParse(value, out outputValue);
-                outputValue *= 1000;
+                double.TryParse(value, out valueInKg);
+                outputValue = (int)(valueInKg * 1000);
             }
             else
-                double.TryParse(value, out outputValue);
+                int.TryParse(value, out outputValue);
 
             return outputValue;
         }

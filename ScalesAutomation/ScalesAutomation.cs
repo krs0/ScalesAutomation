@@ -31,9 +31,9 @@ namespace ScalesAutomation
         private readonly string logFolderPath = Path.Combine(Misc.AssemblyPath, Settings.Default.LogFolderPath);
         private string logFilePath = "";
 
-        private double zeroThreshold;
-        private double measurementTolerance;
-        private double netWeight;
+        private int zeroThreshold;
+        private int measurementTolerance;
+        private int netWeight;
 
         private LotInfo lotInfo;
         private NextLotData nextLotData;
@@ -176,8 +176,8 @@ namespace ScalesAutomation
             lotInfo.Date = DateTime.Now.ToString("yyyy-MM-dd");
 
             netWeight = lotInfo.Package.NetWeight;
-            measurementTolerance = (netWeight * Settings.Default.MeasurementTollerace) / 100;
-            zeroThreshold = (netWeight * Settings.Default.ZeroThreshold) / 100;
+            measurementTolerance = (int)(netWeight * Settings.Default.MeasurementTollerace) / 100;
+            zeroThreshold = (int)(netWeight * Settings.Default.ZeroThreshold) / 100;
 
             // for each LOT save logs in separate files. (If a log file was already created for a lot reuse it)
             if (CsvHelper.LogAlreadyPresent(lotInfo.Id, logFolderPath, ref logFilePath))
@@ -207,7 +207,7 @@ namespace ScalesAutomation
             csvHelper.PrepareOutputFile(CSVOutputFolderPath, lotInfo);
 
             readPort?.Dispose();
-            readPort = new MySerialReader(Measurements, zeroThreshold, lotInfo.Package.Tare);
+            readPort = new MySerialReader(Measurements, zeroThreshold, lotInfo.Package.Tare, lotInfo.TareIsSet);
             if(!readPort.Initialize())
             {
                 MessageBox.Show($"Nu a putut fi creata o legatura cu cantarul.{Environment.NewLine}" +
