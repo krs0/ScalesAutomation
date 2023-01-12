@@ -6,7 +6,7 @@
       <Value Profile="(Default)">Constalaris</Value>
     </Setting>
     <Setting Name="ReadCOMPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">COM5</Value>
+      <Value Profile="(Default)">COM7</Value>
     </Setting>
     <Setting Name="ProductCatalogFilePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">CatalogProduseEurocas.xml</Value>
@@ -30,7 +30,7 @@
       <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="MeasurementTollerace" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">3</Value>
+      <Value Profile="(Default)">30</Value>
     </Setting>
     <Setting Name="DataImporterEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -39,10 +39,10 @@
       <Value Profile="(Default)">..\Server\Cantariri_Manuale\</Value>
     </Setting>
     <Setting Name="SimulationEnabled" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="SerialTransmissionSimulationPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">d:\temp\Krs\ScalesAutomation\out\Logs\SerialTransmissionSimulation.log</Value>
+      <Value Profile="(Default)">d:\temp\Krs\bck\loooogs\Logs\2023-01-09-21-21-31_111_Rhapsody Apricot - Crema cu Caise 1Kg_Borcan PET 1L.log</Value>
     </Setting>
     <Setting Name="WriteCOMPortForSimulation" Type="System.String" Scope="User">
       <Value Profile="(Default)">COM6</Value>
