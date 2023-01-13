@@ -15,7 +15,7 @@ namespace ScalesAutomation
     {
         public SynchronizedCollection<Measurement> Measurements;
 
-        private bool stopPressed;
+        public static volatile bool stopPressed = false; // will also be used to stop the Write Thread in simulation mode
 
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -215,25 +215,10 @@ namespace ScalesAutomation
                 return;
             }
 
-            // Example Code for Start Reading in a new Thread. Not used actually.
-            //readThread?.Abort();
-            //readThread = new Thread(new ThreadStart(ReadThread));
-            //readThread.Start();
-
             Thread.Sleep(100);
 
             if (simulationEnabled)
             {
-                try
-                {
-#pragma warning disable SYSLIB0006
-                    writeThread?.Abort();
-#pragma warning restore SYSLIB0006
-                    writePort?.Dispose();
-                }
-                catch(Exception)
-                {
-                }
                 writeThread = new Thread(WriteThread);
                 writeThread.Start();
             }
@@ -365,9 +350,6 @@ namespace ScalesAutomation
             {
                 try
                 {
-#pragma warning disable SYSLIB0006
-                    writeThread?.Abort(); // throwns not supported on platform
-#pragma warning restore SYSLIB0006
                     writePort?.Dispose();
                 }
                 catch(Exception)
@@ -375,12 +357,6 @@ namespace ScalesAutomation
                 }
             }
         }
-
-        // Example function for Reading in a separate thread (not used).
-        //private void ReadThread()
-        //{
-        //    readPort = new MySerialReader(Measurements, 5000, 0);
-        //}
 
         private void WriteThread()
         {

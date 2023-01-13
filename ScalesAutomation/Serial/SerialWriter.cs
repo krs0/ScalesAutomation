@@ -33,17 +33,16 @@ namespace ScalesAutomation
                 if(!serialPort.IsOpen)
                     serialPort.Open();
 
-                StartTransmissionFromFile();
+                byte[][] dataToTransmit = LoadSimulatedMeasurementsFromFile();
 
-                this.Dispose();
+                StartTransmissionFromFile(dataToTransmit);
+
+                Dispose();
             }
-            catch(ThreadAbortException ex)
+            catch(Exception ex)
             {
+                log.Info("Error in Serial Writer!" + ex.Message);
                 this.Dispose();
-
-                // Clean-up code can go here.  
-                // If there is no Finally clause, ThreadAbortException is  
-                // re-thrown by the system at the end of the Catch clause.
             }
 
         }
@@ -68,15 +67,15 @@ namespace ScalesAutomation
             }
         }
 
-        private void StartTransmissionFromFile()
+        private void StartTransmissionFromFile(byte[][] dataToTransmit)
         {
-            byte[][] dataToTransmit = LoadSimulatedMeasurementsFromFile();
-            int i = 0;
-
-            for (i = 0; i < dataToTransmit.Length; i++)
+            for (int i = 0; i < dataToTransmit.Length; i++)
             {
                 WriteData(dataToTransmit[i]);
                 Thread.Sleep(30); // in reality is 100ms for ustable measurement and 200ms for stable measurement
+
+                if(ScalesAutomation.stopPressed)
+                    break;
             }
         }
 
