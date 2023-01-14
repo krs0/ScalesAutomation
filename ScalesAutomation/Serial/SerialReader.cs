@@ -74,7 +74,7 @@ namespace ScalesAutomation
             {
                 if(!busy)
                 {
-                    SerialPortClose();
+                    SerialPortDispose();
                     finalized = true;
 
                     break;
@@ -87,7 +87,7 @@ namespace ScalesAutomation
             }
 
             if(!finalized)
-                SerialPortClose();
+                SerialPortDispose();
         }
 
         #endregion
@@ -406,7 +406,7 @@ namespace ScalesAutomation
             timer.Start();
         }
 
-        private void SerialPortClose()
+        private void SerialPortDispose()
         {
             try
             {

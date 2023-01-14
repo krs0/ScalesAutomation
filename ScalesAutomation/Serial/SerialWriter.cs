@@ -52,21 +52,34 @@ namespace ScalesAutomation
 
         public void Dispose()
         {
-            if(serialPort != null)
+            SerialPortDispose();
+        }
+
+        private void SerialPortDispose()
+        {
+            try
             {
-                serialPort.DtrEnable = false;
-                serialPort.RtsEnable = false;
-
-                if(serialPort.IsOpen)
+                if(serialPort != null)
                 {
-                    serialPort.DiscardInBuffer();
-                    serialPort.DiscardOutBuffer();
-                    serialPort.Close();
+                    serialPort.DtrEnable = false;
+                    serialPort.RtsEnable = false;
+
+                    Thread.Sleep(200);
+
+                    if(serialPort.IsOpen)
+                    {
+                        serialPort.DiscardInBuffer();
+                        serialPort.DiscardOutBuffer();
+                        serialPort.Close();
+                    }
+
+                    serialPort.Dispose();
                 }
-
-                Thread.Sleep(200);
-
-                serialPort.Dispose();
+            }
+            catch(Exception ex)
+            {
+                log.Error("Cannot Dispose of serial port:" + ex.Message + Environment.NewLine);
+                throw;
             }
         }
 
