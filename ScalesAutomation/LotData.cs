@@ -73,6 +73,7 @@ namespace ScalesAutomation
 
             PackageDefinition = ProductDefinition.PackageDetails.Find(x => x.Type == LotInfo.Package.Type);
             LotInfo.Package.Tare = PackageDefinition.Tare;
+            LotInfo.TareIsSet = cbPackageTareSet.Checked;
             LotInfo.Package.NetWeight = PackageDefinition.NetWeight;
             LotInfo.Package.TotalWeight = PackageDefinition.TotalWeight;
 
@@ -94,7 +95,7 @@ namespace ScalesAutomation
 
         private void cbPackageTareSet_CheckStateChanged(object sender, EventArgs e)
         {
-
+            LotInfo.TareIsSet = cbPackageTareSet.Checked;
         }
 
         private void OnEnterSelectNextControl(KeyPressEventArgs e)
@@ -119,10 +120,9 @@ namespace ScalesAutomation
             cbProduct.SelectedItem = LotInfo.ProductName;
             cbPackage.SelectedItem = LotInfo.Package.Type;
             txtPackageTare.Text = (LotInfo.Package.Tare != 0) ? LotInfo.Package.Tare.ToString() : "";
-            cbPackageTareSet.Checked = true;
+            cbPackageTareSet.Checked = LotInfo.TareIsSet;
 
             // Tare validated() event will fill Nominal Weight
-
         }
 
         public bool AreInputControlsValid()
