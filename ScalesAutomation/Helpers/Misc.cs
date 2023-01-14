@@ -4,6 +4,7 @@ using log4net.Repository.Hierarchy;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -104,6 +105,15 @@ namespace ScalesAutomation
                 int.TryParse(value, out outputValue);
 
             return outputValue;
+        }
+
+        public static int[] TransformIEnumerableByteToIntArray(IEnumerable<byte> package, ref byte[] packageAsByteArray)
+        {
+            packageAsByteArray = package.ToArray();
+            var packageAsCharArray = Array.ConvertAll(packageAsByteArray, element => (System.Text.Encoding.ASCII.GetChars(new[] { element })[0]));
+            var packageAsIntArray = Array.ConvertAll(packageAsCharArray, element => (int)char.GetNumericValue(element));
+
+            return packageAsIntArray;
         }
     }
 }

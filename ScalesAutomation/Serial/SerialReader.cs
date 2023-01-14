@@ -13,23 +13,25 @@ namespace ScalesAutomation
 {
     public class MySerialReader : IDisposable
     {
-        public SynchronizedCollection<Measurement> Measurements;
-        public SerialPort serialPort;
-
         readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        public SynchronizedCollection<Measurement> Measurements;
+        public SynchronizedCollection<Measurement> rawMeasurements;
+
+        public SerialPort serialPort;
 
         System.Windows.Forms.Timer timer;
 
-        SynchronizedCollection<Measurement> rawMeasurements;
-        byte SerialPackageLength = 0; // package length (row length) transmitted by the scales
+        bool busy;
+
+        byte serialPackageLength = 0; // package length (row length) transmitted by the scales
         int zeroThreshold;
+        int requiredConsecutiveStableMeasurements;
+        int stableCounter = 0; // how many times in a row same weight measurement was stable
         int userTare; // Tare entered by the user in GUI. We need it here to check with the Tare received from scale.
         bool tareIsSet;
         ConcurrentQueue<byte> recievedData = new ConcurrentQueue<byte>();
-        int requiredConsecutiveStableMeasurements;
-        bool busy;
         Measurement lastAddedMeasurement;
-        int stableCounter = 0; // how many times in a row same weight measurement was stable
 
         #region Public Methods
 
@@ -47,10 +49,10 @@ namespace ScalesAutomation
             switch(Settings.Default.ScaleType)
             {
                 case "Bilanciai":
-                    SerialPackageLength = 8;
+                    serialPackageLength = 8;
                     break;
                 case "Constalaris":
-                    SerialPackageLength = 17;
+                    serialPackageLength = 17;
                     break;
             }   
         }
@@ -162,50 +164,36 @@ namespace ScalesAutomation
                     {
                         if(!serialPort.IsOpen) return;
 
+                        if(serialPort.BytesToRead < 2 * serialPackageLength) return;
+
                         busy = true;
 
-                        //log.Debug("Bytes To Read: " + serialPort.BytesToRead.ToString() + Environment.NewLine);
-
-                        if(serialPort.BytesToRead < 2 * SerialPackageLength) return;
-
-                        if(Settings.Default.ScaleType == "Bilanciai")
+                        switch(Settings.Default.ScaleType)
                         {
-                            byte[] data = new byte[serialPort.BytesToRead];
-                            var bytesRed = serialPort.Read(data, 0, data.Length);
-                            log.Debug("Bytes Read: " + bytesRed.ToString() + Environment.NewLine);
-
-                            data.ToList().ForEach(b => recievedData.Enqueue(b));
-
-                            DiscardAllBytesUntilStart();
-
-                            AddToRawMeasurements();
-                        }
-                        if(Settings.Default.ScaleType == "Constalaris")
-                        {
-                            var readData = serialPort.ReadLine();
-                            log.Debug("Recieved Data: " + readData + Environment.NewLine);
-
-                            if(readData == null || readData.Count() != SerialPackageLength - 1) return; // discard wrong packages
-
-                            readData.ToList().ForEach(b => recievedData.Enqueue(Convert.ToByte(b)));
-                            log.Debug("Recieved Data size: " + recievedData.Count.ToString() + Environment.NewLine);
-
-                            AddToRawMeasurements();
-
-                            while(recievedData.TryDequeue(out byte item)) { }
+                        case "Bilanciai":
+                            ReadFromSerialBilanciai();
+                            break;
+                        case "Constalaris":
+                            ReadFromSerialConstalaris();
+                            break;
                         }
 
-                        busy = false;
+                        AddToRawMeasurements();
+
+                        while(recievedData.TryDequeue(out byte item)) { }
                     }
                     catch(Exception ex)
                     {
-                        log.Error("DataReceived: " + ex.Message + Environment.NewLine);
+                        log.Error("DataReceived Error: " + ex.Message + Environment.NewLine);
+                    }
+                    finally
+                    {
+                        busy = false;
                     }
                 }
             });
 
             myThread.Start();
-
         }
 
         #endregion
@@ -214,35 +202,38 @@ namespace ScalesAutomation
 
         bool InitializeTransmission()
         {
-            var scaleType = Settings.Default.ScaleType;
-
-            if(scaleType == "Bilanciai")
+            switch(Settings.Default.ScaleType)
+            {
+            case "Bilanciai":
                 serialPort = new SerialPort(Settings.Default.ReadCOMPort, 4800, Parity.Even, 7, StopBits.Two);
-            else if(scaleType == "Constalaris")
+                break;
+            case "Constalaris":
                 serialPort = new SerialPort(Settings.Default.ReadCOMPort, 9600, Parity.None, 8, StopBits.One);
-            else
-                throw new Exception(String.Format($"Model cantar incorect: {0} - Modelele suportate sunt: Bilanciai sau Constalaris.{Environment.NewLine}" +
-                    "Verifica setarea ScaleType in ScalesAutomation.dll.config!", scaleType));
+                break;
+            default:
+                throw new Exception($"Model cantar incorect: {Settings.Default.ScaleType} - " +
+                    $"Modelele suportate sunt: Bilanciai sau Constalaris.{Environment.NewLine}" +
+                    "Verifica setarea ScaleType in ScalesAutomation.dll.config!");
+            }
 
             serialPort.ReadTimeout = 1000;
-            serialPort.ReceivedBytesThreshold = SerialPackageLength;
+            serialPort.ReceivedBytesThreshold = serialPackageLength;
 
-            if(!serialPort.IsOpen)
+            if(serialPort.IsOpen) return true;
+
+            try
             {
-                try
-                {
-                    serialPort?.Open();
+                serialPort?.Open();
 
-                    if(scaleType == "Bilanciai")
-                        EnableCyclicTransmission(); // we need to write a command for Bilanciai to start sending data
+                if(Settings.Default.ScaleType == "Bilanciai")
+                    EnableCyclicTransmission(); // we need to write a command for Bilanciai to start sending data
 
-                    serialPort.DataReceived += serialPort_DataReceived;
-                }
-                catch(Exception ex)
-                {
-                    log.Error(ex.Message);
-                    return false;
-                }
+                serialPort.DataReceived += serialPort_DataReceived;
+            }
+            catch(Exception ex)
+            {
+                log.Error(ex.Message);
+                return false;
             }
 
             return true;
@@ -253,30 +244,34 @@ namespace ScalesAutomation
         /// </summary>
         void EnableCyclicTransmission()
         {
-            byte[] txBuffer = PrepareCyclicTransmissionPackage();
-            log.Info("Enabling Cyclic Transmission... " + BitConverter.ToString(txBuffer) + Environment.NewLine);
-
-            var s = serialPort.IsOpen;
+            byte[] txBuffer = new byte[] { 0x73, 0x78, 0x0D }; // CR = end character
+            log.Info($"Enabling Cyclic Transmission... {BitConverter.ToString(txBuffer)} {Environment.NewLine}");
 
             serialPort.Write(txBuffer, 0, txBuffer.Length);
             Thread.Sleep(10);
         }
 
-        /// <summary>
-        /// Preapare Initialize Cycling transmission Package for Bilanciai Scales
-        /// </summary>
-        /// <returns>Initialize Cycling Transmission Package</returns>
-        byte[] PrepareCyclicTransmissionPackage()
+        private void ReadFromSerialBilanciai()
         {
-            byte[] txBuffer = new byte[3];
+            byte[] data = new byte[serialPort.BytesToRead];
+            var bytesRed = serialPort.Read(data, 0, data.Length);
+            log.Debug("Bytes Read: " + bytesRed.ToString() + Environment.NewLine);
 
-            // assign to buffer
-            txBuffer[0] = 0x73;
-            txBuffer[1] = 0x78;
-            txBuffer[2] = 0x0D; // CR = end character
+            data.ToList().ForEach(b => recievedData.Enqueue(b));
 
-            return txBuffer;
+            DiscardAllBytesUntilStart();
+        }
 
+        private void ReadFromSerialConstalaris()
+        {
+            var readData = serialPort.ReadLine();
+            log.Debug("Recieved Data: " + readData + Environment.NewLine);
+
+            if(readData == null || readData.Count() != serialPackageLength - 1)
+                throw new Exception("Wrong fromatted package received");
+
+            readData.ToList().ForEach(b => recievedData.Enqueue(Convert.ToByte(b)));
+            log.Debug("Recieved Data size: " + recievedData.Count.ToString() + Environment.NewLine);
         }
 
         void AddToRawMeasurements()
@@ -288,38 +283,38 @@ namespace ScalesAutomation
             {
                 // Determine if we have a full "package" in the queue
                 // ToDo: CrLa - Here we could lose data. change to while and test
-                if(recievedData.Count >= SerialPackageLength - 1)
+                if(recievedData.Count >= serialPackageLength - 1)
                 {
                     //var package = Enumerable.Range(0, SerialPackageLength-1).Select(i => recievedData.Dequeue()); // Old version of code
                     var package = new List<byte>();
-                    for(int i = 0; i < SerialPackageLength - 2; i++)
+                    for(int i = 0; i < serialPackageLength - 2; i++)
                     {
                         recievedData.TryDequeue(out byte val);
                         package.Add(val);
                     }
-                    var packageAsIntArray = TransformByteEnumerationToIntArray(package, ref packageAsByteArray);
+                    var packageAsIntArray = Misc.TransformIEnumerableByteToIntArray(package, ref packageAsByteArray);
 
                     switch(Settings.Default.ScaleType)
                     {
-                        case "Bilanciai":
-                            measurement.IsStable = (packageAsIntArray[1] == 0 ? true : false);
-                            measurement.TotalWeight = packageAsIntArray[6] + packageAsIntArray[5] * 10 + packageAsIntArray[4] * 100 + packageAsIntArray[3] * 1000 + packageAsIntArray[2] * 10000;
-                            break;
-                        case "Constalaris":
-                            measurement.IsStable = (package.ElementAt(1) == 84 ? true : false); // if second element is T (from ST) than its stable
-                            measurement.TotalWeight = packageAsIntArray[12] + packageAsIntArray[11] * 10 + packageAsIntArray[10] * 100 + packageAsIntArray[8] * 1000;
-                            if(packageAsIntArray[7] != -1) // if tens for Kg is a valid number (if not used is space that was previously converted to -1)
-                                measurement.TotalWeight += packageAsIntArray[7] * 10000;
-                            if(package.ElementAt(7) == 45) // if negative measurement sent (this is actually Tare) set to 0
-                            {
-                                // sanity check for Tare that is the same as in GUI... but only silent error in log!
-                                var tareOnScale = measurement.TotalWeight;
-                                if(tareOnScale != this.userTare)
-                                    log.Error(String.Format("Error: Tara raportata de cantar: {0} nu este aceiasi cu tara setata in GUI: {1}!", tareOnScale, this.userTare));
+                    case "Bilanciai":
+                        measurement.IsStable = (packageAsIntArray[1] == 0 ? true : false);
+                        measurement.TotalWeight = packageAsIntArray[6] + packageAsIntArray[5] * 10 + packageAsIntArray[4] * 100 + packageAsIntArray[3] * 1000 + packageAsIntArray[2] * 10000;
+                        break;
+                    case "Constalaris":
+                        measurement.IsStable = (package.ElementAt(1) == 84 ? true : false); // if second element is T (from ST) than its stable
+                        measurement.TotalWeight = packageAsIntArray[12] + packageAsIntArray[11] * 10 + packageAsIntArray[10] * 100 + packageAsIntArray[8] * 1000;
+                        if(packageAsIntArray[7] != -1) // if tens for Kg is a valid number (if not used is space that was previously converted to -1)
+                            measurement.TotalWeight += packageAsIntArray[7] * 10000;
+                        if(package.ElementAt(7) == 45) // if negative measurement sent (this is actually Tare) set to 0
+                        {
+                            // sanity check for Tare that is the same as in GUI... but only silent error in log!
+                            var tareOnScale = measurement.TotalWeight;
+                            if(tareOnScale != this.userTare)
+                                log.Error(String.Format("Error: Tara raportata de cantar: {0} nu este aceiasi cu tara setata in GUI: {1}!", tareOnScale, this.userTare));
 
-                                measurement.TotalWeight = 0; // report as 0 measurement (to match Bialnciai)
-                            }
-                            break;
+                            measurement.TotalWeight = 0; // report as 0 measurement (to match Bialnciai)
+                        }
+                        break;
                     }
 
                     measurement.TimeStamp = DateTime.Now;
@@ -360,20 +355,10 @@ namespace ScalesAutomation
                         break;
                 }
             }
-            catch (Exception)
+            catch(Exception)
             {
                 throw;
             }
-        }
-
-        static int[] TransformByteEnumerationToIntArray(IEnumerable<byte> package, ref byte[] packageAsByteArray)
-        {
-            packageAsByteArray = package.ToArray();
-            var packageAsCharArray = Array.ConvertAll(packageAsByteArray, element => (System.Text.Encoding.ASCII.GetChars(new[] { element })[0]));
-            var packageAsIntArray = Array.ConvertAll(packageAsCharArray, element => (int)char.GetNumericValue(element));
-
-            return packageAsIntArray;
-
         }
 
         /// <summary>
@@ -384,7 +369,7 @@ namespace ScalesAutomation
         {
             bool result = true;
 
-            if ((measurement.TotalWeight < zeroThreshold) && !(measurement.TotalWeight == 0 && measurement.IsStable))
+            if((measurement.TotalWeight < zeroThreshold) && !(measurement.TotalWeight == 0 && measurement.IsStable))
             {
                 measurement.TotalWeight = 0;
                 measurement.IsStable = true;
@@ -406,7 +391,7 @@ namespace ScalesAutomation
             timer.Start();
         }
 
-        private void SerialPortDispose()
+        void SerialPortDispose()
         {
             try
             {

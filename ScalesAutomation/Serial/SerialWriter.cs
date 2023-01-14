@@ -55,35 +55,9 @@ namespace ScalesAutomation
             SerialPortDispose();
         }
 
-        private void SerialPortDispose()
-        {
-            try
-            {
-                if(serialPort != null)
-                {
-                    serialPort.DtrEnable = false;
-                    serialPort.RtsEnable = false;
-
-                    Thread.Sleep(200);
-
-                    if(serialPort.IsOpen)
-                    {
-                        serialPort.DiscardInBuffer();
-                        serialPort.DiscardOutBuffer();
-                        serialPort.Close();
-                    }
-
-                    serialPort.Dispose();
-                }
-            }
-            catch(Exception ex)
-            {
-                log.Error("Cannot Dispose of serial port:" + ex.Message + Environment.NewLine);
-                throw;
-            }
-        }
-
-        /// <summary>Loads all measurements from a previously recorded log</summary>
+        /// <summary>
+        /// Loads all measurements from a previously recorded log
+        /// </summary>
         /// Log line format: 2018-09-05 07:07:16,950 INFO  S: F - W: 140
         /// Created measurement lines depend on scale type:
         /// ST,GS:  0.000kg<13><10> Constalaris format
@@ -144,7 +118,9 @@ namespace ScalesAutomation
             simulatedMeasurementsIndex++;
         }
 
-        /// <summary>Transforms a Scales automation log line in Bilanciai raw format</summary>
+        /// <summary>
+        /// Transforms a Scales automation log line in Bilanciai raw format
+        /// </summary>
         private static void CreateMeasurementLineBilanciai(string line, int startOfStable, int startOfMeasurement, out byte[] rawLogLine, out int rawLogLineLength)
         {
             rawLogLineLength = 8;
@@ -163,7 +139,9 @@ namespace ScalesAutomation
                 rawLogLine[rawLogLineLength - 2 - j] = Convert.ToByte(measurementAsCharArray[j]);
         }
 
-        /// <summary>Transforms a Scales automation log line in Constalaris raw format</summary>
+        /// <summary>
+        /// Transforms a Scales automation log line in Constalaris raw format
+        /// </summary>
         private static void CreateMeasurementLineConstalaris(string line, int startOfStable, int startOfMeasurement, out byte[] rawLogLine, out int rawLogLineLength)
         {
             rawLogLineLength = 17;
@@ -204,6 +182,34 @@ namespace ScalesAutomation
 
                 if(ScalesAutomation.stopPressed) // stop this thread when stop lot is pressed in main
                     break;
+            }
+        }
+
+        private void SerialPortDispose()
+        {
+            try
+            {
+                if(serialPort != null)
+                {
+                    serialPort.DtrEnable = false;
+                    serialPort.RtsEnable = false;
+
+                    Thread.Sleep(200);
+
+                    if(serialPort.IsOpen)
+                    {
+                        serialPort.DiscardInBuffer();
+                        serialPort.DiscardOutBuffer();
+                        serialPort.Close();
+                    }
+
+                    serialPort.Dispose();
+                }
+            }
+            catch(Exception ex)
+            {
+                log.Error("Cannot Dispose of serial port:" + ex.Message + Environment.NewLine);
+                throw;
             }
         }
     }
