@@ -6,7 +6,6 @@ using log4net;
 using System.Reflection;
 using System.Threading;
 using ScalesAutomation.Properties;
-using System.Drawing;
 
 namespace ScalesAutomation
 {

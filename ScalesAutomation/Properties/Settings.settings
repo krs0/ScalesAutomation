@@ -42,7 +42,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="SerialTransmissionSimulationPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">d:\temp\Krs\bck\loooogs\Logs\2023-01-09-21-21-31_111_Rhapsody Apricot - Crema cu Caise 1Kg_Borcan PET 1L.log</Value>
+      <Value Profile="(Default)">d:\temp\Krs\ScalesAutomation\Resources\Temp\logs_constalaris\Logs\2023-01-09-21-21-31_111_Rhapsody Apricot - Crema cu Caise 1Kg_Borcan PET 1L.log</Value>
     </Setting>
     <Setting Name="WriteCOMPortForSimulation" Type="System.String" Scope="User">
       <Value Profile="(Default)">COM6</Value>
