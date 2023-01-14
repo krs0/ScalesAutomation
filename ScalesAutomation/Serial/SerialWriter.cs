@@ -71,34 +71,37 @@ namespace ScalesAutomation
             }
         }
 
-        /// <summary>This function will load a series of measurements from a file. It can work with real logs provided by this program</summary>
+        /// <summary>Loads all measurements from a previously recorded log</summary>
+        /// Line format supported: 2018-09-05 07:07:16,950 INFO  S: F - W: 140
+        /// It ignore all lines that do not contain a measurement
         /// <returns>A 2 dimensional byte array where each entry is one measurement (an array of bytes)</returns>
         private void LoadSimulatedMeasurementsFromFile(out byte[][] dataToTransmit)
         {
-            string simulatedFilePath = Settings.Default.SerialTransmissionSimulationPath;
             string line;
+            int lineIndex = 0;
             string measurement;
-            int i = 0;
+            bool noMeasurementLine;
+
+            string simulatedFilePath = Settings.Default.SerialTransmissionSimulationPath;
+            log.Info("Start Loading Simulated Data from: " + simulatedFilePath);
 
             var lineCount = File.ReadLines(simulatedFilePath).Count();
-            dataToTransmit = new byte[lineCount][]; // give it max possible size
-
-            log.Info("Start Loading Simulated Data from: " + simulatedFilePath);
+            dataToTransmit = new byte[lineCount][]; // max possible size (including non measurements lines)
 
             using (var file = new StreamReader(simulatedFilePath))
             {
                 while ((line = file.ReadLine()) != null)
                 {
-                    // if measurement data found in the line, add it to output array
-                    // Line format supported: 2018-09-05 07:07:16,950 INFO  S: F - W: 140
-                    var startOfMeasurement = line.IndexOf("- W: ") + 5; // Start of wanted pattern + pattern length
                     var startOfStable = line.IndexOf(" S: ") + 4; // Start of wanted pattern + pattern length
+                    var startOfMeasurement = line.IndexOf("- W: ") + 5; // Start of wanted pattern + pattern length
+                    noMeasurementLine = startOfMeasurement == 4; // -1 (because not found) + length of "- W: "
 
-                    if (startOfMeasurement != 4) // (-1 + length of "- W: ") ignore lines without measurements
+                    if(noMeasurementLine)
+                        continue;
+                    
+                    // recreate from our logs the exact string the Scales is sending
+                    switch(Settings.Default.ScaleType)
                     {
-                        // recreate from our logs the exact string the Scales is sending
-                        switch(Settings.Default.ScaleType)
-                        {
                         case "Bilanciai":
                             byte[] lineAsByteArray = { 0x24, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x0D };
                             byte wrappedMeasurementLength = 8;
@@ -116,9 +119,9 @@ namespace ScalesAutomation
                                 lineAsByteArray[wrappedMeasurementLength - 2 - j] = Convert.ToByte(charArray[j]);
 
                             // Add information from current line to returned array
-                            dataToTransmit[i] = new byte[wrappedMeasurementLength];
-                            lineAsByteArray.CopyTo(dataToTransmit[i], 0);
-                            i++;
+                            dataToTransmit[lineIndex] = new byte[wrappedMeasurementLength];
+                            lineAsByteArray.CopyTo(dataToTransmit[lineIndex], 0);
+                            lineIndex++;
                             break;
 
                         case "Constalaris": //Convert from "S: T - W: 955" to "ST,GS:  0.000kg<13><10>"
@@ -151,19 +154,18 @@ namespace ScalesAutomation
                                 lineAsByteArray2[wrappedMeasurementLength2 - 6 - j] = Convert.ToByte(charArray2[j]);
 
                             // Add information from current line to returned array
-                            dataToTransmit[i] = new byte[wrappedMeasurementLength2];
-                            lineAsByteArray2.CopyTo(dataToTransmit[i], 0);
-                            i++;
+                            dataToTransmit[lineIndex] = new byte[wrappedMeasurementLength2];
+                            lineAsByteArray2.CopyTo(dataToTransmit[lineIndex], 0);
+                            lineIndex++;
 
                             break;
-                        }
                     }
                 }
             }
 
-            Array.Resize(ref dataToTransmit, i); // correct the size because we had non-measurement lines
+            Array.Resize(ref dataToTransmit, lineIndex); // correct the size because we had non-measurement lines
 
-            log.Info(String.Format("Loaded {0} measurements.", i));
+            log.Info(String.Format("Loaded {0} measurements.", lineIndex));
             log.Info("Finished Loading Simulated Data" + Environment.NewLine);
         }
 
