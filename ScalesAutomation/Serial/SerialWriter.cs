@@ -12,49 +12,53 @@ namespace ScalesAutomation
 {
     public class MySerialWriter : IDisposable
     {
-        readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        SerialPort serialPort;
+        private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private SerialPort serialPort;
 
         public MySerialWriter()
         {
             try
             {
-                var scaleType = Settings.Default.ScaleType;
-
-                if(scaleType == "Bilanciai")
-                    serialPort = new SerialPort(Settings.Default.WriteCOMPortForSimulation, 4800, Parity.Even, 7, StopBits.Two);
-                else if(scaleType == "Constalaris")
-                    serialPort = new SerialPort(Settings.Default.WriteCOMPortForSimulation, 9600, Parity.None, 8, StopBits.One);
-                else
-                    log.Error("Model cantar incorect: " + scaleType + " - Modelele suportate sunt: Bilanciai sau Constalaris");
+                // set porperties for serial port
+                switch(Settings.Default.ScaleType)
+                {
+                    case "Bilanciai":
+                        serialPort = new SerialPort(Settings.Default.WriteCOMPortForSimulation, 4800, Parity.Even, 7, StopBits.Two);
+                        break;
+                    case "Constalaris":
+                        serialPort = new SerialPort(Settings.Default.WriteCOMPortForSimulation, 9600, Parity.None, 8, StopBits.One);
+                        break;
+                    default:
+                        log.Error($"Model cantar incorect: {Settings.Default.ScaleType} - Modelele suportate sunt: Bilanciai sau Constalaris");
+                        break;
+                }
 
                 Thread.Sleep(100);
 
-                if(!serialPort.IsOpen)
-                    serialPort.Open();
+                serialPort.Open();
 
-                byte[][] dataToTransmit = LoadSimulatedMeasurementsFromFile();
+                LoadSimulatedMeasurementsFromFile(out byte[][] dataToTransmit);
 
-                StartTransmissionFromFile(dataToTransmit);
-
-                Dispose();
+                TransmitSimulatedMeasurements(dataToTransmit);
             }
             catch(Exception ex)
             {
                 log.Info("Error in Serial Writer!" + ex.Message);
-                this.Dispose();
             }
-
+            finally
+            {
+                Dispose();
+            }
         }
 
         public void Dispose()
         {
-            if (serialPort != null)
+            if(serialPort != null)
             {
                 serialPort.DtrEnable = false;
                 serialPort.RtsEnable = false;
 
-                if (serialPort.IsOpen)
+                if(serialPort.IsOpen)
                 {
                     serialPort.DiscardInBuffer();
                     serialPort.DiscardOutBuffer();
@@ -67,123 +71,128 @@ namespace ScalesAutomation
             }
         }
 
-        private void StartTransmissionFromFile(byte[][] dataToTransmit)
+        /// <summary>Loads all measurements from a previously recorded log</summary>
+        /// Log line format: 2018-09-05 07:07:16,950 INFO  S: F - W: 140
+        /// Created measurement lines depend on scale type:
+        /// ST,GS:  0.000kg<13><10> Constalaris format
+        /// *********************** Bilanciai format
+        /// Note: It ignores all lines that do not contain a measurement
+        /// <returns>A 2 dimensional byte array where each entry is one measurement</returns>
+        private void LoadSimulatedMeasurementsFromFile(out byte[][] simulatedMeasurements)
         {
-            for (int i = 0; i < dataToTransmit.Length; i++)
-            {
-                WriteData(dataToTransmit[i]);
-                Thread.Sleep(10); // in reality is 100ms for ustable measurement and 200ms for stable measurement
-
-                if(ScalesAutomation.stopPressed)
-                    break;
-            }
-        }
-
-        /// <summary>This function will load a series of measurements from a file. It can work with real logs provided by this program</summary>
-        /// <returns>A 2 dimensional byte array where each entry is one measurement (an array of bytes)</returns>
-        public byte[][] LoadSimulatedMeasurementsFromFile()
-        {
-            string simulatedFilePath = Settings.Default.SerialTransmissionSimulationPath;
             string line;
-            string measurement;
-            int i = 0;
+            int simulatedMeasurementsIndex = 0;
+            bool noMeasurementLine;
+            byte[] rawLogLine = { };
+            int rawLogLineLength = 0;
+
+            string simulatedFilePath = Settings.Default.SerialTransmissionSimulationPath;
+            log.Info($"Start Loading Simulated Data from: {simulatedFilePath}");
 
             var lineCount = File.ReadLines(simulatedFilePath).Count();
-            byte[][] byteArray2d = new byte[lineCount][]; // give it max possible size
-
-            log.Info("Start Loading Simulated Data from: " + simulatedFilePath);
+            simulatedMeasurements = new byte[lineCount][]; // max possible size (including non measurements lines)
 
             using (var file = new StreamReader(simulatedFilePath))
             {
                 while ((line = file.ReadLine()) != null)
                 {
-                    // if measurement data found in the line, add it to output array
-                    // Line format supported: 2018-09-05 07:07:16,950 INFO  S: F - W: 140
-                    var startOfMeasurement = line.IndexOf("- W: ") + 5; // Start of wanted pattern + pattern length
                     var startOfStable = line.IndexOf(" S: ") + 4; // Start of wanted pattern + pattern length
+                    var startOfMeasurement = line.IndexOf("- W: ") + 5; // Start of wanted pattern + pattern length
+                    noMeasurementLine = startOfMeasurement == 4; // -1 (because not found) + length of "- W: "
 
-                    if (startOfMeasurement != 4) // (-1 + length of "- W: ") ignore lines without measurements
+                    if(noMeasurementLine)
+                        continue;
+
+                    // recreate from our logs the exact string the Scales is sending
+                    switch(Settings.Default.ScaleType)
                     {
-                        // recreate from our logs the exact string the Scales is sending
-                        switch(Settings.Default.ScaleType)
-                        {
-                            case "Bilanciai":
-                                byte[] lineAsByteArray = { 0x24, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x0D };
-                                byte wrappedMeasurementLength = 8;
+                    case "Bilanciai": //Convert from "S: T - W: 955" to "..."
+                        CreateMeasurementLineBilanciai(line, startOfStable, startOfMeasurement, out rawLogLine, out rawLogLineLength);
+                        break;
 
-                                // Add stability information
-                                var stableBooleanString = line.Substring(startOfStable, 1);
-                                if(stableBooleanString == "F")
-                                    lineAsByteArray[1] = 0x31; // else it is already 0x30
-
-                                // Add measurement information
-                                measurement = line.Substring(startOfMeasurement, line.Length - startOfMeasurement); // get only the measurement value
-                                char[] charArray = measurement.ToCharArray();
-                                Array.Reverse(charArray);
-                                for(var j = 0; j < charArray.Length; j++)
-                                    lineAsByteArray[wrappedMeasurementLength - 2 - j] = Convert.ToByte(charArray[j]);
-
-                                // Add information from current line to returned array
-                                byteArray2d[i] = new byte[wrappedMeasurementLength];
-                                lineAsByteArray.CopyTo(byteArray2d[i], 0);
-                                i++;
-                                break;
-
-                            case "Constalaris": //Convert from "S: T - W: 955" to "ST,GS:  0.000kg<13><10>"
-                                byte[] lineAsByteArray2 = { 83, 84, 44, 71, 83, 58, 32, 32, 48, 46, 48, 48, 48, 107, 103, 13, 10 };
-                                byte wrappedMeasurementLength2 = 17;
-
-                                // Add stability information
-                                var stableBooleanString2 = line.Substring(startOfStable, 1);
-                                if(stableBooleanString2 == "F") // Stable is filled aready as default
-                                {
-                                    lineAsByteArray2[0] = 85;
-                                    lineAsByteArray2[1] = 83;
-                                }
-
-                                // Add measurement information
-                                measurement = line.Substring(startOfMeasurement, line.Length - startOfMeasurement); // get only the measurement value, its in grams, needs to be in kg
-                                char[] charArray2 = measurement.ToCharArray();
-                                Array.Reverse(charArray2);
-                                // insert grams before Kg<13><10>
-                                for(var j = 0; j < charArray2.Length; j++)
-                                {
-                                    if(j >= 3) // stop to insert . point
-                                        break;
-
-                                    lineAsByteArray2[wrappedMeasurementLength2 - 5 - j] = Convert.ToByte(charArray2[j]);
-                                }
-
-                                // continue with kgs if needed before .
-                                for(var j = 3; j < charArray2.Length; j++)
-                                    lineAsByteArray2[wrappedMeasurementLength2 - 6 - j] = Convert.ToByte(charArray2[j]);
-
-                                // Add information from current line to returned array
-                                byteArray2d[i] = new byte[wrappedMeasurementLength2];
-                                lineAsByteArray2.CopyTo(byteArray2d[i], 0);
-                                i++;
-
-                                break;
-                        }
+                    case "Constalaris": //Convert from "S: T - W: 955" to "ST,GS:  0.000kg<13><10>"
+                        CreateMeasurementLineConstalaris(line, startOfStable, startOfMeasurement, out rawLogLine, out rawLogLineLength);
+                        break;
                     }
+
+                    AddRawLogLineToSimulatedMeasurements(simulatedMeasurements, ref simulatedMeasurementsIndex, rawLogLine, rawLogLineLength);
                 }
             }
 
-            Array.Resize(ref byteArray2d, i); // correct the size because we had non-measurement lines
+            Array.Resize(ref simulatedMeasurements, simulatedMeasurementsIndex); // correct the size because we had non-measurement lines
 
-            log.Info(String.Format("Loaded {0} measurements.", i));
-            log.Info("Finished Loading Simulated Data" + Environment.NewLine);
-
-            return byteArray2d;
-
+            log.Info($"Loaded {simulatedMeasurementsIndex} measurements.");
+            log.Info($"Finished Loading Simulated Data {Environment.NewLine}");
         }
 
-        public void WriteData(byte[] txBuffer)
+        private static void AddRawLogLineToSimulatedMeasurements(byte[][] simulatedMeasurements, ref int simulatedMeasurementsIndex, byte[] rawLogLine, int rawLogLineLength)
         {
-            // log.Info("Writing bytes: " + BitConverter.ToString(txBuffer) + Environment.NewLine);
-
-            serialPort.Write(txBuffer, 0, txBuffer.Length);
+            simulatedMeasurements[simulatedMeasurementsIndex] = new byte[rawLogLineLength];
+            rawLogLine.CopyTo(simulatedMeasurements[simulatedMeasurementsIndex], 0);
+            simulatedMeasurementsIndex++;
         }
 
+        /// <summary>Transforms a Scales automation log line in Bilanciai raw format</summary>
+        private static void CreateMeasurementLineBilanciai(string line, int startOfStable, int startOfMeasurement, out byte[] rawLogLine, out int rawLogLineLength)
+        {
+            rawLogLineLength = 8;
+            rawLogLine = new byte[] { 0x24, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x0D };
+
+            // Add stability information
+            var stableBooleanString = line.Substring(startOfStable, 1);
+            if(stableBooleanString == "F")
+                rawLogLine[1] = 0x31; // 0x30 (T) was default
+
+            // Add measurement information
+            var measurement = line.Substring(startOfMeasurement, line.Length - startOfMeasurement); // get only the measurement value
+            char[] measurementAsCharArray = measurement.ToCharArray();
+            Array.Reverse(measurementAsCharArray);
+            for(var j = 0; j < measurementAsCharArray.Length; j++)
+                rawLogLine[rawLogLineLength - 2 - j] = Convert.ToByte(measurementAsCharArray[j]);
+        }
+
+        /// <summary>Transforms a Scales automation log line in Constalaris raw format</summary>
+        private static void CreateMeasurementLineConstalaris(string line, int startOfStable, int startOfMeasurement, out byte[] rawLogLine, out int rawLogLineLength)
+        {
+            rawLogLineLength = 17;
+            rawLogLine = new byte[] { 83, 84, 44, 71, 83, 58, 32, 32, 48, 46, 48, 48, 48, 107, 103, 13, 10 };
+
+            // Add stability information
+            var stableEntry = line.Substring(startOfStable, 1);
+            if(stableEntry == "F") // put US in array instead of default ST
+            {
+                rawLogLine[0] = 85;
+                rawLogLine[1] = 83;
+            }
+
+            // Add measurement information
+            var measurement = line.Substring(startOfMeasurement, line.Length - startOfMeasurement); // get only the measurement value, its in grams, needs to be in kg
+            char[] measurementAsCharArray = measurement.ToCharArray();
+            Array.Reverse(measurementAsCharArray);
+            // insert measurement value before Kg<13><10>. Keep in mind that for measurements > 1Kg a . exists!
+            for(var j = 0; j < measurementAsCharArray.Length; j++)
+            {
+                if(j >= 3) // stop to insert . point
+                    break;
+
+                rawLogLine[rawLogLineLength - 5 - j] = Convert.ToByte(measurementAsCharArray[j]);
+            }
+
+            // continue with Kg digits if needed (before .)
+            for(var j = 3; j < measurementAsCharArray.Length; j++)
+                rawLogLine[rawLogLineLength - 6 - j] = Convert.ToByte(measurementAsCharArray[j]);
+        }
+
+        private void TransmitSimulatedMeasurements(byte[][] simulatedMeasurements)
+        {
+            for(int i = 0; i < simulatedMeasurements.Length; i++)
+            {
+                serialPort.Write(simulatedMeasurements[i], 0, simulatedMeasurements[i].Length);
+                Thread.Sleep(10); // in reality is 100ms for ustable measurement and 200ms for stable measurement
+
+                if(ScalesAutomation.stopPressed) // stop this thread when stop lot is pressed in main
+                    break;
+            }
+        }
     }
 }
