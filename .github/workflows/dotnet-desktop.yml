@@ -86,7 +86,7 @@ jobs:
     #- name: Create Artifacts
     #  run: ./makeDistribution.bat
 
-    # Make release artifacts
+    # Make release artifacts, still in test did not start on tag push
     - name: Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
