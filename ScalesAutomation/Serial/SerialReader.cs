@@ -184,7 +184,7 @@ namespace ScalesAutomation
                     }
                     catch(Exception ex)
                     {
-                        log.Error("DataReceived Error: " + ex.Message + Environment.NewLine);
+                        log.Error($"DataReceived Error: {ex.Message}{Environment.NewLine}");
                     }
                     finally
                     {
@@ -245,7 +245,7 @@ namespace ScalesAutomation
         void EnableCyclicTransmission()
         {
             byte[] txBuffer = new byte[] { 0x73, 0x78, 0x0D }; // CR = end character
-            log.Info($"Enabling Cyclic Transmission... {BitConverter.ToString(txBuffer)} {Environment.NewLine}");
+            log.Info($"Enabling Cyclic Transmission... {BitConverter.ToString(txBuffer)}{Environment.NewLine}");
 
             serialPort.Write(txBuffer, 0, txBuffer.Length);
             Thread.Sleep(10);
@@ -255,7 +255,7 @@ namespace ScalesAutomation
         {
             byte[] data = new byte[serialPort.BytesToRead];
             var bytesRed = serialPort.Read(data, 0, data.Length);
-            log.Debug("Bytes Read: " + bytesRed.ToString() + Environment.NewLine);
+            log.Debug($"Bytes Read: {bytesRed}{Environment.NewLine}");
 
             data.ToList().ForEach(b => recievedData.Enqueue(b));
 
@@ -265,13 +265,13 @@ namespace ScalesAutomation
         private void ReadFromSerialConstalaris()
         {
             var readData = serialPort.ReadLine();
-            log.Debug("Recieved Data: " + readData + Environment.NewLine);
+            log.Debug($"Recieved Data: {readData}{Environment.NewLine}");
 
             if(readData == null || readData.Count() != serialPackageLength - 1)
                 throw new Exception("Wrong fromatted package received");
 
             readData.ToList().ForEach(b => recievedData.Enqueue(Convert.ToByte(b)));
-            log.Debug("Recieved Data size: " + recievedData.Count.ToString() + Environment.NewLine);
+            log.Debug($"Recieved Data size: {recievedData.Count}{Environment.NewLine}");
         }
 
         void AddToRawMeasurements()
@@ -309,8 +309,8 @@ namespace ScalesAutomation
                         {
                             // sanity check for Tare that is the same as in GUI... but only silent error in log!
                             var tareOnScale = measurement.TotalWeight;
-                            if(tareOnScale != this.userTare)
-                                log.Error(String.Format("Error: Tara raportata de cantar: {0} nu este aceiasi cu tara setata in GUI: {1}!", tareOnScale, this.userTare));
+                            if(measurement.IsStable && (tareOnScale != this.userTare))
+                                log.Error($"Error: Tara raportata de cantar: {tareOnScale} nu este aceiasi cu tara setata in GUI: {this.userTare}!");
 
                             measurement.TotalWeight = 0; // report as 0 measurement (to match Bialnciai)
                         }
@@ -415,7 +415,7 @@ namespace ScalesAutomation
             }
             catch(Exception ex)
             {
-                log.Error("Cannot Dispose of serial port:" + ex.Message + Environment.NewLine);
+                log.Error($"Cannot Dispose of serial port: {ex.Message}{Environment.NewLine}");
                 throw;
             }
         }
