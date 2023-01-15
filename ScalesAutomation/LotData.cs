@@ -180,7 +180,7 @@ namespace ScalesAutomation
         void InitializeGuiBackendFromXml()
         {
             var productCatalogFilePath = Settings.Default.ProductCatalogFilePath;
-            if (!CsvHelper.IsAbsolutePath(productCatalogFilePath))
+            if (!PathHelper.IsAbsolutePath(productCatalogFilePath))
                 productCatalogFilePath = Path.Combine(Misc.AssemblyPath, productCatalogFilePath);
 
             XmlHandler.ReadCatalogue(productCatalogFilePath);

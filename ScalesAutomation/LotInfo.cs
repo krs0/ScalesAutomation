@@ -73,6 +73,9 @@ namespace ScalesAutomation
             }
         }
 
+        /// <summary>
+        /// get unique Lot id: LotNumber_ProductName_PakageType
+        /// </summary>
         public string GetUniqueLotId()
         {
             var uniqueId = Lot + "_" + ProductName + "_" + Package.Type;

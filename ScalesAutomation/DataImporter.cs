@@ -54,7 +54,7 @@ namespace ScalesAutomation
 
                 var intermediateFilePath = Path.GetDirectoryName(inputFilePath) + "\\temp_.bak";
 
-                if (CsvHelper.OutputAlreadyPresent(lotInfo.Id, outputFolderPath, ref outputFilePath))
+                if (PathHelper.GetOutputFilePath(lotInfo.Id, outputFolderPath, ref outputFilePath))
                 {
                     var result = MessageBox.Show("Pentru lotul selectat exista deja masuratori. Noile masuratori se vor adauga celor existente. Doriti sa Continuati?", "Continuare Lot", MessageBoxButtons.YesNo);
                     if (result != DialogResult.Yes)
@@ -75,7 +75,7 @@ namespace ScalesAutomation
                 }
 
                 Misc.MakeTemporaryFileWithStandardizedContents(inputFilePath, intermediateFilePath, lotInfo.Date, startMeasurementIndex);
-                Misc.AppendOneFileToAnother(intermediateFilePath, outputFilePath);
+                Misc.AppendFiles(intermediateFilePath, outputFilePath);
 
                 MessageBox.Show("Datele au fost importate in fisierul: " + Environment.NewLine + Environment.NewLine +
                     outputFilePath, "Conversie Terminata", MessageBoxButtons.OK, MessageBoxIcon.None);

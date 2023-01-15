@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using log4net;
 using System.Reflection;
-using System.Windows.Forms.VisualStyles;
 
 namespace ScalesAutomation
 {
@@ -106,7 +105,7 @@ namespace ScalesAutomation
             //if (File.Exists(Path.Combine(bckFolderPath, OutputFileFullName)))
             //    backupFileName = Path.GetFileNameWithoutExtension(OutputFileFullName) + "_" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".csv";
                                  
-            FileCopy(OutputFolderPath, bckFolderPath, backupFileName);
+            PathHelper.FileCopy(OutputFolderPath, bckFolderPath, backupFileName);
         }
 
         /// <summary>Launch the legacy application with some options set.</summary>
@@ -139,63 +138,7 @@ namespace ScalesAutomation
 
         public bool IsServerFolderReachable(string serverFolderPath)
         {
-            return DirectoryExists(serverFolderPath);
-        }
-
-        public static bool IsAbsolutePath(string filePath)
-        {
-            return filePath.Contains(":");
-        }
-
-        public static bool LogAlreadyPresent(string lotId, string logFolderPath, ref string logFilePath)
-        {
-            return FileAlreadyPresent(lotId, logFolderPath, ref logFilePath, ".log");
-        }
-
-        public static bool OutputAlreadyPresent(string lotId, string outputFolderPath, ref string outputFilePath)
-        {
-            return FileAlreadyPresent(lotId, outputFolderPath, ref outputFilePath, ".csv");
-        }
-
-        private static bool FileAlreadyPresent(string lotId, string folderPath, ref string filePath, string fileExtension)
-        {
-            var result = false;
-
-            try
-            {
-                var dirInfo = new DirectoryInfo(folderPath);
-                var files = dirInfo.GetFiles("*" + lotId + fileExtension);
-
-                if (files.Length > 0)
-                {
-                    filePath = files[0].FullName;
-                    result = true;
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-
-            return result;
-        }
-
-        public static string GetExistingOutputFileName(string lotId, string outputFolderPath)
-        {
-            var outputFileName = "";
-
-            OutputAlreadyPresent(lotId, outputFolderPath, ref outputFileName);
-
-            return outputFileName;
-        }
-
-        public static string GetExistingLogFileName(string lotId, string logFolderPath)
-        {
-            var logFileName = "";
-
-            LogAlreadyPresent(lotId, logFolderPath, ref logFileName);
-
-            return logFileName;
+            return PathHelper.DirectoryExists(serverFolderPath);
         }
 
         public static string GetLastMeasurementIndex(string outputFilePath)
@@ -203,6 +146,7 @@ namespace ScalesAutomation
             var lastLine = File.ReadLines(outputFilePath).Last();
             var splitLine = lastLine.Split(';');
             var lastMeasurementIndex = splitLine[0];
+
             return lastMeasurementIndex;
         }
 
@@ -216,14 +160,14 @@ namespace ScalesAutomation
             {
                 OutputFolderPath = folderPath;
 
-                if (appendToExistingLogFile && OutputAlreadyPresent(lotId, folderPath, ref OutputFilePath))
+                if (appendToExistingLogFile && PathHelper.GetOutputFilePath(lotId, OutputFolderPath, ref OutputFilePath))
                 {
                     OutputFileFullName = Path.GetFileName(OutputFilePath);
                     appendToExistingOutputFile = true;
                 }
                 else
                 {
-                    CalculateOutputFilePath(folderPath, DateTime.Now, lotId);
+                    CalculateOutputFilePath(OutputFolderPath, DateTime.Now, lotId);
                     appendToExistingOutputFile = false;
                 }
             }
@@ -232,40 +176,6 @@ namespace ScalesAutomation
                 log.Error("Cannot calculate CSV output file Path... " + OutputFilePath + ex.Message + Environment.NewLine);
                 throw;
             }
-        }
-
-        private void FileCopy(string sourceFolderPath, string destinationFolderPath, string fileName)
-        {
-            try
-            {
-                string sourceFilePath = Path.Combine(sourceFolderPath, fileName);
-                string destinationFilePath = Path.Combine(destinationFolderPath, fileName);
-
-                File.Copy(sourceFilePath, destinationFilePath, true);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Cannot copy file:" + fileName + " From " + sourceFolderPath + " to " + destinationFolderPath + ex.Message + Environment.NewLine);
-                throw;
-            }
-        }
-
-        private bool DirectoryExists(string folderPath)
-        {
-            var exists = false;
-
-            try
-            {
-                if (Directory.Exists(folderPath))
-                    exists = true;
-            }
-            catch (Exception ex)
-            {
-                log.Error("Folder does not exist or is unreachable:" + folderPath + ex.Message + Environment.NewLine);
-                throw;
-            }
-
-            return exists;
         }
 
         #endregion

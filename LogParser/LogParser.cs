@@ -69,7 +69,7 @@ namespace LogParser
             lotInfo = lotInfo.ReadLotInfoFromLog(logFilePath);
 
             // we rewrite whole logs. no appending
-            if (!CsvHelper.OutputAlreadyPresent(lotInfo.GetUniqueLotId(), outputFolderPath, ref outputFilePath))
+            if (!PathHelper.GetOutputFilePath(lotInfo.GetUniqueLotId(), outputFolderPath, ref outputFilePath))
             {
                 var logFileName = Path.GetFileNameWithoutExtension(logFilePath);
                 outputFilePath = Path.Combine(outputFolderPath, logFileName + ".csv");

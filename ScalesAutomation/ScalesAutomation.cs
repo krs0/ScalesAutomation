@@ -180,7 +180,7 @@ namespace ScalesAutomation
             zeroThreshold = (int)(netWeight * Settings.Default.ZeroThreshold) / 100;
 
             // for each LOT save logs in separate files. (If a log file was already created for a lot reuse it)
-            if (CsvHelper.LogAlreadyPresent(lotInfo.Id, logFolderPath, ref logFilePath))
+            if (PathHelper.GetLogFilePath(lotInfo.Id, logFolderPath, ref logFilePath))
             {
                 DialogResult result = MessageBox.Show("Pentru lotul selectat exista deja masuratori. Noile masuratori se vor adauga celor existente. Doriti sa Continuati?", "Continuare Lot", MessageBoxButtons.YesNo);
                 if (result != DialogResult.Yes)

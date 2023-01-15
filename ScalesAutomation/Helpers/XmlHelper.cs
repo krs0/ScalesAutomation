@@ -24,8 +24,8 @@ namespace ScalesAutomation
                 foreach (var element in elements)
                 {
                     var name = element.Elements("Name").First().Value;
-                    var packageDetails = new Package();
 
+                    var packageDetails = new Package();
                     packageDetails.Type = element.Elements("Package").First().Value;
 
                     var strNetWeight = element.Elements("NetWeight").First().Value;
@@ -36,7 +36,7 @@ namespace ScalesAutomation
 
                     packageDetails.TotalWeight = packageDetails.NetWeight + packageDetails.Tare;
 
-                    AddToCatalogueOrUpdateIfExisting(name, packageDetails);
+                    AddToCatalogueCollection(name, packageDetails);
                 }
             }
             catch (Exception ex)
@@ -45,20 +45,23 @@ namespace ScalesAutomation
             }
         }
 
-        private void AddToCatalogueOrUpdateIfExisting(string name, Package packageDetails)
+        /// <summary>
+        /// Adds product data to catalogue collection. Updates if product already existing.
+        /// </summary>
+        private void AddToCatalogueCollection(string name, Package packageDetails)
         {
-            Product? temp = Catalogue.Find(x => x.Name == name);
-            if (temp?.Name != null)
-                temp?.PackageDetails.Add(packageDetails);
+            Product? searchedProduct = Catalogue.Find(x => x.Name == name);
+            if (searchedProduct?.Name != null)
+                searchedProduct?.PackageDetails.Add(packageDetails);
             else
             {
-                var entry = new Product
+                var product = new Product
                 {
                     Name = name,
                     PackageDetails = new List<Package> { packageDetails }
                 };
 
-                Catalogue.Add(entry);
+                Catalogue.Add(product);
             }
         }
     }
