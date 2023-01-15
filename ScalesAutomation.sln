@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScalesAutomation", "ScalesAutomation\ScalesAutomation.csproj", "{E8A96C8C-1490-4BE1-81DD-509D94409D38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScalesAutomation", "ScalesAutomation\ScalesAutomation.csproj", "{E8A96C8C-1490-4BE1-81DD-509D94409D38}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Distribution", "Distribution", "{9F857F83-2670-4027-B0B4-BD5298C1B37F}"
 	ProjectSection(SolutionItems) = preProject
@@ -24,7 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{440DCC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSVServer", "CSVServer", "{A3F9AD69-C886-478D-8589-A91741E42F96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogParser", "LogParser\LogParser.csproj", "{4B5E4132-6CA0-40A0-8C19-0B8B00BBF040}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogParser", "LogParser\LogParser.csproj", "{4B5E4132-6CA0-40A0-8C19-0B8B00BBF040}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,12 +56,23 @@ Global
 		UpdateAssemblyVersion = True
 		UpdateAssemblyFileVersion = True
 		UpdateAssemblyInfoVersion = True
+		ShouldCreateLogs = True
 		AdvancedSettingsExpanded = True
-		AssemblyVersionSettings = IncrementOnDemand.IncrementOnDemand.None.None
-		AssemblyFileVersionSettings = IncrementOnDemand.IncrementOnDemand.None.None
-		AssemblyInfoVersionSettings = IncrementOnDemand.IncrementOnDemand.IncrementWithResetOnIncrease.None
+		AssemblyVersionSettings = IncrementOnDemand.IncrementOnDemand.IncrementOnDemand.DeltaDayStamp
+		AssemblyFileVersionSettings = IncrementOnDemand.IncrementOnDemand.IncrementOnDemand.DeltaDayStamp
+		AssemblyInfoVersionSettings = IncrementOnDemand.IncrementOnDemand.IncrementWithResetOnIncrease.DeltaDayStamp
 		UpdatePackageVersion = False
 		AssemblyInfoVersionType = SettingsVersion
 		InheritWinAppVersionFrom = None
+		UpdateAssemblyVersion.Debug|Any CPU = True
+		UpdateAssemblyFileVersion.Debug|Any CPU = True
+		UpdateAssemblyInfoVersion.Debug|Any CPU = False
+		ShouldCreateLogs.Debug|Any CPU = True
+		AdvancedSettingsExpanded.Debug|Any CPU = True
+		AssemblyVersionSettings.Debug|Any CPU = None.None.None.None
+		AssemblyFileVersionSettings.Debug|Any CPU = None.None.None.None
+		UpdatePackageVersion.Debug|Any CPU = False
+		AssemblyInfoVersionType.Debug|Any CPU = SettingsVersion
+		InheritWinAppVersionFrom.Debug|Any CPU = None
 	EndGlobalSection
 EndGlobal

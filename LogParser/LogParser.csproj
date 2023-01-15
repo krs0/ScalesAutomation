@@ -35,6 +35,14 @@
   
   	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
   	  <DebugType>full</DebugType>
+  	  <ShouldCreateLogs>True</ShouldCreateLogs>
+  	  <AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
+  	  <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
+  	  <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
+  	  <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
+  	  <UpdatePackageVersion>False</UpdatePackageVersion>
+  	  <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
+  	  <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
   	</PropertyGroup>
   
   	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
