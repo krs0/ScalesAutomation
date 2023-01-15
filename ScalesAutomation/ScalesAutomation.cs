@@ -259,17 +259,16 @@ namespace ScalesAutomation
             InitializeInputControls();
             uctlLotData.EnableInputControls();
 
-            // parse logs only for Bilanciai
+            // parse logs only for Bilanciai, for Constalaris we log exactly what's in the GUI
             if(!(Settings.Default.ScaleType == "Constalaris"))
-                csvHelper.ParseCurrentLog(logFilePath);
+                LogHelper.ParseLog(logFilePath);
 
-            csvHelper.BackupCurrentCsv(Settings.Default.CSVBackupPath);
-            if (csvHelper.IsServerFolderReachable(Settings.Default.CSVServerFolderPath))
-                csvHelper.CopyCurrentCsvToServer(Settings.Default.CSVServerFolderPath);
+            csvHelper.BackupOutputFile(Settings.Default.CSVBackupPath);
+            csvHelper.CopyOutputFileToServer(Settings.Default.CSVServerFolderPath);
 
         }
 
-        private void btnShowNextLotData_Click(object sender, EventArgs e)
+        void btnShowNextLotData_Click(object sender, EventArgs e)
         {
             if (nextLotData == null)
             {
@@ -284,12 +283,12 @@ namespace ScalesAutomation
             }
         }
 
-        private void NextLotDataClosed()
+        void NextLotDataClosed()
         {
             nextLotData = null;
         }
 
-        private void NextLotDataApplyClicked()
+        void NextLotDataApplyClicked()
         {
             if (uctlLotData.InputControlsEnabled())
             {

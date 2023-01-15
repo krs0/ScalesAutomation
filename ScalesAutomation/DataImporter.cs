@@ -30,6 +30,11 @@ namespace ScalesAutomation
             }
         }
 
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
         private void btnImport_Click(object sender, System.EventArgs e)
         {
 
@@ -65,7 +70,7 @@ namespace ScalesAutomation
 
                 if (lotInfo.AppendToLot)
                 {
-                    var lastMeasurementIndex = CsvHelper.GetLastMeasurementIndex(outputFilePath);
+                    var lastMeasurementIndex = CsvHelper.GetLastMeasurementIndexFromOutputFile(outputFilePath);
                     startMeasurementIndex = Int32.Parse(lastMeasurementIndex) + 1;
                 }
                 else
@@ -94,12 +99,7 @@ namespace ScalesAutomation
                 txtFileName.Text = "";
                 dateTimePicker.Value = DateTime.Now;
             }
-
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
     }
 }

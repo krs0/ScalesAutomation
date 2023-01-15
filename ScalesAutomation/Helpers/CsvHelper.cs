@@ -10,25 +10,15 @@ namespace ScalesAutomation
 {
     public class CsvHelper
     {
+        readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public static string OutputFilePath;
         public static string OutputFolderPath;
         public static string OutputFileFullName;
 
-        readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         private bool appendToExistingOutputFile;
-       
+
         #region Public Methods
-
-        public void PrepareOutputFile(string folderPath, LotInfo lotInfo)
-        {
-            CalculatePaths(folderPath, lotInfo.Id, lotInfo.AppendToLot);
-
-            if (appendToExistingOutputFile) return;
-
-            var fileHeader = lotInfo.MakeMeasurementFileHeader();
-            InitializeOutputFileContents(OutputFilePath, fileHeader);
-        }
 
         public static string CalculateOutputFilePath(string outputFolderPath, DateTime date, string lotId)
         {
@@ -42,16 +32,26 @@ namespace ScalesAutomation
         {
             try
             {
-                using (var csvFile = new StreamWriter(outputFilePath, false))
+                using(var csvFile = new StreamWriter(outputFilePath, false))
                 {
                     csvFile.Write(headerRow + csvFile.NewLine);
                 }
             }
-            catch (Exception)
+            catch(Exception)
             {
                 // log.Error("Error creating CSV File... " + CsvFileFullPath + ex.Message + Environment.NewLine);
                 throw;
             }
+        }
+
+        public void PrepareOutputFile(string folderPath, LotInfo lotInfo)
+        {
+            CalculatePaths(folderPath, lotInfo.Id, lotInfo.AppendToLot);
+
+            if (appendToExistingOutputFile) return;
+
+            var fileHeader = lotInfo.MakeMeasurementFileHeader();
+            InitializeOutputFileContents(OutputFilePath, fileHeader);
         }
 
         public void WriteLineToOutputFile(DataRow row, int iColCount)
@@ -79,11 +79,11 @@ namespace ScalesAutomation
             }
         }
 
-        public void CopyCurrentCsvToServer(string serverFolderPath)
+        public void CopyOutputFileToServer(string serverFolderPath)
         {
             try
             {
-                if (!IsServerFolderReachable(serverFolderPath)) return;
+                if (!PathHelper.DirectoryExists(serverFolderPath)) return;
 
                 var serverOutputFilePath = Path.Combine(serverFolderPath, OutputFileFullName);
 
@@ -91,12 +91,12 @@ namespace ScalesAutomation
             }
             catch (Exception ex)
             {
-                log.Error("Cannot copy file to server:" + OutputFileFullName + " From " + OutputFilePath + " to " + serverFolderPath + ex.Message + Environment.NewLine);
+                log.Error($"Cannot copy file to server: {OutputFileFullName}. Trying to copy {OutputFilePath} to {serverFolderPath} {ex.Message} {Environment.NewLine}");
                 throw;
             }
         }
 
-        public void BackupCurrentCsv(string bckFolderPath)
+        public void BackupOutputFile(string bckFolderPath)
         {
             var backupFileName = OutputFileFullName;
 
@@ -108,40 +108,7 @@ namespace ScalesAutomation
             PathHelper.FileCopy(OutputFolderPath, bckFolderPath, backupFileName);
         }
 
-        /// <summary>Launch the legacy application with some options set.</summary>
-        public void ParseCurrentLog(string logFilePath)
-        {
-            var startInfo = new ProcessStartInfo
-            {
-                CreateNoWindow = false,
-                UseShellExecute = false,
-                FileName = "LogParser.exe",
-                WindowStyle = ProcessWindowStyle.Hidden,
-                Arguments = "\"" + logFilePath + "\" \"" + OutputFolderPath + "\\\"" // add an extra \ at the end, not to escape last " when it arrives in parser
-            };
-
-            try
-            {
-                // Start the process with the info we specified.
-                // Call WaitForExit and then the using-statement will close.
-                log.Info("Starting parser with arguments: " + startInfo.Arguments );
-                using (var parserProcess = Process.Start(startInfo))
-                {
-                    parserProcess?.WaitForExit();
-                }
-            }
-            catch
-            {
-                // Log error.
-            }
-        }
-
-        public bool IsServerFolderReachable(string serverFolderPath)
-        {
-            return PathHelper.DirectoryExists(serverFolderPath);
-        }
-
-        public static string GetLastMeasurementIndex(string outputFilePath)
+        public static string GetLastMeasurementIndexFromOutputFile(string outputFilePath)
         {
             var lastLine = File.ReadLines(outputFilePath).Last();
             var splitLine = lastLine.Split(';');
