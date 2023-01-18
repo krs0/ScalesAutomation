@@ -66,11 +66,14 @@
   </ItemGroup>
   
    <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(OutDir)..\..\Resources\CentralizatorMasuratori.xlsm" "$(OutDir)..\Server\CentralizatorMasuratori.xlsm"
-copy /Y "$(OutDir)..\..\Resources\CatalogProduseMargarita.xml" "$(OutDir)CatalogProduseMargarita.xml"
-copy /Y "$(OutDir)..\..\Resources\CatalogProduseEurocas.xml" "$(OutDir)CatalogProduseEurocas.xml"
-copy /Y "$(OutDir)CatalogProduseMargarita.xml" "$(OutDir)..\Server\CatalogProduseMargarita.xml"
-copy /Y "$(OutDir)CatalogProduseEurocas.xml" "$(OutDir)..\Server\CatalogProduseEurocas.xml"
+    <PostBuildEvent>if not exist ..\Server\ mkdir ..\Server\
+if not exist ..\Server\Cantariri_Automate mkdir ..\Server\Cantariri_Automate
+if not exist ..\Server\Cantariri_Manuale mkdir ..\Server\Cantariri_Manuale
+if not exist ..\Server\Fara_Metrologie mkdir ..\Server\Fara_Metrologie
+copy /Y "$(OutDir)..\..\Resources\CentralizatorMasuratori.xlsm" "$(OutDir)..\Server\CentralizatorMasuratori.xlsm"
+copy /Y "$(OutDir)..\..\Resources\CatalogProduseMargarita.xml" "$(OutDir)..\Server\CatalogProduseMargarita.xml"
+copy /Y "$(OutDir)..\..\Resources\CatalogProduseEurocas.xml" "$(OutDir)..\Server\CatalogProduseEurocas.xml"
+
 </PostBuildEvent>
     <StartupObject></StartupObject>
     <IsPublishable>False</IsPublishable>

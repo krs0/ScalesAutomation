@@ -53,14 +53,11 @@ Global
 	EndGlobalSection
 	GlobalSection(AutomaticVersions) = postSolution
 		PrimaryVersionType = AssemblyVersionAttribute
-		UpdateAssemblyVersion = True
-		UpdateAssemblyFileVersion = True
-		UpdateAssemblyInfoVersion = True
+		UpdateAssemblyVersion = False
+		UpdateAssemblyFileVersion = False
+		UpdateAssemblyInfoVersion = False
 		ShouldCreateLogs = True
 		AdvancedSettingsExpanded = True
-		AssemblyVersionSettings = IncrementOnDemand.IncrementOnDemand.IncrementOnDemand.DeltaDayStamp
-		AssemblyFileVersionSettings = IncrementOnDemand.IncrementOnDemand.IncrementOnDemand.DeltaDayStamp
-		AssemblyInfoVersionSettings = IncrementOnDemand.IncrementOnDemand.IncrementWithResetOnIncrease.DeltaDayStamp
 		UpdatePackageVersion = False
 		AssemblyInfoVersionType = SettingsVersion
 		InheritWinAppVersionFrom = None

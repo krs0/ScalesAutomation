@@ -49,7 +49,7 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("CatalogProduseEurocas.xml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("..\\Server\\CatalogProduseEurocas.xml")]
         public string ProductCatalogFilePath {
             get {
                 return ((string)(this["ProductCatalogFilePath"]));

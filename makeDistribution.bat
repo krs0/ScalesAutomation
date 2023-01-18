@@ -1,2 +1,2 @@
 robocopy *.* .\out\Release\ .\Distribution\ScalesAutomation\
-robocopy *.* .\out\Server\ .\Distribution\Server\ 
+robocopy *.* .\Resources .\Distribution\Server CentralizatorMasuratori.xlsm /XF "Manual - Automatizare Cantar.docx"
