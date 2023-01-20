@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MetrologyReader": {
+      "commandName": "Project",
+      "commandLineArgs": "d:\\temp\\Krs\\ScalesAutomation\\out\\Server\\CentralizatorMasuratori.xlsm"
+    }
+  }
+}
