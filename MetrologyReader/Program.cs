@@ -1,18 +1,23 @@
-﻿using System;
+﻿using Microsoft.Office.Interop.Excel;
+using System;
 using Excel = Microsoft.Office.Interop.Excel;
+//using System.Windows.Forms;
 
 class Program
 {
     static void Main(string[] args)
     {
-        if(args.Length == 0)
+        if(args.Length < 2)
         {
-            Console.WriteLine("Please provide a filepath as an argument.");
+            Console.WriteLine("Please provide the filepath for centralizator masuratori and the desired outputFilename to be interrogated as arguments.");
             return;
         }
 
-        string measurementsFilePath = args[0];
-        if(!File.Exists(measurementsFilePath))
+        string centralizatorFilePath = args[0];
+        string measurementsFileName = args[1];
+        Console.WriteLine(measurementsFileName);
+
+        if(!File.Exists(centralizatorFilePath))
         {
             Console.WriteLine("The file does not exist.");
             return;
@@ -21,23 +26,33 @@ class Program
         // Open Excel in non-visible mode
         Excel.Application excelApp = new Excel.Application
         {
-            Visible = false
+            Visible = false,
+            DisplayAlerts = false
         };
 
-        Excel.Workbook workbook = excelApp.Workbooks.Open(measurementsFilePath);
-
+        Excel.Workbook workbook = excelApp.Workbooks.Open(centralizatorFilePath);
+        Excel.Sheets worksheets = (Excel.Sheets)workbook.Worksheets;
         Excel.Worksheet worksheet = (Excel.Worksheet)workbook.Worksheets["Metrologie"];
 
-        string? value = worksheet.Range["A2"].Text.ToString();
+        excelApp.EnableEvents = true; // disable events
 
-        Console.WriteLine("Value of cell A2 in worksheet 'Metrologie': " + value);
+        worksheet.Range["MeasurementsFileName"].Value2 = measurementsFileName;
+
+        excelApp.EnableEvents = false; // re-enable events
+
+        string? value = worksheet.Range["MeasurementsFileName"].Text.ToString();
+        string? value2 = worksheet.Range["A2"].Text.ToString();
+
+        Console.WriteLine("Written value in MeasurementsFileName: " + value);
+        Console.WriteLine("Value of cell A2 in worksheet 'Metrologie': " + value2);
 
         // Close the workbook and Excel application
-        workbook.Close(false);
+        workbook.Close(true);
         excelApp.Quit();
 
         // Release the Excel objects
         System.Runtime.InteropServices.Marshal.ReleaseComObject(worksheet);
+        System.Runtime.InteropServices.Marshal.ReleaseComObject(worksheets);
         System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
         System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
     }

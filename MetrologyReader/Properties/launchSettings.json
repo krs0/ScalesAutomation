@@ -2,7 +2,7 @@
   "profiles": {
     "MetrologyReader": {
       "commandName": "Project",
-      "commandLineArgs": "d:\\temp\\Krs\\ScalesAutomation\\out\\Server\\CentralizatorMasuratori.xlsm"
+      "commandLineArgs": "d:\\temp\\Krs\\ScalesAutomation\\out\\Server\\CentralizatorMasuratori.xlsm \"2023-01-13-13-45-03_20221006K41NA_01_Cuvertura Ciocolata Lapte 33% - 1Kg_Punga Eurocas PE cu poliester metalizat.csv\""
     }
   }
 }
