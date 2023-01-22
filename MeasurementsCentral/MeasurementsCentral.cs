@@ -16,16 +16,13 @@ namespace MeasurementsCentral
         public MeasurementsCentral()
         {
             InitializeComponent();
-
-            lvwMeasurementsFiles.ListViewItemSorter = lvwColumnSorter;
             lvwColumnSorter = new ListViewColumnSorter();
+            lvwMeasurementsFiles.ListViewItemSorter = lvwColumnSorter;
+
+            lvwMeasurementsFiles.ShowItemToolTips = true;
 
             dlgFolderBrowser = new FolderBrowserDialog();
             dlgFolderBrowser.RootFolder = Environment.SpecialFolder.Recent;
-
-            // Create a new ToolTip
-            tooltip = new ToolTip();
-            tooltip.IsBalloon = true;
 
             PpopulatelvwMeasurementsFiles(Settings.Default.LastSelectedFolder);
         }
@@ -44,21 +41,22 @@ namespace MeasurementsCentral
         {
             tbFileName.Text = path;
 
-            // Get all files in the directory
-            string[] files = Directory.GetFiles(path);
+            // Get all filePaths in the directory
+            string[] filePaths = Directory.GetFiles(path);
 
             lvwMeasurementsFiles.Items.Clear();
 
-            // Add each file to the ListView
-            foreach(string file in files)
+            // Add each filePath to the ListView
+            foreach(string filePath in filePaths)
             {
-                var filename = Path.GetFileName(file).Trim();
+                var filename = Path.GetFileName(filePath).Trim();
                 ListViewItem item = new ListViewItem(filename);
+                item.Tag = filename;
                 item.SubItems.Add("OK");
                 lvwMeasurementsFiles.Items.Add(item);
 
-                // Add the file name to the tooltip
-                tooltip.SetToolTip(lvwMeasurementsFiles, filename);
+                // Add the filePath name to the tooltip
+                item.ToolTipText = filename;
             }
         }
 
@@ -69,13 +67,9 @@ namespace MeasurementsCentral
             {
                 // Reverse the current sort direction for this column.
                 if(lvwColumnSorter.Order == SortOrder.Ascending)
-                {
                     lvwColumnSorter.Order = SortOrder.Descending;
-                }
                 else
-                {
                     lvwColumnSorter.Order = SortOrder.Ascending;
-                }
             }
             else
             {
