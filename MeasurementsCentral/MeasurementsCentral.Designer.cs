@@ -36,7 +36,7 @@
 
         #endregion
 
-        private TextBox textBox1;
-        private Button button1;
+        private TextBox tbFileName;
+        private Button btnBrowse;
     }
 }
