@@ -23,10 +23,11 @@
             this.Status});
             this.listView.Location = new System.Drawing.Point(12, 54);
             this.listView.Name = "listView";
-            this.listView.Size = new System.Drawing.Size(982, 606);
+            this.listView.Size = new System.Drawing.Size(982, 593);
             this.listView.TabIndex = 0;
             this.listView.UseCompatibleStateImageBehavior = false;
             this.listView.View = System.Windows.Forms.View.Details;
+            this.listView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView_ColumnClick);
             // 
             // FileName
             // 
