@@ -12,10 +12,7 @@ namespace MeasurementsCentral
 
             dialog = new FolderBrowserDialog();
             //Set Root folder as desktop
-            dialog.RootFolder = Environment.SpecialFolder.Desktop;
-
-            // Add a column for the file size
-            listView.Columns.Add("Size", 100, HorizontalAlignment.Right);
+            dialog.RootFolder = Environment.SpecialFolder.Recent;
 
             // Create a new ToolTip
             tooltip = new ToolTip();
@@ -25,12 +22,17 @@ namespace MeasurementsCentral
         private void InitializeComponent()
         {
             this.listView = new System.Windows.Forms.ListView();
+            this.FileName = new System.Windows.Forms.ColumnHeader();
+            this.Status = new System.Windows.Forms.ColumnHeader();
             this.tbFileName = new System.Windows.Forms.TextBox();
             this.btnBrowse = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listView
             // 
+            this.listView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.FileName,
+            this.Status});
             this.listView.Location = new System.Drawing.Point(12, 54);
             this.listView.Name = "listView";
             this.listView.Size = new System.Drawing.Size(982, 606);
@@ -38,16 +40,26 @@ namespace MeasurementsCentral
             this.listView.UseCompatibleStateImageBehavior = false;
             this.listView.View = System.Windows.Forms.View.Details;
             // 
+            // FileName
+            // 
+            this.FileName.Text = "Nume Fisier";
+            this.FileName.Width = 900;
+            // 
+            // Status
+            // 
+            this.Status.Text = "Status";
+            this.Status.Width = 100;
+            // 
             // tbFileName
             // 
-            this.tbFileName.Location = new System.Drawing.Point(99, 17);
+            this.tbFileName.Location = new System.Drawing.Point(12, 16);
             this.tbFileName.Name = "tbFileName";
             this.tbFileName.Size = new System.Drawing.Size(895, 27);
             this.tbFileName.TabIndex = 1;
             // 
             // btnBrowse
             // 
-            this.btnBrowse.Location = new System.Drawing.Point(12, 15);
+            this.btnBrowse.Location = new System.Drawing.Point(919, 12);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(75, 31);
             this.btnBrowse.TabIndex = 0;

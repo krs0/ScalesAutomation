@@ -38,5 +38,7 @@
 
         private TextBox tbFileName;
         private Button btnBrowse;
+        private ColumnHeader FileName;
+        private ColumnHeader Status;
     }
 }
