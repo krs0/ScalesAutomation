@@ -1,3 +1,4 @@
+using MeasurementsCentral.Properties;
 using System;
 using System.Collections;
 using System.IO;
@@ -7,55 +8,61 @@ namespace MeasurementsCentral
 {
     public partial class MeasurementsCentral : Form
     {
+        FolderBrowserDialog dlgFolderBrowser;
+        ListView lvwMeasurementsFiles;
+        ListViewColumnSorter lvwColumnSorter;
+        ToolTip tooltip;
+
         public MeasurementsCentral()
         {
             InitializeComponent();
 
+            lvwMeasurementsFiles.ListViewItemSorter = lvwColumnSorter;
             lvwColumnSorter = new ListViewColumnSorter();
-            this.listView.ListViewItemSorter = lvwColumnSorter;
 
-            dialog = new FolderBrowserDialog();
-            //Set Root folder as desktop
-            dialog.RootFolder = Environment.SpecialFolder.Recent;
+            dlgFolderBrowser = new FolderBrowserDialog();
+            dlgFolderBrowser.RootFolder = Environment.SpecialFolder.Recent;
 
             // Create a new ToolTip
             tooltip = new ToolTip();
             tooltip.IsBalloon = true;
-        }
 
-        FolderBrowserDialog dialog;
-        ListView listView;
-        ListViewColumnSorter lvwColumnSorter;
-        ToolTip tooltip;
+            PpopulatelvwMeasurementsFiles(Settings.Default.LastSelectedFolder);
+        }
 
         private void btnBrowse_Click(object sender, EventArgs e)
         {
-            if(dialog.ShowDialog() == DialogResult.OK)
+            if(dlgFolderBrowser.ShowDialog() == DialogResult.OK)
             {
-                string path = dialog.SelectedPath;
+                string path = dlgFolderBrowser.SelectedPath;
 
-                tbFileName.Text = path;
-
-                // Get all files in the directory
-                string[] files = Directory.GetFiles(path);
-
-                listView.Items.Clear();
-
-                // Add each file to the ListView
-                foreach(string file in files)
-                {
-                    var filename = Path.GetFileName(file).Trim();
-                    ListViewItem item = new ListViewItem(filename);
-                    item.SubItems.Add("OK");
-                    listView.Items.Add(item);
-
-                    // Add the file name to the tooltip
-                    tooltip.SetToolTip(listView, filename);
-                }
+                PpopulatelvwMeasurementsFiles(path);
             }
         }
 
-        private void listView_ColumnClick(object sender, ColumnClickEventArgs e)
+        private void PpopulatelvwMeasurementsFiles(string path)
+        {
+            tbFileName.Text = path;
+
+            // Get all files in the directory
+            string[] files = Directory.GetFiles(path);
+
+            lvwMeasurementsFiles.Items.Clear();
+
+            // Add each file to the ListView
+            foreach(string file in files)
+            {
+                var filename = Path.GetFileName(file).Trim();
+                ListViewItem item = new ListViewItem(filename);
+                item.SubItems.Add("OK");
+                lvwMeasurementsFiles.Items.Add(item);
+
+                // Add the file name to the tooltip
+                tooltip.SetToolTip(lvwMeasurementsFiles, filename);
+            }
+        }
+
+        private void lvwMeasurementsFiles_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             // Determine if clicked column is already the column that is being sorted.
             if(e.Column == lvwColumnSorter.SortColumn)
@@ -78,7 +85,7 @@ namespace MeasurementsCentral
             }
 
             // Perform the sort with these new sort options.
-            this.listView.Sort();
+            this.lvwMeasurementsFiles.Sort();
         }
     }
 

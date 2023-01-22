@@ -9,25 +9,26 @@
 
         private void InitializeComponent()
         {
-            this.listView = new System.Windows.Forms.ListView();
+            this.lvwMeasurementsFiles = new System.Windows.Forms.ListView();
             this.FileName = new System.Windows.Forms.ColumnHeader();
             this.Status = new System.Windows.Forms.ColumnHeader();
             this.tbFileName = new System.Windows.Forms.TextBox();
             this.btnBrowse = new System.Windows.Forms.Button();
+            this.lblMeasurementsFolder = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // listView
+            // lvwMeasurementsFiles
             // 
-            this.listView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lvwMeasurementsFiles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.FileName,
             this.Status});
-            this.listView.Location = new System.Drawing.Point(12, 54);
-            this.listView.Name = "listView";
-            this.listView.Size = new System.Drawing.Size(982, 593);
-            this.listView.TabIndex = 0;
-            this.listView.UseCompatibleStateImageBehavior = false;
-            this.listView.View = System.Windows.Forms.View.Details;
-            this.listView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView_ColumnClick);
+            this.lvwMeasurementsFiles.Location = new System.Drawing.Point(12, 54);
+            this.lvwMeasurementsFiles.Name = "lvwMeasurementsFiles";
+            this.lvwMeasurementsFiles.Size = new System.Drawing.Size(982, 593);
+            this.lvwMeasurementsFiles.TabIndex = 0;
+            this.lvwMeasurementsFiles.UseCompatibleStateImageBehavior = false;
+            this.lvwMeasurementsFiles.View = System.Windows.Forms.View.Details;
+            this.lvwMeasurementsFiles.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvwMeasurementsFiles_ColumnClick);
             // 
             // FileName
             // 
@@ -41,26 +42,36 @@
             // 
             // tbFileName
             // 
-            this.tbFileName.Location = new System.Drawing.Point(12, 16);
+            this.tbFileName.Location = new System.Drawing.Point(147, 16);
             this.tbFileName.Name = "tbFileName";
-            this.tbFileName.Size = new System.Drawing.Size(895, 27);
+            this.tbFileName.Size = new System.Drawing.Size(724, 27);
             this.tbFileName.TabIndex = 1;
             // 
             // btnBrowse
             // 
-            this.btnBrowse.Location = new System.Drawing.Point(919, 12);
+            this.btnBrowse.Location = new System.Drawing.Point(895, 14);
             this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(75, 31);
+            this.btnBrowse.Size = new System.Drawing.Size(99, 31);
             this.btnBrowse.TabIndex = 0;
             this.btnBrowse.Text = "Browse";
             this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
             // 
+            // lblMeasurementsFolder
+            // 
+            this.lblMeasurementsFolder.AutoSize = true;
+            this.lblMeasurementsFolder.Location = new System.Drawing.Point(12, 19);
+            this.lblMeasurementsFolder.Name = "lblMeasurementsFolder";
+            this.lblMeasurementsFolder.Size = new System.Drawing.Size(129, 20);
+            this.lblMeasurementsFolder.TabIndex = 2;
+            this.lblMeasurementsFolder.Text = "Folder Masuratori:";
+            // 
             // MeasurementsCentral
             // 
             this.ClientSize = new System.Drawing.Size(1006, 721);
+            this.Controls.Add(this.lblMeasurementsFolder);
             this.Controls.Add(this.btnBrowse);
             this.Controls.Add(this.tbFileName);
-            this.Controls.Add(this.listView);
+            this.Controls.Add(this.lvwMeasurementsFiles);
             this.Name = "MeasurementsCentral";
             this.Text = "Centralizator Masuratori";
             this.ResumeLayout(false);
@@ -101,5 +112,6 @@
         private Button btnBrowse;
         private ColumnHeader FileName;
         private ColumnHeader Status;
+        private Label lblMeasurementsFolder;
     }
 }
