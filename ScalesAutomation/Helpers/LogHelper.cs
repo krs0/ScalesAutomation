@@ -2,6 +2,8 @@
 using log4net;
 using System.Reflection;
 using System;
+using ScalesAutomation.Properties;
+using System.IO;
 
 namespace ScalesAutomation
 {
@@ -34,6 +36,43 @@ namespace ScalesAutomation
             catch (Exception ex)
             {
                 log.Info($"Cannot start log parser process: {ex.Message}");
+            }
+        }
+
+        public static void GetMetrologyResults(string logFileName)
+        {
+            var centralizatorMasuratoriFilePath = CsvHelper.OutputFolderPath + @"..\..\Server\CentralizatorMasuratori.xlsm";
+
+            var startInfo = new ProcessStartInfo
+            {
+                CreateNoWindow = false,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                FileName = "MetrologyReader.exe",
+                WindowStyle = ProcessWindowStyle.Hidden,
+                Arguments = "\"" + centralizatorMasuratoriFilePath + "\" \"" + logFileName + "\""
+            };
+
+            try
+            {
+                // Start the process with the info we specified.
+                // Call WaitForExit and then the using-statement will close.
+                log.Info("Starting Metrology Reader with arguments: " + startInfo.Arguments);
+                using(var metrologyReaderProcess = Process.Start(startInfo))
+                {
+                    // Synchronously read the standard output of Metrology Reader process.
+                    StreamReader reader = metrologyReaderProcess.StandardOutput;
+                    string output = reader.ReadToEnd();
+
+                    // Write the redirected output to this application's window.
+                    log.Info(output);
+
+                    metrologyReaderProcess?.WaitForExit();
+                }
+            }
+            catch(Exception ex)
+            {
+                log.Info($"Cannot start Metrology Reader process: {ex.Message}");
             }
         }
 

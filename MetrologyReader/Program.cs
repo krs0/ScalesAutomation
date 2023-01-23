@@ -19,7 +19,7 @@ class Program
 
         if(!File.Exists(centralizatorFilePath))
         {
-            Console.WriteLine("The file does not exist.");
+            Console.WriteLine("Centralizator File does not exist.");
             return;
         }
 
@@ -44,7 +44,7 @@ class Program
         string? value2 = worksheet.Range["A2"].Text.ToString();
 
         Console.WriteLine("Written value in MeasurementsFileName: " + value);
-        Console.WriteLine("Value of cell A2 in worksheet 'Metrologie': " + value2);
+        Console.WriteLine("Lot Status: " + value2);
 
         // Close the workbook and Excel application
         workbook.Close(true);

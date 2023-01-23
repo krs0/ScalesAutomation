@@ -266,6 +266,7 @@ namespace ScalesAutomation
             csvHelper.BackupOutputFile(Settings.Default.CSVBackupPath);
             csvHelper.CopyOutputFileToServer(Settings.Default.CSVServerFolderPath);
 
+            LogHelper.GetMetrologyResults(CsvHelper.OutputFileFullName);
         }
 
         void btnShowNextLotData_Click(object sender, EventArgs e)
