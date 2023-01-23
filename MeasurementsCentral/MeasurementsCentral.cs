@@ -15,6 +15,14 @@ namespace MeasurementsCentral
 
         public MeasurementsCentral()
         {
+            ImageList imageList = new ImageList();
+
+            imageList.ImageSize = new Size(32, 32);
+
+            // Add images to the image list
+            imageList.Images.Add(Image.FromFile("Images/ok.png"));
+            imageList.Images.Add(Image.FromFile("Images/x.png"));
+
             InitializeComponent();
             lvwColumnSorter = new ListViewColumnSorter();
             lvwMeasurementsFiles.ListViewItemSorter = lvwColumnSorter;
@@ -23,6 +31,8 @@ namespace MeasurementsCentral
 
             dlgFolderBrowser = new FolderBrowserDialog();
             dlgFolderBrowser.RootFolder = Environment.SpecialFolder.Recent;
+
+            lvwMeasurementsFiles.SmallImageList = imageList;
 
             PpopulatelvwMeasurementsFiles(Settings.Default.LastSelectedFolder);
         }
@@ -52,11 +62,16 @@ namespace MeasurementsCentral
                 var filename = Path.GetFileName(filePath).Trim();
                 ListViewItem item = new ListViewItem(filename);
                 item.Tag = filename;
-                item.SubItems.Add("OK");
-                lvwMeasurementsFiles.Items.Add(item);
+                //item.SubItems.Add("OK");
+                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, ""));
+                if(filename.Contains("2023-01-13"))
+                    item.ImageIndex = 1;
+                else
+                    item.ImageIndex = 0;
 
                 // Add the filePath name to the tooltip
                 item.ToolTipText = filename;
+                lvwMeasurementsFiles.Items.Add(item);
             }
         }
 

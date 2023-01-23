@@ -22,6 +22,7 @@
             this.lvwMeasurementsFiles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.FileName,
             this.Status});
+            this.lvwMeasurementsFiles.FullRowSelect = true;
             this.lvwMeasurementsFiles.Location = new System.Drawing.Point(12, 54);
             this.lvwMeasurementsFiles.Name = "lvwMeasurementsFiles";
             this.lvwMeasurementsFiles.Size = new System.Drawing.Size(982, 593);
