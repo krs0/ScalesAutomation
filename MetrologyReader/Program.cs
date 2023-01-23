@@ -1,25 +1,28 @@
-﻿using Microsoft.Office.Interop.Excel;
-using System;
+﻿using log4net;
+using System.Reflection;
 using Excel = Microsoft.Office.Interop.Excel;
-//using System.Windows.Forms;
 
 class Program
 {
+    readonly static ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
     static void Main(string[] args)
     {
         if(args.Length < 2)
         {
-            Console.WriteLine("Please provide the filepath for centralizator masuratori and the desired outputFilename to be interrogated as arguments.");
+            log.Error($"Please provide the filepath for centralizator masuratori and the desired measurements file name to be interrogated as arguments.");
             return;
         }
 
         string centralizatorFilePath = args[0];
         string measurementsFileName = args[1];
-        Console.WriteLine(measurementsFileName);
+        log.Info($"Metrology Reader Started with the following arguments: {System.Environment.NewLine}" +
+            $"Centralizator Masuratori File Path = {centralizatorFilePath} {System.Environment.NewLine}" +
+            $"Measurements File Name = {measurementsFileName} {System.Environment.NewLine}");
 
         if(!File.Exists(centralizatorFilePath))
         {
-            Console.WriteLine("Centralizator File does not exist.");
+            log.Error($"Centralizator File does not exist!");
             return;
         }
 
@@ -34,17 +37,20 @@ class Program
         Excel.Sheets worksheets = (Excel.Sheets)workbook.Worksheets;
         Excel.Worksheet worksheet = (Excel.Worksheet)workbook.Worksheets["Metrologie"];
 
-        excelApp.EnableEvents = true; // disable events
+        excelApp.EnableEvents = true; // we need to manually enable here because by default Excel events are disabled
 
+        // set the measurements file name in a special cell that is monitored for changed even within Excel (this event will select this file in files dropdown and run all macros).
         worksheet.Range["MeasurementsFileName"].Value2 = measurementsFileName;
 
-        excelApp.EnableEvents = false; // re-enable events
+        excelApp.EnableEvents = false; // disable Excel events again
 
-        string? value = worksheet.Range["MeasurementsFileName"].Text.ToString();
-        string? value2 = worksheet.Range["A2"].Text.ToString();
+        log.Debug($"Written value in MeasurementsFileName Range: {worksheet.Range["MeasurementsFileName"].Text.ToString()}");
 
-        Console.WriteLine("Written value in MeasurementsFileName: " + value);
-        Console.WriteLine("Lot Status: " + value2);
+        string? measurementsOverallStatus = worksheet.Range["A2"].Text.ToString();
+        log.Info($"Measurement overall status: {measurementsOverallStatus}");
+
+        // write in console so that calling process can catch this result
+        Console.WriteLine(measurementsOverallStatus);
 
         // Close the workbook and Excel application
         workbook.Close(true);

@@ -39,6 +39,7 @@ namespace ScalesAutomation
             }
         }
 
+        /// <summary>Launch the Metrology Reader application and read its output</summary>
         public static void GetMetrologyResults(string logFileName)
         {
             var centralizatorMasuratoriFilePath = CsvHelper.OutputFolderPath + @"..\..\Server\CentralizatorMasuratori.xlsm";
