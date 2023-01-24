@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -272,9 +272,9 @@ namespace ScalesAutomation
 
             // display dialog with results
             if(result == "Lot Acceptat")
-                MessageBox.Show($"Lot Acceptat. {Environment.NewLine} {Environment.NewLine} {lotId}", "Rezultat Metrologie", MessageBoxButtons.OK, MessageBoxIcon.None);
+                MessageBox.Show($"Lot Acceptat.{Environment.NewLine}{Environment.NewLine}{lotId}", "Rezultat Metrologie", MessageBoxButtons.OK, MessageBoxIcon.None);
             else
-                MessageBox.Show($"Lot Neacceptat! {Environment.NewLine} {Environment.NewLine} {lotId}", "Rezultat Metrologie", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Lot Neacceptat!{Environment.NewLine}{Environment.NewLine}{lotId}", "Rezultat Metrologie", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         void btnShowNextLotData_Click(object sender, EventArgs e)
