@@ -43,9 +43,9 @@
             // 
             // tbFileName
             // 
-            this.tbFileName.Location = new System.Drawing.Point(147, 16);
+            this.tbFileName.Location = new System.Drawing.Point(159, 16);
             this.tbFileName.Name = "tbFileName";
-            this.tbFileName.Size = new System.Drawing.Size(724, 27);
+            this.tbFileName.Size = new System.Drawing.Size(712, 27);
             this.tbFileName.TabIndex = 1;
             // 
             // btnBrowse
@@ -62,9 +62,9 @@
             this.lblMeasurementsFolder.AutoSize = true;
             this.lblMeasurementsFolder.Location = new System.Drawing.Point(12, 19);
             this.lblMeasurementsFolder.Name = "lblMeasurementsFolder";
-            this.lblMeasurementsFolder.Size = new System.Drawing.Size(129, 20);
+            this.lblMeasurementsFolder.Size = new System.Drawing.Size(141, 20);
             this.lblMeasurementsFolder.TabIndex = 2;
-            this.lblMeasurementsFolder.Text = "Folder Masuratori:";
+            this.lblMeasurementsFolder.Text = "Director Masuratori:";
             // 
             // MeasurementsCentral
             // 

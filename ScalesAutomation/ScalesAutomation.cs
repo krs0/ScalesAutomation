@@ -48,7 +48,6 @@ namespace ScalesAutomation
             Measurements = new SynchronizedCollection<Measurement>();
 
             CreateTimer();
-
         }
 
         public bool IsStopPressed()
