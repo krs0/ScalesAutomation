@@ -292,7 +292,7 @@ namespace ScalesAutomation
                         recievedData.TryDequeue(out byte val);
                         package.Add(val);
                     }
-                    var packageAsIntArray = Misc.TransformIEnumerableByteToIntArray(package, ref packageAsByteArray);
+                    var packageAsIntArray = Common.TransformIEnumerableByteToIntArray(package, ref packageAsByteArray);
 
                     switch(Settings.Default.ScaleType)
                     {

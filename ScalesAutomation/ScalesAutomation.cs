@@ -202,7 +202,7 @@ namespace ScalesAutomation
                 LogLotInfo(lotInfo);
             }
 
-            var CSVOutputFolderPath = Path.Combine(Misc.AssemblyPath, Settings.Default.CSVOutputPath);
+            var CSVOutputFolderPath = Path.Combine(Common.AssemblyPath, Settings.Default.CSVOutputPath);
             csvHelper = new CsvHelper();
             csvHelper.PrepareOutputFile(CSVOutputFolderPath, lotInfo);
 

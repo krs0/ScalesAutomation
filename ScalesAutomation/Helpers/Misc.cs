@@ -14,41 +14,6 @@ namespace ScalesAutomation
 {
     public static class Misc
     {
-        public static string AssemblyPath
-        {
-            get
-            {
-                return Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
-            }
-        }
-
-        public static void ChangeLoggingFile(this ILog log, string newFileName)
-        {
-            var logger = (Logger)log.Logger;
-
-            while (logger != null)
-            {
-                foreach (var appender in logger.Appenders)
-                {
-                    if (appender is FileAppender fileAppender)
-                    {
-                        fileAppender.File = newFileName;
-                        fileAppender.ActivateOptions();
-                    }
-                }
-                logger = logger.Parent;
-            }
-        }
-
-        public static void AppendFiles(string inputFilePath, string outputFilePath)
-        {
-            using (Stream input = File.OpenRead(inputFilePath))
-            using (Stream output = new FileStream(outputFilePath, FileMode.Append, FileAccess.Write, FileShare.None))
-            {
-                input.CopyTo(output); // Using .NET 4
-            }
-        }
-
         /// <summary>// remove trailing kg from string </summary>
         public static string RemoveTrailingKg(string rawValue)
         {
@@ -59,7 +24,7 @@ namespace ScalesAutomation
             return rawValue;
         }
 
-        // We will never have a non integer value. Grams is the lowest unit.
+        /// <summary> We will never have a non integer value. Grams is the lowest unit.</summary>
         public static int GetValueInGrams(string value)
         {
             int outputValue;
@@ -78,18 +43,7 @@ namespace ScalesAutomation
             return outputValue;
         }
 
-        public static int[] TransformIEnumerableByteToIntArray(IEnumerable<byte> package, ref byte[] packageAsByteArray)
-        {
-            packageAsByteArray = package.ToArray();
-            var packageAsCharArray = Array.ConvertAll(packageAsByteArray, element => (System.Text.Encoding.ASCII.GetChars(new[] { element })[0]));
-            var packageAsIntArray = Array.ConvertAll(packageAsCharArray, element => (int)char.GetNumericValue(element));
-
-            return packageAsIntArray;
-        }
-
-        /// <summary>
-        /// Deprecated. Used for transforming log from an old format to the current one.
-        /// </summary>
+        /// <summary>Deprecated. Used for transforming log from an old format to the current one.</summary>
         public static void MakeTemporaryFileWithStandardizedContents(string inputFilePath, string outputFilePath, string dateTime, int initialIndex)
         {
             try

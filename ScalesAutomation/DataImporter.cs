@@ -80,7 +80,7 @@ namespace ScalesAutomation
                 }
 
                 Misc.MakeTemporaryFileWithStandardizedContents(inputFilePath, intermediateFilePath, lotInfo.Date, startMeasurementIndex);
-                Misc.AppendFiles(intermediateFilePath, outputFilePath);
+                Common.AppendFiles(intermediateFilePath, outputFilePath);
 
                 MessageBox.Show("Datele au fost importate in fisierul: " + Environment.NewLine + Environment.NewLine +
                     outputFilePath, "Conversie Terminata", MessageBoxButtons.OK, MessageBoxIcon.None);

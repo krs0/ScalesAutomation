@@ -195,7 +195,7 @@ namespace ScalesAutomation
             var transformedFolderPath = folderPath;
 
             if(!PathHelper.IsAbsolutePath(transformedFolderPath))
-                transformedFolderPath = Path.Combine(Misc.AssemblyPath, transformedFolderPath);
+                transformedFolderPath = Path.Combine(Common.AssemblyPath, transformedFolderPath);
 
             return transformedFolderPath;
         }
