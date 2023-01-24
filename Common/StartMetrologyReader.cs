@@ -36,6 +36,7 @@ namespace Common
                 // Synchronously read the standard metrologyResult of Metrology Reader process.
                 StreamReader reader = metrologyReaderProcess.StandardOutput;
                 metrologyResult = reader.ReadToEnd();
+                metrologyResult = metrologyResult.TrimEnd();
 
                 // Write the redirected metrologyResult to this application's window.
                 log.Info($"Metrology Result: {metrologyResult}");

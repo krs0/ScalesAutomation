@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -269,10 +269,10 @@ namespace ScalesAutomation
             csvHelper.BackupOutputFile(Settings.Default.CSVBackupPath);
             csvHelper.CopyOutputFileToServer(Settings.Default.CSVServerFolderPath);
 
-            var result = StartMetrologyReader.GetMetrologyResults(CsvHelper.OutputFileFullName, LotData.TransformToAbsolutePath(Settings.Default.CSVServerFolderPath));
+            var metrologyResult = StartMetrologyReader.GetMetrologyResults(CsvHelper.OutputFileFullName, LotData.TransformToAbsolutePath(Settings.Default.CSVServerFolderPath));
 
             // display dialog with results
-            if(result == "Lot Acceptat")
+            if(metrologyResult == "Lot Acceptat")
                 MessageBox.Show($"Lot Acceptat.{Environment.NewLine}{Environment.NewLine}{lotId}", "Rezultat Metrologie", MessageBoxButtons.OK, MessageBoxIcon.None);
             else
                 MessageBox.Show($"Lot Neacceptat!{Environment.NewLine}{Environment.NewLine}{lotId}", "Rezultat Metrologie", MessageBoxButtons.OK, MessageBoxIcon.Error);
