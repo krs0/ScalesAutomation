@@ -1,42 +1,13 @@
-﻿using System.Diagnostics;
-using log4net;
-using System.Reflection;
+﻿using log4net;
 using System;
-using System.IO;
+using System.Diagnostics;
+using System.Reflection;
 
-namespace ScalesAutomation
+namespace Common
 {
-    public static class LogHelper
+    public static class StartMetrologyReader
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        /// <summary>Launch the log parsing application with some options set.</summary>
-        public static void ParseLog(string logFilePath, string outputFolderPath)
-        {
-            var startInfo = new ProcessStartInfo
-            {
-                CreateNoWindow = false,
-                UseShellExecute = false,
-                FileName = "LogParser.exe",
-                WindowStyle = ProcessWindowStyle.Hidden,
-                Arguments = "\"" + logFilePath + "\" \"" + outputFolderPath + "\\\"" // add an extra \ at the end, not to escape last " when it arrives in parser
-            };
-
-            try
-            {
-                // Start the process with the info we specified.
-                // Call WaitForExit and then the using-statement will close.
-                log.Info("Starting parser with arguments: " + startInfo.Arguments);
-                using(var parserProcess = Process.Start(startInfo))
-                {
-                    parserProcess?.WaitForExit();
-                }
-            }
-            catch (Exception ex)
-            {
-                log.Info($"Cannot start log parser process: {ex.Message}");
-            }
-        }
 
         /// <summary>Launch the Metrology Reader application and read its metrologyResult</summary>
         public static string GetMetrologyResults(string logFileName, string serverFolderPath)
@@ -78,6 +49,5 @@ namespace ScalesAutomation
 
             return metrologyResult;
         }
-
     }
 }

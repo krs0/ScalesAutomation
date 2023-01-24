@@ -5,6 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using Common;
 using log4net;
 using Microsoft.VisualBasic;
 using ScalesAutomation.Properties;
@@ -263,12 +264,12 @@ namespace ScalesAutomation
 
             // parse logs only for Bilanciai, for Constalaris we log exactly what's in the GUI
             if(!(Settings.Default.ScaleType == "Constalaris"))
-                LogHelper.ParseLog(logFilePath, CsvHelper.OutputFolderPath);
+                StartLogParser.ParseLog(logFilePath, CsvHelper.OutputFolderPath);
 
             csvHelper.BackupOutputFile(Settings.Default.CSVBackupPath);
             csvHelper.CopyOutputFileToServer(Settings.Default.CSVServerFolderPath);
 
-            var result = LogHelper.GetMetrologyResults(CsvHelper.OutputFileFullName, LotData.TransformToAbsolutePath(Settings.Default.CSVServerFolderPath));
+            var result = StartMetrologyReader.GetMetrologyResults(CsvHelper.OutputFileFullName, LotData.TransformToAbsolutePath(Settings.Default.CSVServerFolderPath));
 
             // display dialog with results
             if(result == "Lot Acceptat")
