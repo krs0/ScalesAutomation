@@ -275,7 +275,7 @@ namespace ScalesAutomation
             if(metrologyResult == "Lot Acceptat")
                 MessageBox.Show($"Lot Acceptat.{Environment.NewLine}{Environment.NewLine}{lotId}", "Rezultat Metrologie", MessageBoxButtons.OK, MessageBoxIcon.None);
             else
-                MessageBox.Show($"Lot Neacceptat!{Environment.NewLine}{Environment.NewLine}{lotId}", "Rezultat Metrologie", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Lot Respins!{Environment.NewLine}{Environment.NewLine}{lotId}", "Rezultat Metrologie", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         void btnShowNextLotData_Click(object sender, EventArgs e)
