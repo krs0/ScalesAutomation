@@ -44,6 +44,22 @@ namespace ScalesAutomation
             }
         }
 
+        public static bool IsAbsolutePath(string filePath)
+        {
+            return filePath.Contains(':');
+        }
+
+        /// <summary>Transforms a relative path in a absolute path relative to AssemblyPath</summary>
+        public static string TransformToAbsolutePath(string folderPath)
+        {
+            var transformedFolderPath = folderPath;
+
+            if(!IsAbsolutePath(transformedFolderPath))
+                transformedFolderPath = Path.Combine(Common.AssemblyPath, transformedFolderPath);
+
+            return transformedFolderPath;
+        }
+
         public static int[] TransformIEnumerableByteToIntArray(IEnumerable<byte> package, ref byte[] packageAsByteArray)
         {
             packageAsByteArray = package.ToArray();

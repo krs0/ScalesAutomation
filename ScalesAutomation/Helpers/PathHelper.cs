@@ -44,10 +44,6 @@ namespace ScalesAutomation
             return GetFilePath(lotId, outputFolderPath, ref outputFilePath, ".csv");
         }
 
-        public static bool IsAbsolutePath(string filePath)
-        {
-            return filePath.Contains(":");
-        }
 
         public static void FileCopy(string sourceFolderPath, string destinationFolderPath, string fileName)
         {

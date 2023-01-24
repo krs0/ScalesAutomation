@@ -179,7 +179,7 @@ namespace ScalesAutomation
 
         void InitializeGuiBackendFromXml()
         {
-            string productCatalogFilePath = TransformToAbsolutePath(Settings.Default.ProductCatalogFilePath);
+            string productCatalogFilePath = Common.TransformToAbsolutePath(Settings.Default.ProductCatalogFilePath);
 
             XmlHandler.ReadCatalogue(productCatalogFilePath);
 
@@ -187,17 +187,6 @@ namespace ScalesAutomation
             {
                 cbProduct.Items.Add(product.Name);
             }
-        }
-
-        /// <summary>Transforms a relative path in a absolute path relative to AssemblyPath</summary>
-        public static string TransformToAbsolutePath(string folderPath)
-        {
-            var transformedFolderPath = folderPath;
-
-            if(!PathHelper.IsAbsolutePath(transformedFolderPath))
-                transformedFolderPath = Path.Combine(Common.AssemblyPath, transformedFolderPath);
-
-            return transformedFolderPath;
         }
     }
 }

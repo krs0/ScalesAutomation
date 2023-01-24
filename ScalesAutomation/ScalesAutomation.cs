@@ -30,7 +30,7 @@ namespace ScalesAutomation
 
         private readonly bool simulationEnabled;
         private CsvHelper csvHelper;
-        private readonly string logFolderPath = LotData.TransformToAbsolutePath(Settings.Default.LogFolderPath);
+        private readonly string logFolderPath = Common.TransformToAbsolutePath(Settings.Default.LogFolderPath);
         private string logFilePath = "";
 
         private int zeroThreshold;
@@ -269,7 +269,7 @@ namespace ScalesAutomation
             csvHelper.BackupOutputFile(Settings.Default.CSVBackupPath);
             csvHelper.CopyOutputFileToServer(Settings.Default.CSVServerFolderPath);
 
-            var metrologyResult = StartMetrologyReader.GetMetrologyResults(CsvHelper.OutputFileFullName, LotData.TransformToAbsolutePath(Settings.Default.CSVServerFolderPath));
+            var metrologyResult = StartMetrologyReader.GetMetrologyResults(CsvHelper.OutputFileFullName, Common.TransformToAbsolutePath(Settings.Default.CSVServerFolderPath));
 
             // display dialog with results
             if(metrologyResult == "Lot Acceptat")
