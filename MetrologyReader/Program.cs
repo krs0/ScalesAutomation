@@ -16,9 +16,9 @@ class Program
 
         string centralizatorFilePath = args[0];
         string measurementsFileName = args[1];
-        log.Info($"Metrology Reader Started with the following arguments: {System.Environment.NewLine}" +
-            $"Centralizator Masuratori File Path = {centralizatorFilePath} {System.Environment.NewLine}" +
-            $"Measurements File Name = {measurementsFileName} {System.Environment.NewLine}");
+        log.Info($"Metrology Reader Started with the following arguments:{System.Environment.NewLine}" +
+            $"Centralizator Masuratori File Path = {centralizatorFilePath}{System.Environment.NewLine}" +
+            $"Measurements File Name = {measurementsFileName}{System.Environment.NewLine}");
 
         if(!File.Exists(centralizatorFilePath))
         {

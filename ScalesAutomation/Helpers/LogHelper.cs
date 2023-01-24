@@ -2,7 +2,6 @@
 using log4net;
 using System.Reflection;
 using System;
-using ScalesAutomation.Properties;
 using System.IO;
 
 namespace ScalesAutomation
@@ -12,7 +11,7 @@ namespace ScalesAutomation
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>Launch the log parsing application with some options set.</summary>
-        public static void ParseLog(string logFilePath)
+        public static void ParseLog(string logFilePath, string outputFolderPath)
         {
             var startInfo = new ProcessStartInfo
             {
@@ -20,7 +19,7 @@ namespace ScalesAutomation
                 UseShellExecute = false,
                 FileName = "LogParser.exe",
                 WindowStyle = ProcessWindowStyle.Hidden,
-                Arguments = "\"" + logFilePath + "\" \"" + CsvHelper.OutputFolderPath + "\\\"" // add an extra \ at the end, not to escape last " when it arrives in parser
+                Arguments = "\"" + logFilePath + "\" \"" + outputFolderPath + "\\\"" // add an extra \ at the end, not to escape last " when it arrives in parser
             };
 
             try
@@ -39,12 +38,12 @@ namespace ScalesAutomation
             }
         }
 
-        /// <summary>Launch the Metrology Reader application and read its result</summary>
-        public static string GetMetrologyResults(string logFileName)
+        /// <summary>Launch the Metrology Reader application and read its metrologyResult</summary>
+        public static string GetMetrologyResults(string logFileName, string serverFolderPath)
         {
-            string result = "";
+            string metrologyResult = "";
 
-            var centralizatorMasuratoriFilePath = CsvHelper.OutputFolderPath + @"..\..\Server\CentralizatorMasuratori.xlsm";
+            var centralizatorMasuratoriFilePath = serverFolderPath + @"..\CentralizatorMasuratori.xlsm";
 
             var startInfo = new ProcessStartInfo
             {
@@ -58,17 +57,17 @@ namespace ScalesAutomation
 
             try
             {
-                // Start the process with the info we specified, read from its std result and WaitForExit
+                // Start the process with the info we specified, read from its std metrologyResult and WaitForExit
                 log.Info("Starting Metrology Reader with arguments: " + startInfo.Arguments);
 
                 using var metrologyReaderProcess = Process.Start(startInfo);
 
-                // Synchronously read the standard result of Metrology Reader process.
+                // Synchronously read the standard metrologyResult of Metrology Reader process.
                 StreamReader reader = metrologyReaderProcess.StandardOutput;
-                result = reader.ReadToEnd();
+                metrologyResult = reader.ReadToEnd();
 
-                // Write the redirected result to this application's window.
-                log.Info(result);
+                // Write the redirected metrologyResult to this application's window.
+                log.Info($"Metrology Result: {metrologyResult}");
 
                 metrologyReaderProcess?.WaitForExit();
             }
@@ -77,7 +76,7 @@ namespace ScalesAutomation
                 log.Info($"Cannot start Metrology Reader process: {ex.Message}");
             }
 
-            return result;
+            return metrologyResult;
         }
 
     }

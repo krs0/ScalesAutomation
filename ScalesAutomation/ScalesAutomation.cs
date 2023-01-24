@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -29,7 +29,7 @@ namespace ScalesAutomation
 
         private readonly bool simulationEnabled;
         private CsvHelper csvHelper;
-        private readonly string logFolderPath = Path.Combine(Misc.AssemblyPath, Settings.Default.LogFolderPath);
+        private readonly string logFolderPath = LotData.TransformToAbsolutePath(Settings.Default.LogFolderPath);
         private string logFilePath = "";
 
         private int zeroThreshold;
@@ -263,12 +263,12 @@ namespace ScalesAutomation
 
             // parse logs only for Bilanciai, for Constalaris we log exactly what's in the GUI
             if(!(Settings.Default.ScaleType == "Constalaris"))
-                LogHelper.ParseLog(logFilePath);
+                LogHelper.ParseLog(logFilePath, CsvHelper.OutputFolderPath);
 
             csvHelper.BackupOutputFile(Settings.Default.CSVBackupPath);
             csvHelper.CopyOutputFileToServer(Settings.Default.CSVServerFolderPath);
 
-            var result = LogHelper.GetMetrologyResults(CsvHelper.OutputFileFullName);
+            var result = LogHelper.GetMetrologyResults(CsvHelper.OutputFileFullName, LotData.TransformToAbsolutePath(Settings.Default.CSVServerFolderPath));
 
             // display dialog with results
             if(result == "Lot Acceptat")

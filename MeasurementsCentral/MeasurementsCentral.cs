@@ -64,6 +64,9 @@ namespace MeasurementsCentral
                 item.Tag = filename;
                 //item.SubItems.Add("OK");
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item, ""));
+
+                // var result = LogHelper.GetMetrologyResults(CsvHelper.OutputFileFullName);
+
                 if(filename.Contains("2023-01-13"))
                     item.ImageIndex = 1;
                 else
