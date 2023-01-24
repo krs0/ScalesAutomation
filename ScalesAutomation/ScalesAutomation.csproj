@@ -91,12 +91,14 @@ copy /Y "$(OutDir)..\..\Resources\CatalogProduseEurocas.xml" "$(OutDir)..\Server
      <DebugType>full</DebugType>
      <ShouldCreateLogs>True</ShouldCreateLogs>
      <AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
-     <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
-     <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
+     <UpdateAssemblyVersion>True</UpdateAssemblyVersion>
+     <UpdateAssemblyFileVersion>True</UpdateAssemblyFileVersion>
      <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
      <UpdatePackageVersion>False</UpdatePackageVersion>
      <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
      <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
+     <AssemblyVersionSettings>None.None.None.None</AssemblyVersionSettings>
+     <AssemblyFileVersionSettings>None.None.None.None</AssemblyFileVersionSettings>
    </PropertyGroup>
   
    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
