@@ -18,7 +18,7 @@ namespace ScalesAutomation
 
         public static volatile bool stopPressed = false; // will also be used to stop the Write Thread in simulation mode
 
-        private readonly ILog log = LogManager.GetLogger(typeof(ScalesAutomation));
+        private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private Timer timer;
         private readonly DataTable dataTable = new DataTable();

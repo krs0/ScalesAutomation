@@ -1,10 +1,10 @@
-﻿using log4net;
+using log4net;
 using System.Reflection;
 using Excel = Microsoft.Office.Interop.Excel;
 
 class MetrologyReader
 {
-    readonly static ILog log = LogManager.GetLogger(typeof(MetrologyReader));
+    private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
     static void Main(string[] args)
     {
