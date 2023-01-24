@@ -44,7 +44,6 @@ namespace ScalesAutomation
             return GetFilePath(lotId, outputFolderPath, ref outputFilePath, ".csv");
         }
 
-
         public static void FileCopy(string sourceFolderPath, string destinationFolderPath, string fileName)
         {
             try
@@ -80,10 +79,5 @@ namespace ScalesAutomation
         }
 
         #endregion
-
-        #region Private Methods
-
-        #endregion
-
     }
 }

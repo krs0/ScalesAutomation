@@ -7,7 +7,6 @@ using System.Threading;
 using System.Windows.Forms;
 using Common;
 using log4net;
-using Microsoft.VisualBasic;
 using ScalesAutomation.Properties;
 using Timer = System.Windows.Forms.Timer;
 
@@ -19,7 +18,7 @@ namespace ScalesAutomation
 
         public static volatile bool stopPressed = false; // will also be used to stop the Write Thread in simulation mode
 
-        private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILog log = LogManager.GetLogger(typeof(ScalesAutomation));
 
         private Timer timer;
         private readonly DataTable dataTable = new DataTable();

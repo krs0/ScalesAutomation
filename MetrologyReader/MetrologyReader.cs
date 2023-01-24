@@ -2,9 +2,9 @@
 using System.Reflection;
 using Excel = Microsoft.Office.Interop.Excel;
 
-class Program
+class MetrologyReader
 {
-    readonly static ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+    readonly static ILog log = LogManager.GetLogger(typeof(MetrologyReader));
 
     static void Main(string[] args)
     {
