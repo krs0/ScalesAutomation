@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using log4net;
+using Microsoft.VisualBasic;
 using ScalesAutomation.Properties;
 using Timer = System.Windows.Forms.Timer;
 
@@ -256,6 +257,8 @@ namespace ScalesAutomation
 
             Thread.Sleep(500);
 
+            var lotId = uctlLotData.LotInfo.Id; // save Lot ID for later (display in result message box)
+
             InitializeInputControls();
             uctlLotData.EnableInputControls();
 
@@ -266,7 +269,13 @@ namespace ScalesAutomation
             csvHelper.BackupOutputFile(Settings.Default.CSVBackupPath);
             csvHelper.CopyOutputFileToServer(Settings.Default.CSVServerFolderPath);
 
-            LogHelper.GetMetrologyResults(CsvHelper.OutputFileFullName);
+            var result = LogHelper.GetMetrologyResults(CsvHelper.OutputFileFullName);
+
+            // display dialog with results
+            if(result == "Lot Acceptat")
+                MessageBox.Show($"Lot Acceptat. {Environment.NewLine} {Environment.NewLine} {lotId}", "Rezultat Metrologie", MessageBoxButtons.OK, MessageBoxIcon.None);
+            else
+                MessageBox.Show($"Lot Neacceptat! {Environment.NewLine} {Environment.NewLine} {lotId}", "Rezultat Metrologie", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         void btnShowNextLotData_Click(object sender, EventArgs e)

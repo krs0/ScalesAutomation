@@ -39,9 +39,11 @@ namespace ScalesAutomation
             }
         }
 
-        /// <summary>Launch the Metrology Reader application and read its output</summary>
-        public static void GetMetrologyResults(string logFileName)
+        /// <summary>Launch the Metrology Reader application and read its result</summary>
+        public static string GetMetrologyResults(string logFileName)
         {
+            string result = "";
+
             var centralizatorMasuratoriFilePath = CsvHelper.OutputFolderPath + @"..\..\Server\CentralizatorMasuratori.xlsm";
 
             var startInfo = new ProcessStartInfo
@@ -56,25 +58,26 @@ namespace ScalesAutomation
 
             try
             {
-                // Start the process with the info we specified.
-                // Call WaitForExit and then the using-statement will close.
+                // Start the process with the info we specified, read from its std result and WaitForExit
                 log.Info("Starting Metrology Reader with arguments: " + startInfo.Arguments);
-                using(var metrologyReaderProcess = Process.Start(startInfo))
-                {
-                    // Synchronously read the standard output of Metrology Reader process.
-                    StreamReader reader = metrologyReaderProcess.StandardOutput;
-                    string output = reader.ReadToEnd();
 
-                    // Write the redirected output to this application's window.
-                    log.Info(output);
+                using var metrologyReaderProcess = Process.Start(startInfo);
 
-                    metrologyReaderProcess?.WaitForExit();
-                }
+                // Synchronously read the standard result of Metrology Reader process.
+                StreamReader reader = metrologyReaderProcess.StandardOutput;
+                result = reader.ReadToEnd();
+
+                // Write the redirected result to this application's window.
+                log.Info(result);
+
+                metrologyReaderProcess?.WaitForExit();
             }
             catch(Exception ex)
             {
                 log.Info($"Cannot start Metrology Reader process: {ex.Message}");
             }
+
+            return result;
         }
 
     }
