@@ -256,11 +256,6 @@ namespace ScalesAutomation
 
             Thread.Sleep(500);
 
-            var lotId = uctlLotData.LotInfo.Id; // save Lot ID for later (display in result message box)
-
-            InitializeInputControls();
-            uctlLotData.EnableInputControls();
-
             // parse logs only for Bilanciai, for Constalaris we log exactly what's in the GUI
             if(!(Settings.Default.ScaleType == "Constalaris"))
                 StartLogParser.ParseLog(logFilePath, CsvHelper.OutputFolderPath);
@@ -271,10 +266,14 @@ namespace ScalesAutomation
             var metrologyResult = StartMetrologyReader.GetMetrologyResults(CsvHelper.OutputFileFullName, Common.TransformToAbsolutePath(Settings.Default.CSVServerFolderPath));
 
             // display dialog with results
+            var lotId = uctlLotData.LotInfo.Id;
             if(metrologyResult == "Lot Acceptat")
                 MessageBox.Show($"Lot Acceptat.{Environment.NewLine}{Environment.NewLine}{lotId}", "Rezultat Metrologie", MessageBoxButtons.OK, MessageBoxIcon.None);
             else
                 MessageBox.Show($"Lot Respins!{Environment.NewLine}{Environment.NewLine}{lotId}", "Rezultat Metrologie", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            InitializeInputControls();
+            uctlLotData.EnableInputControls();
         }
 
         void btnShowNextLotData_Click(object sender, EventArgs e)
