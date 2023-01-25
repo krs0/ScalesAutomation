@@ -5,5 +5,8 @@
     <Setting Name="LastSelectedFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)">d:\temp\Krs\ScalesAutomation\out\Server\Cantariri_Automate\</Value>
     </Setting>
+    <Setting Name="MaxNoOfMeasurementFiles" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

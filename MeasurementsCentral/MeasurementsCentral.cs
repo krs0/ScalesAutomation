@@ -26,6 +26,7 @@ namespace MeasurementsCentral
             imageList.Images.Add(Image.FromFile("Images/x.png"));
 
             InitializeComponent();
+
             lvwColumnSorter = new ListViewColumnSorter();
             lvwMeasurementsFiles.ListViewItemSorter = lvwColumnSorter;
 
@@ -51,6 +52,8 @@ namespace MeasurementsCentral
 
         private void PpopulatelvwMeasurementsFiles(string path)
         {
+            int fileCount = 0;
+
             tbFileName.Text = path;
 
             // Get all filePaths in the directory
@@ -77,6 +80,11 @@ namespace MeasurementsCentral
                 // Add the measuremetnsFilePath name to the tooltip
                 item.ToolTipText = measurementsFilename;
                 lvwMeasurementsFiles.Items.Add(item);
+
+                if (fileCount > Settings.Default.MaxNoOfMeasurementFiles)
+                    break;
+
+                fileCount++;
             }
         }
 

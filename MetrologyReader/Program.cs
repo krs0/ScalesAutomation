@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace MetrologyReader
 {
-    class MetrologyReader
+    class Program
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
