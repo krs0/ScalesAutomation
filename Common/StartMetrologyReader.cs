@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace Common
+namespace ScalesAutomation
 {
     public static class StartMetrologyReader
     {
@@ -18,7 +18,7 @@ namespace Common
 
             var startInfo = new ProcessStartInfo
             {
-                CreateNoWindow = false,
+                CreateNoWindow = true,
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 FileName = "MetrologyReader.exe",

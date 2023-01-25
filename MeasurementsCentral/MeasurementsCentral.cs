@@ -1,3 +1,4 @@
+using ScalesAutomation;
 using MeasurementsCentral.Properties;
 using System;
 using System.Collections;
@@ -12,6 +13,7 @@ namespace MeasurementsCentral
         ListView lvwMeasurementsFiles;
         ListViewColumnSorter lvwColumnSorter;
         ToolTip tooltip;
+        string CSVServerFolderPath = ScalesAutomation.Common.TransformToAbsolutePath(Common.Properties.Settings.Default.CSVServerFolderPath);
 
         public MeasurementsCentral()
         {
@@ -56,24 +58,24 @@ namespace MeasurementsCentral
 
             lvwMeasurementsFiles.Items.Clear();
 
-            // Add each filePath to the ListView
-            foreach(string filePath in filePaths)
+            // Add each measurements file to the ListView
+            foreach(string measuremetnsFilePath in filePaths)
             {
-                var filename = Path.GetFileName(filePath).Trim();
-                ListViewItem item = new ListViewItem(filename);
-                item.Tag = filename;
+                var measurementsFilename = Path.GetFileName(measuremetnsFilePath).Trim();
+                ListViewItem item = new ListViewItem(measurementsFilename);
+                item.Tag = measuremetnsFilePath;
                 //item.SubItems.Add("OK");
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item, ""));
 
-                // var result = LogHelper.GetMetrologyResults(CsvHelper.OutputFileFullName);
+                var metrologyResult = StartMetrologyReader.GetMetrologyResults(measurementsFilename, CSVServerFolderPath);
 
-                if(filename.Contains("2023-01-13"))
-                    item.ImageIndex = 1;
-                else
+                if(metrologyResult == "Lot Acceptat")
                     item.ImageIndex = 0;
+                else
+                    item.ImageIndex = 1;
 
-                // Add the filePath name to the tooltip
-                item.ToolTipText = filename;
+                // Add the measuremetnsFilePath name to the tooltip
+                item.ToolTipText = measurementsFilename;
                 lvwMeasurementsFiles.Items.Add(item);
             }
         }
