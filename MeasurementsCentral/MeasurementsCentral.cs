@@ -27,6 +27,8 @@ namespace MeasurementsCentral
 
             InitializeComponent();
 
+            Shown += MeasurementsCentral_Shown;
+
             lvwColumnSorter = new ListViewColumnSorter();
             lvwMeasurementsFiles.ListViewItemSorter = lvwColumnSorter;
 
@@ -36,7 +38,10 @@ namespace MeasurementsCentral
             dlgFolderBrowser.RootFolder = Environment.SpecialFolder.Recent;
 
             lvwMeasurementsFiles.SmallImageList = imageList;
+        }
 
+        private void MeasurementsCentral_Shown(object sender, EventArgs e)
+        {
             PpopulatelvwMeasurementsFiles(Settings.Default.LastSelectedFolder);
         }
 
