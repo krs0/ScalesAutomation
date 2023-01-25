@@ -2,9 +2,9 @@
 using System.Reflection;
 using Excel = Microsoft.Office.Interop.Excel;
 
-namespace MetrologyReader
+namespace MetrologyReaderNS
 {
-    public class Metrology
+    public class MetrologyReader
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -13,7 +13,7 @@ namespace MetrologyReader
         Excel.Sheets worksheets;
         Excel.Worksheet worksheet;
 
-        public void GetMetrologyResult(string measurementsFileName)
+        public string GetMetrologyResult(string measurementsFileName)
         {
             excelApp.EnableEvents = true; // we need to manually enable here because by default Excel events are disabled
 
@@ -29,6 +29,8 @@ namespace MetrologyReader
 
             // write in console so that calling process can catch this result
             Console.WriteLine(measurementsOverallStatus);
+
+            return measurementsOverallStatus;
         }
 
         public void InitializeExcel(string centralizatorFilePath)

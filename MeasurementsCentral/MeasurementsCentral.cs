@@ -1,4 +1,5 @@
 using ScalesAutomation;
+using MetrologyReaderNS;
 using MeasurementsCentral.Properties;
 using System;
 using System.Collections;
@@ -27,7 +28,7 @@ namespace MeasurementsCentral
 
             InitializeComponent();
 
-            Shown += MeasurementsCentral_Shown;
+            Shown += MeasurementsCentral_Shown; // Start filling the measurements file list only after main Form is Shown.
 
             lvwColumnSorter = new ListViewColumnSorter();
             lvwMeasurementsFiles.ListViewItemSorter = lvwColumnSorter;
@@ -66,6 +67,9 @@ namespace MeasurementsCentral
 
             lvwMeasurementsFiles.Items.Clear();
 
+            var metrologyReader = new MetrologyReader();
+            metrologyReader.InitializeExcel($"{CSVServerFolderPath}../CentralizatorMasuratori.xlsm");
+
             // Add each measurements file to the ListView
             foreach(string measuremetnsFilePath in filePaths)
             {
@@ -75,7 +79,7 @@ namespace MeasurementsCentral
                 //item.SubItems.Add("OK");
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item, ""));
 
-                var metrologyResult = StartMetrologyReader.GetMetrologyResults(measurementsFilename, CSVServerFolderPath);
+                var metrologyResult = metrologyReader.GetMetrologyResult(measurementsFilename);
 
                 if(metrologyResult == "Lot Acceptat")
                     item.ImageIndex = 0;
@@ -91,6 +95,8 @@ namespace MeasurementsCentral
 
                 fileCount++;
             }
+
+            metrologyReader.CloseExcel();
         }
 
         private void lvwMeasurementsFiles_ColumnClick(object sender, ColumnClickEventArgs e)

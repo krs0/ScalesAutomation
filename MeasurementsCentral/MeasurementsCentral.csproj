@@ -65,6 +65,7 @@
   
    <ItemGroup>
      <ProjectReference Include="..\Common\Common.csproj" />
+     <ProjectReference Include="..\MetrologyReader\MetrologyReader.csproj" />
    </ItemGroup>
   
    <ItemGroup>

@@ -1,7 +1,7 @@
 using log4net;
 using System.Reflection;
 
-namespace MetrologyReader
+namespace MetrologyReaderNS
 {
     class Program
     {
@@ -15,7 +15,7 @@ namespace MetrologyReader
             {
                 ParseArgs(args, out centralizatorFilePath, out measurementsFileName);
 
-                Metrology metrologyReader = new Metrology();
+                MetrologyReader metrologyReader = new MetrologyReader();
 
                 metrologyReader.InitializeExcel(centralizatorFilePath);
 
