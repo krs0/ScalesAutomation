@@ -1,10 +1,6 @@
-using ScalesAutomation;
 using MetrologyReaderNS;
 using MeasurementsCentral.Properties;
-using System;
 using System.Collections;
-using System.IO;
-using System.Windows.Forms;
 
 namespace MeasurementsCentral
 {
@@ -44,16 +40,6 @@ namespace MeasurementsCentral
         private void MeasurementsCentral_Shown(object sender, EventArgs e)
         {
             PpopulatelvwMeasurementsFiles(Settings.Default.LastSelectedFolder);
-        }
-
-        private void btnBrowse_Click(object sender, EventArgs e)
-        {
-            if(dlgFolderBrowser.ShowDialog() == DialogResult.OK)
-            {
-                string path = dlgFolderBrowser.SelectedPath;
-
-                PpopulatelvwMeasurementsFiles(path);
-            }
         }
 
         private void PpopulatelvwMeasurementsFiles(string path)
@@ -99,6 +85,16 @@ namespace MeasurementsCentral
             metrologyReader.CloseExcel();
         }
 
+        private void btnBrowse_Click(object sender, EventArgs e)
+        {
+            if(dlgFolderBrowser.ShowDialog() == DialogResult.OK)
+            {
+                string path = dlgFolderBrowser.SelectedPath;
+
+                PpopulatelvwMeasurementsFiles(path);
+            }
+        }
+
         private void lvwMeasurementsFiles_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             // Determine if clicked column is already the column that is being sorted.
@@ -124,32 +120,9 @@ namespace MeasurementsCentral
 
     class ListViewColumnSorter : IComparer
     {
-        private int ColumnToSort;
-        private SortOrder OrderOfSort;
+        public int SortColumn { set; get; }
 
-        public int SortColumn
-        {
-            set
-            {
-                ColumnToSort = value;
-            }
-            get
-            {
-                return ColumnToSort;
-            }
-        }
-
-        public SortOrder Order
-        {
-            set
-            {
-                OrderOfSort = value;
-            }
-            get
-            {
-                return OrderOfSort;
-            }
-        }
+        public SortOrder Order { set; get; }
 
         public int Compare(object x, object y)
         {
@@ -157,21 +130,16 @@ namespace MeasurementsCentral
             ListViewItem listviewX, listviewY;
             listviewX = (ListViewItem)x;
             listviewY = (ListViewItem)y;
-            string xText = listviewX.SubItems[ColumnToSort].Text;
-            string yText = listviewY.SubItems[ColumnToSort].Text;
+            string xText = listviewX.SubItems[SortColumn].Text;
+            string yText = listviewY.SubItems[SortColumn].Text;
             compareResult = String.Compare(xText, yText);
-            if(OrderOfSort == SortOrder.Ascending)
-            {
+
+            if(Order == SortOrder.Ascending)
                 return compareResult;
-            }
-            else if(OrderOfSort == SortOrder.Descending)
-            {
+            else if(Order == SortOrder.Descending)
                 return (-compareResult);
-            }
             else
-            {
                 return 0;
-            }
         }
     }
 }
