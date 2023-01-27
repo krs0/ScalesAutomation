@@ -49,7 +49,7 @@
             this.cbProduct.Location = new System.Drawing.Point(180, 80);
             this.cbProduct.Name = "cbProduct";
             this.cbProduct.Size = new System.Drawing.Size(784, 32);
-            this.cbProduct.TabIndex = 16;
+            this.cbProduct.TabIndex = 2;
             this.cbProduct.SelectedIndexChanged += new System.EventHandler(this.cbProduct_SelectedIndexChanged);
             // 
             // lblPackageTare
@@ -60,7 +60,7 @@
             this.lblPackageTare.Location = new System.Drawing.Point(5, 209);
             this.lblPackageTare.Name = "lblPackageTare";
             this.lblPackageTare.Size = new System.Drawing.Size(156, 24);
-            this.lblPackageTare.TabIndex = 23;
+            this.lblPackageTare.TabIndex = 24;
             this.lblPackageTare.Text = "Tara Ambalaj:";
             // 
             // lblPackage
@@ -71,7 +71,7 @@
             this.lblPackage.Location = new System.Drawing.Point(5, 145);
             this.lblPackage.Name = "lblPackage";
             this.lblPackage.Size = new System.Drawing.Size(142, 24);
-            this.lblPackage.TabIndex = 22;
+            this.lblPackage.TabIndex = 23;
             this.lblPackage.Text = "Tip Ambalaj:";
             // 
             // lblNominalWeight
@@ -82,7 +82,7 @@
             this.lblNominalWeight.Location = new System.Drawing.Point(5, 282);
             this.lblNominalWeight.Name = "lblNominalWeight";
             this.lblNominalWeight.Size = new System.Drawing.Size(142, 24);
-            this.lblNominalWeight.TabIndex = 21;
+            this.lblNominalWeight.TabIndex = 25;
             this.lblNominalWeight.Text = "Masa Totala:";
             // 
             // lblLot
@@ -93,7 +93,7 @@
             this.lblLot.Location = new System.Drawing.Point(7, 15);
             this.lblLot.Name = "lblLot";
             this.lblLot.Size = new System.Drawing.Size(52, 24);
-            this.lblLot.TabIndex = 24;
+            this.lblLot.TabIndex = 21;
             this.lblLot.Text = "Lot:";
             // 
             // lblProduct
@@ -104,7 +104,7 @@
             this.lblProduct.Location = new System.Drawing.Point(7, 80);
             this.lblProduct.Name = "lblProduct";
             this.lblProduct.Size = new System.Drawing.Size(142, 24);
-            this.lblProduct.TabIndex = 20;
+            this.lblProduct.TabIndex = 22;
             this.lblProduct.Text = "Sortimentul:";
             // 
             // cbPackage
@@ -115,7 +115,7 @@
             this.cbPackage.Location = new System.Drawing.Point(180, 145);
             this.cbPackage.Name = "cbPackage";
             this.cbPackage.Size = new System.Drawing.Size(784, 32);
-            this.cbPackage.TabIndex = 17;
+            this.cbPackage.TabIndex = 3;
             this.cbPackage.SelectedIndexChanged += new System.EventHandler(this.cbPackage_SelectedIndexChanged);
             // 
             // txtPackageTare
@@ -126,7 +126,7 @@
             this.txtPackageTare.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtPackageTare.Name = "txtPackageTare";
             this.txtPackageTare.Size = new System.Drawing.Size(784, 30);
-            this.txtPackageTare.TabIndex = 18;
+            this.txtPackageTare.TabIndex = 4;
             this.txtPackageTare.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPackageTare_KeyPress);
             this.txtPackageTare.Validated += new System.EventHandler(this.txtPackageTare_Validated);
             // 
@@ -138,7 +138,7 @@
             this.txtNominalWeight.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtNominalWeight.Name = "txtNominalWeight";
             this.txtNominalWeight.Size = new System.Drawing.Size(784, 30);
-            this.txtNominalWeight.TabIndex = 19;
+            this.txtNominalWeight.TabIndex = 6;
             // 
             // txtLot
             // 
@@ -147,7 +147,7 @@
             this.txtLot.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtLot.Name = "txtLot";
             this.txtLot.Size = new System.Drawing.Size(784, 30);
-            this.txtLot.TabIndex = 15;
+            this.txtLot.TabIndex = 1;
             this.txtLot.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtLot_KeyPress);
             this.txtLot.Validated += new System.EventHandler(this.txtLot_Validated);
             // 
@@ -159,7 +159,7 @@
             this.cbPackageTareSet.Location = new System.Drawing.Point(180, 247);
             this.cbPackageTareSet.Name = "cbPackageTareSet";
             this.cbPackageTareSet.Size = new System.Drawing.Size(186, 24);
-            this.cbPackageTareSet.TabIndex = 25;
+            this.cbPackageTareSet.TabIndex = 5;
             this.cbPackageTareSet.Text = "Cantarul are Tara setata";
             this.cbPackageTareSet.UseVisualStyleBackColor = true;
             this.cbPackageTareSet.CheckStateChanged += new System.EventHandler(this.cbPackageTareSet_CheckStateChanged);
