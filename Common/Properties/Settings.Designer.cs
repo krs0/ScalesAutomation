@@ -34,5 +34,17 @@ namespace Common.Properties {
                 this["CSVServerFolderPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("\"c:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE\"")]
+        public string ExcelExePath {
+            get {
+                return ((string)(this["ExcelExePath"]));
+            }
+            set {
+                this["ExcelExePath"] = value;
+            }
+        }
     }
 }

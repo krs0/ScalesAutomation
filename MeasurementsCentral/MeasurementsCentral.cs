@@ -1,6 +1,7 @@
 using MetrologyReaderNS;
 using MeasurementsCentral.Properties;
 using System.Collections;
+using ScalesAutomation;
 
 namespace MeasurementsCentral
 {
@@ -44,6 +45,9 @@ namespace MeasurementsCentral
 
         private void PpopulatelvwMeasurementsFiles(string path)
         {
+            if(OpenExcel.CheckIfExcelIsOpen())
+                return;
+
             int fileCount = 0;
 
             tbFileName.Text = path;
@@ -115,6 +119,25 @@ namespace MeasurementsCentral
 
             // Perform the sort with these new sort options.
             this.lvwMeasurementsFiles.Sort();
+        }
+
+        private void lvwMeasurementsFiles_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if(OpenExcel.CheckIfExcelIsOpen())
+                return;
+
+            var metrologyReader = new MetrologyReader();
+            metrologyReader.InitializeExcel($"{CSVServerFolderPath}../CentralizatorMasuratori.xlsm");
+
+            //var measurementsFilename = Path.GetFileName(measuremetnsFilePath).Trim();
+            var measurementsFilename = lvwMeasurementsFiles.SelectedItems[0].Text;
+
+            var metrologyResult = metrologyReader.GetMetrologyResult(measurementsFilename);
+
+            metrologyReader.CloseExcel();
+
+            var excelFilePath = $"{CSVServerFolderPath}..\\CentralizatorMasuratori.xlsm";
+            OpenExcel.OpenWorkbook(excelFilePath);
         }
     }
 

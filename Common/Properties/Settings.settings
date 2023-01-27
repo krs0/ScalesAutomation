@@ -5,5 +5,8 @@
     <Setting Name="CSVServerFolderPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">..\Server\Cantariri_Automate\</Value>
     </Setting>
+    <Setting Name="ExcelExePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">"c:\Program Files\Microsoft Office\root\Office16\EXCEL.EXE"</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
