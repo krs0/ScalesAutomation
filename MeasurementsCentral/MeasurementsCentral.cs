@@ -14,8 +14,7 @@ namespace MeasurementsCentral
         FolderBrowserDialog dlgFolderBrowser;
         ListView lvwMeasurementsFiles;
         ListViewColumnSorter lvwColumnSorter;
-        ToolTip tooltip;
-        string CSVServerFolderPath = ScalesAutomation.Common.TransformToAbsolutePath(CommonNS.Properties.Settings.Default.CSVServerFolderPath);
+        string CSVServerFolderPath = Common.TransformToAbsolutePath(CommonNS.Properties.Settings.Default.CSVServerFolderPath);
 
         public MeasurementsCentral()
         {
@@ -70,7 +69,6 @@ namespace MeasurementsCentral
                 var measurementsFilename = Path.GetFileName(measuremetnsFilePath).Trim();
                 ListViewItem item = new ListViewItem(measurementsFilename);
                 item.Tag = measuremetnsFilePath;
-                //item.SubItems.Add("OK");
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item, ""));
 
                 var metrologyResult = metrologyReader.GetMetrologyResult(measurementsFilename);
