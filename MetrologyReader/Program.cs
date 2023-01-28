@@ -21,7 +21,7 @@ namespace MetrologyReaderNS
 
                 metrologyReader.GetMetrologyResult(measurementsFileName);
 
-                metrologyReader.CloseExcel();
+                metrologyReader.Dispose();
             }
             catch(Exception ex)
             {

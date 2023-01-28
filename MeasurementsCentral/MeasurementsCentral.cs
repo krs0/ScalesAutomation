@@ -86,7 +86,7 @@ namespace MeasurementsCentral
                 fileCount++;
             }
 
-            metrologyReader.CloseExcel();
+            metrologyReader.Dispose();
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
@@ -134,7 +134,7 @@ namespace MeasurementsCentral
 
             var metrologyResult = metrologyReader.GetMetrologyResult(measurementsFilename);
 
-            metrologyReader.CloseExcel();
+            metrologyReader.Dispose();
 
             var excelFilePath = $"{CSVServerFolderPath}..\\CentralizatorMasuratori.xlsm";
             OpenExcel.OpenWorkbook(excelFilePath);

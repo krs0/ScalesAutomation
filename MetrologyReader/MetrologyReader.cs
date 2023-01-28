@@ -4,9 +4,11 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace MetrologyReaderNS
 {
-    public class MetrologyReader
+    public class MetrologyReader : IDisposable
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        private bool disposed = false; // flag to indicate whether the resource has already been disposed 
 
         Excel.Application excelApp;
         Excel.Workbooks workbooks;
@@ -54,6 +56,8 @@ namespace MetrologyReaderNS
 
         public void CloseExcel()
         {
+            // Check this for info https://www.add-in-express.com/creating-addins-blog/2013/11/05/release-excel-com-objects/
+
             // Release the Excel objects
             System.Runtime.InteropServices.Marshal.ReleaseComObject(rangeFileName);
             System.Runtime.InteropServices.Marshal.ReleaseComObject(rangeStatus);
@@ -68,5 +72,39 @@ namespace MetrologyReaderNS
             System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
         }
 
+        ~MetrologyReader()
+        {
+            this.Dispose(false);
+        }
+
+        public virtual void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if(!this.disposed)
+            {
+                if(disposing)
+                {
+                    // release unmanaged resources here
+
+                    CloseExcel();
+
+                    // Check this for info https://www.add-in-express.com/creating-addins-blog/2013/11/05/release-excel-com-objects/
+
+                    // WARNING: Wait for ALL pending finalizers
+                    // COM objects in other STA threads will require those threads to process messages in a timely manner.
+                    // However, this is the only way to be sure GCed RCWs actually invoked the COM object's Release.
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
+                }
+                this.disposed = true;
+            }
+        }
     }
 }
