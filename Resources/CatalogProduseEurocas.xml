@@ -270,7 +270,8 @@
 		<PackageTare>15</PackageTare>
 		<NetWeight>260</NetWeight>
 	</Product>
-	<Name>Coji Tarte Rotunde 44mm - 33 Buc</Name>
+	<Product>
+		<Name>Coji Tarte Rotunde 44mm - 33 Buc</Name>
 		<Package>Caserola</Package>
 		<PackageTare>25</PackageTare>
 		<NetWeight>340</NetWeight>
@@ -437,7 +438,6 @@
 		<PackageTare>55</PackageTare>
 		<NetWeight>1Kg</NetWeight>
 	</Product>
-	<Product>
 	<Product>
 		<Name>Sirop de zahar caramelizat - 1Kg</Name>
 		<Package>Borcan PET 1L</Package>
