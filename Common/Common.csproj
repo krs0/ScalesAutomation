@@ -2,26 +2,25 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-	<SelfContained>false</SelfContained>
+	  <SelfContained>false</SelfContained>
     <PublishSingleFile>true</PublishSingleFile>
     <PublishReadyToRun>true</PublishReadyToRun>
-	<PublishSingleFile>true</PublishSingleFile>
+	  <PublishSingleFile>true</PublishSingleFile>
     <UseWindowsForms>true</UseWindowsForms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	<RootNamespace>Common</RootNamespace>
+	  <RootNamespace>Common</RootNamespace>
     <AssemblyName>Common</AssemblyName>
-	<AssemblyVersion>2.4.1.0</AssemblyVersion>
-	<UpdateAssemblyVersion>False</UpdateAssemblyVersion>
+	  <AssemblyVersion>2.4.1.0</AssemblyVersion>
+    <FileVersion>2.4.1.0</FileVersion>
+	  <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
     <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
     <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
-	<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
-	<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+	  <GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
+	  <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
   
-  	<PropertyGroup>    
+  <PropertyGroup>    
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
@@ -33,7 +32,7 @@
 		<IsPublishable>False</IsPublishable>
 		<BaseOutputPath>..\out\</BaseOutputPath>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-		<FileVersion>2.4.1.0</FileVersion>
+
 	</PropertyGroup>
   
    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -52,7 +51,7 @@
   
    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
      <DebugType>full</DebugType>
-     <ShouldCreateLogs>True</ShouldCreateLogs>
+     <ShouldCreateLogs>False</ShouldCreateLogs>
      <AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
      <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
      <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>

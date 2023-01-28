@@ -3,22 +3,23 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
-	<RuntimeIdentifier>win10-x64</RuntimeIdentifier>
-	<SelfContained>false</SelfContained>
+	  <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+	  <SelfContained>false</SelfContained>
     <PublishSingleFile>true</PublishSingleFile>
     <PublishReadyToRun>true</PublishReadyToRun>
-	<PublishSingleFile>true</PublishSingleFile>
+	  <PublishSingleFile>true</PublishSingleFile>
     <UseWindowsForms>true</UseWindowsForms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	<RootNamespace>ScalesAutomation</RootNamespace>
+	  <RootNamespace>ScalesAutomation</RootNamespace>
     <AssemblyName>ScalesAutomation</AssemblyName>
-	<AssemblyVersion>2.4.1.0</AssemblyVersion>
-	<UpdateAssemblyVersion>False</UpdateAssemblyVersion>
+	  <AssemblyVersion>2.4.1.0</AssemblyVersion>
+    <FileVersion>2.4.1.0</FileVersion>
+	  <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
     <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
     <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
-	<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
-	<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+	  <GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
+	  <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
   
 	<PropertyGroup>    
@@ -27,12 +28,20 @@
 		<GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
 		<ProduceReferenceAssemblyInOutDir>true</ProduceReferenceAssemblyInOutDir>
 	</PropertyGroup>
+
+  <PropertyGroup>
+    <StartupObject></StartupObject>
+    <IsPublishable>False</IsPublishable>
+    <BaseOutputPath>..\out\</BaseOutputPath>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <ApplicationIcon>Scales.ico</ApplicationIcon>
+  </PropertyGroup>
   
-   <ItemGroup>
+  <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.15" />
-	<PackageReference Include="System.IO.Ports" Version="7.0.0" />
-	<PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
-	<PackageReference Include="System.ServiceModel.Primitives" Version="4.10.0" />
+	  <PackageReference Include="System.IO.Ports" Version="7.0.0" />
+	  <PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
+	  <PackageReference Include="System.ServiceModel.Primitives" Version="4.10.0" />
   </ItemGroup>
   
   <ItemGroup>
@@ -68,7 +77,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  
+
    <PropertyGroup>
     <PostBuildEvent>if not exist ..\Server\ mkdir ..\Server\
 if not exist ..\Server\Cantariri_Automate mkdir ..\Server\Cantariri_Automate
@@ -79,12 +88,6 @@ copy /Y "$(OutDir)..\..\Resources\CatalogProduseMargarita.xml" "$(OutDir)..\Serv
 copy /Y "$(OutDir)..\..\Resources\CatalogProduseEurocas.xml" "$(OutDir)..\Server\CatalogProduseEurocas.xml"
 
 </PostBuildEvent>
-    <StartupObject></StartupObject>
-    <IsPublishable>False</IsPublishable>
-    <BaseOutputPath>..\out\</BaseOutputPath>
-    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-    <ApplicationIcon>Scales.ico</ApplicationIcon>
-    <FileVersion>2.4.1.0</FileVersion>
   </PropertyGroup>
   
    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -103,7 +106,7 @@ copy /Y "$(OutDir)..\..\Resources\CatalogProduseEurocas.xml" "$(OutDir)..\Server
   
    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
      <DebugType>full</DebugType>
-     <ShouldCreateLogs>True</ShouldCreateLogs>
+     <ShouldCreateLogs>False</ShouldCreateLogs>
      <AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
      <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
      <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>

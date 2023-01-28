@@ -2,36 +2,37 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-	  <TargetFramework>net6.0-windows</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-	  <SelfContained>false</SelfContained>
-	  <PublishSingleFile>true</PublishSingleFile>
-	  <PublishReadyToRun>true</PublishReadyToRun>
-	  <PublishSingleFile>true</PublishSingleFile>
-	  <UseWindowsForms>true</UseWindowsForms>
-	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	  <RootNamespace>MetrologyReader</RootNamespace>
-	  <AssemblyName>MetrologyReader</AssemblyName>
-	  <AssemblyVersion>2.4.1.0</AssemblyVersion>
-	  <IsPublishable>False</IsPublishable>
-	  <BaseOutputPath>..\out\</BaseOutputPath>
-	  <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-	  <GenerateRuntimeConfigDevFile>false</GenerateRuntimeConfigDevFile>
-	  <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+	<TargetFramework>net6.0-windows</TargetFramework>
+	<SelfContained>false</SelfContained>
+	<PublishSingleFile>true</PublishSingleFile>
+	<PublishReadyToRun>true</PublishReadyToRun>
+	<PublishSingleFile>true</PublishSingleFile>
+	<UseWindowsForms>true</UseWindowsForms>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<RootNamespace>MetrologyReader</RootNamespace>
+	<AssemblyName>MetrologyReader</AssemblyName>
+	<AssemblyVersion>2.4.1.0</AssemblyVersion>
+	<FileVersion>2.4.1.0</FileVersion>
+	<UpdateAssemblyVersion>False</UpdateAssemblyVersion>
+    <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
+    <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
+    <UpdatePackageVersion>False</UpdatePackageVersion>
+	<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
+	<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
-
-	<PropertyGroup>
-		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
-		<UseCommonOutputDirectory>True</UseCommonOutputDirectory>
-	</PropertyGroup>
 
 	<PropertyGroup>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
-		<ProduceReferenceAssemblyInOutDir>false</ProduceReferenceAssemblyInOutDir>
-		<FileVersion>2.4.1.0</FileVersion>
+		<ProduceReferenceAssemblyInOutDir>true</ProduceReferenceAssemblyInOutDir>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<StartupObject></StartupObject>
+		<IsPublishable>False</IsPublishable>
+		<BaseOutputPath>..\out\</BaseOutputPath>
+		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -48,9 +49,17 @@
 		<AssemblyFileVersionSettings>None.None.None.None</AssemblyFileVersionSettings>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<DebugType>full</DebugType>
-	</PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+     <DebugType>full</DebugType>
+     <ShouldCreateLogs>False</ShouldCreateLogs>
+     <AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
+     <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
+     <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
+     <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
+     <UpdatePackageVersion>False</UpdatePackageVersion>
+     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
+     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
+   </PropertyGroup>
 
 	<ItemGroup>
 	  <COMReference Include="Microsoft.Office.Interop.Excel">

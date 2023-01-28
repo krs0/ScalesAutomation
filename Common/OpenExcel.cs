@@ -1,7 +1,9 @@
 ﻿using CommonNS.Properties;
 using log4net;
+using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace ScalesAutomation
 {

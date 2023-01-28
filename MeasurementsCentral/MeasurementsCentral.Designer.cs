@@ -1,4 +1,6 @@
-﻿namespace MeasurementsCentral
+﻿using System.Windows.Forms;
+
+namespace MeasurementsCentral
 {
     partial class MeasurementsCentral
     {
