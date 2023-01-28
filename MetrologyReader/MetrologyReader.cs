@@ -31,7 +31,7 @@ namespace MetrologyReaderNS
             log.Debug($"Written value in MeasurementsFileName Range: {rangeFileName.Text.ToString()}");
 
             rangeStatus = worksheet.Range["A2"];
-            string? measurementsOverallStatus = rangeStatus.Text.ToString();
+            string measurementsOverallStatus = rangeStatus.Text.ToString();
             log.Info($"Measurement overall status: {measurementsOverallStatus}");
 
             // write in console so that calling process can catch this result

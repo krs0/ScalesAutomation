@@ -49,30 +49,6 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("..\\Server\\CatalogProduseEurocas.xml")]
-        public string ProductCatalogFilePath {
-            get {
-                return ((string)(this["ProductCatalogFilePath"]));
-            }
-            set {
-                this["ProductCatalogFilePath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Logs\\")]
-        public string LogFolderPath {
-            get {
-                return ((string)(this["LogFolderPath"]));
-            }
-            set {
-                this["LogFolderPath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("CSVOutput\\")]
         public string CSVOutputPath {
             get {
@@ -169,7 +145,7 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("d:\\temp\\Krs\\ScalesAutomationForm\\Resources\\Temp\\logs_constalaris\\Logs\\2023-01-09-21-2" +
+        [global::System.Configuration.DefaultSettingValueAttribute("d:\\temp\\Krs\\ScalesAutomation\\Resources\\Temp\\logs_constalaris\\Logs\\2023-01-09-21-2" +
             "1-31_111_Rhapsody Apricot - Crema cu Caise 1Kg_Borcan PET 1L.log")]
         public string SerialTransmissionSimulationPath {
             get {

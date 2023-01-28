@@ -8,12 +8,6 @@
     <Setting Name="ReadCOMPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">COM7</Value>
     </Setting>
-    <Setting Name="ProductCatalogFilePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">..\Server\CatalogProduseEurocas.xml</Value>
-    </Setting>
-    <Setting Name="LogFolderPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Logs\</Value>
-    </Setting>
     <Setting Name="CSVOutputPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">CSVOutput\</Value>
     </Setting>

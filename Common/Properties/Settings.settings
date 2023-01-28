@@ -8,5 +8,11 @@
     <Setting Name="ExcelExePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">"c:\Program Files\Microsoft Office\root\Office16\EXCEL.EXE"</Value>
     </Setting>
+    <Setting Name="ProductCatalogFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">..\Server\CatalogProduseEurocas.xml</Value>
+    </Setting>
+    <Setting Name="LogFolderPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Logs\</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
