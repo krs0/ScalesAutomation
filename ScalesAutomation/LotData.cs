@@ -180,8 +180,16 @@ namespace ScalesAutomation
         void InitializeGuiBackendFromXml()
         {
             string productCatalogFilePath = Common.TransformToAbsolutePath(Settings.Default.ProductCatalogFilePath);
+            try
+            {
+                XmlHandler.ReadCatalogue(productCatalogFilePath);
+            }
+            catch(Exception Ex)
+            {
+                MessageBox.Show(Ex.Message, "Eorare", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw;
+            }
 
-            XmlHandler.ReadCatalogue(productCatalogFilePath);
 
             foreach(var product in XmlHandler.Catalogue)
             {

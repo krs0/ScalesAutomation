@@ -13,7 +13,7 @@ namespace ScalesAutomation.Properties {
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.4.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+    public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
         
@@ -97,18 +97,6 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("..\\Server\\Cantariri_Automate\\")]
-        public string CSVServerFolderPath {
-            get {
-                return ((string)(this["CSVServerFolderPath"]));
-            }
-            set {
-                this["CSVServerFolderPath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int ZeroThreshold {
             get {
@@ -181,7 +169,7 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("d:\\temp\\Krs\\ScalesAutomation\\Resources\\Temp\\logs_constalaris\\Logs\\2023-01-09-21-2" +
+        [global::System.Configuration.DefaultSettingValueAttribute("d:\\temp\\Krs\\ScalesAutomationForm\\Resources\\Temp\\logs_constalaris\\Logs\\2023-01-09-21-2" +
             "1-31_111_Rhapsody Apricot - Crema cu Caise 1Kg_Borcan PET 1L.log")]
         public string SerialTransmissionSimulationPath {
             get {

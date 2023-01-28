@@ -30,6 +30,7 @@
             this.lvwMeasurementsFiles.UseCompatibleStateImageBehavior = false;
             this.lvwMeasurementsFiles.View = System.Windows.Forms.View.Details;
             this.lvwMeasurementsFiles.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvwMeasurementsFiles_ColumnClick);
+            this.lvwMeasurementsFiles.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.lvwMeasurementsFiles_KeyPress);
             this.lvwMeasurementsFiles.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lvwMeasurementsFiles_MouseDoubleClick);
             // 
             // FileName

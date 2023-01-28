@@ -1,6 +1,6 @@
 namespace ScalesAutomation
 {
-    partial class ScalesAutomation
+    partial class ScalesAutomationForm
     {
         /// <summary>
         /// Required designer variable.
@@ -31,7 +31,7 @@ namespace ScalesAutomation
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScalesAutomation));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScalesAutomationForm));
             this.btnStart = new System.Windows.Forms.Button();
             this.btnPause = new System.Windows.Forms.Button();
             this.dataGridViewMeasurements = new System.Windows.Forms.DataGridView();
@@ -143,7 +143,7 @@ namespace ScalesAutomation
             this.ShowNextLotData.UseVisualStyleBackColor = true;
             this.ShowNextLotData.Click += new System.EventHandler(this.btnShowNextLotData_Click);
             // 
-            // ScalesAutomation
+            // ScalesAutomationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -156,7 +156,7 @@ namespace ScalesAutomation
             this.Controls.Add(this.btnStart);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.Name = "ScalesAutomation";
+            this.Name = "ScalesAutomationForm";
             this.Text = "Automatizare Cantar Bilanciai";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ScalesAutomation_FormClosing);
             this.Load += new System.EventHandler(this.ScalesAutomation_Load);

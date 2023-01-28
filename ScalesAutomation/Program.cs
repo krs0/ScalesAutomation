@@ -19,7 +19,7 @@ namespace ScalesAutomation
                 if(Settings.Default.DataImporterEnabled)
                     Application.Run(new DataImporter());
                 else
-                    Application.Run(new ScalesAutomation());
+                    Application.Run(new ScalesAutomationForm());
 
                 mutex.ReleaseMutex();
             }

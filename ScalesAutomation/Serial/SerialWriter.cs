@@ -180,7 +180,7 @@ namespace ScalesAutomation
                 serialPort.Write(simulatedMeasurements[i], 0, simulatedMeasurements[i].Length);
                 Thread.Sleep(10); // in reality is 100ms for ustable measurement and 200ms for stable measurement
 
-                if(ScalesAutomation.stopPressed) // stop this thread when stop lot is pressed in main
+                if(ScalesAutomationForm.stopPressed) // stop this thread when stop lot is pressed in main
                     break;
             }
         }

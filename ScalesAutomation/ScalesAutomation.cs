@@ -5,14 +5,14 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-using Common;
+using CommonNS;
 using log4net;
 using ScalesAutomation.Properties;
 using Timer = System.Windows.Forms.Timer;
 
 namespace ScalesAutomation
 {
-    public partial class ScalesAutomation : Form
+    public partial class ScalesAutomationForm : Form
     {
         public SynchronizedCollection<Measurement> Measurements;
 
@@ -29,6 +29,7 @@ namespace ScalesAutomation
 
         private readonly bool simulationEnabled;
         private CsvHelper csvHelper;
+        private readonly string csvServerFolderPath = Common.TransformToAbsolutePath(CommonNS.Properties.Settings.Default.CSVServerFolderPath);
         private readonly string logFolderPath = Common.TransformToAbsolutePath(Settings.Default.LogFolderPath);
         private string logFilePath = "";
 
@@ -39,7 +40,7 @@ namespace ScalesAutomation
         private LotInfo lotInfo;
         private NextLotData nextLotData;
 
-        public ScalesAutomation()
+        public ScalesAutomationForm()
         {
             InitializeComponent();
 
@@ -211,7 +212,7 @@ namespace ScalesAutomation
             if(!readPort.Initialize())
             {
                 MessageBox.Show($"Nu a putut fi creata o legatura cu cantarul.{Environment.NewLine}" +
-                    $"Verificati setarea ReadCOMport din ScalesAutomation.dll.config, si restartati aplicatia.", "Initializare Esuata", MessageBoxButtons.OK);
+                    $"Verificati setarea ReadCOMport din ScalesAutomationForm.dll.config, si restartati aplicatia.", "Initializare Esuata", MessageBoxButtons.OK);
                 return;
             }
 
@@ -261,9 +262,9 @@ namespace ScalesAutomation
                 StartLogParser.ParseLog(logFilePath, CsvHelper.OutputFolderPath);
 
             csvHelper.BackupOutputFile(Settings.Default.CSVBackupPath);
-            csvHelper.CopyOutputFileToServer(Settings.Default.CSVServerFolderPath);
+            csvHelper.CopyOutputFileToServer(csvServerFolderPath);
 
-            var metrologyResult = StartMetrologyReader.GetMetrologyResults(CsvHelper.OutputFileFullName, Common.TransformToAbsolutePath(Settings.Default.CSVServerFolderPath));
+            var metrologyResult = StartMetrologyReader.GetMetrologyResults(CsvHelper.OutputFileFullName, csvServerFolderPath);
 
             // display dialog with results
             var lotId = uctlLotData.LotInfo.Id;

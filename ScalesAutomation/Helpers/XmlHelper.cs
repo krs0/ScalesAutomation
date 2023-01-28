@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.ServiceModel.Channels;
 using System.Text.RegularExpressions;
 
 namespace ScalesAutomation
@@ -42,6 +43,7 @@ namespace ScalesAutomation
             catch (Exception ex)
             {
                 log.Error("Error reading the Product Catalogue: " + Environment.NewLine + ex.Message + Environment.NewLine);
+                throw new Exception($"Eroare la citirea Catalogului de Produse: {filePath}");
             }
         }
 

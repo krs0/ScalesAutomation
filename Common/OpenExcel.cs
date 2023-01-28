@@ -1,4 +1,4 @@
-﻿using Common.Properties;
+﻿using CommonNS.Properties;
 using log4net;
 using System.Diagnostics;
 using System.Reflection;
@@ -9,7 +9,7 @@ namespace ScalesAutomation
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        /// <summary>Launch the log parsing application with some options set.</summary>
+        /// <summary>Launch Excel application for the selected xls file.</summary>
         public static void OpenWorkbook(string xlsFilePath)
         {
             var startInfo = new ProcessStartInfo
@@ -23,10 +23,7 @@ namespace ScalesAutomation
             try
             {
                 log.Info($"Starting excel app with arguments: {xlsFilePath}");
-                using(var parserProcess = Process.Start(startInfo))
-                {
-                    //parserProcess?.WaitForExit();
-                }
+                using var parserProcess = Process.Start(startInfo);
 
             }
             catch(Exception ex)

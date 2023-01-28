@@ -2,6 +2,7 @@ using MetrologyReaderNS;
 using MeasurementsCentral.Properties;
 using System.Collections;
 using ScalesAutomation;
+using System.Windows.Forms;
 
 namespace MeasurementsCentral
 {
@@ -11,7 +12,7 @@ namespace MeasurementsCentral
         ListView lvwMeasurementsFiles;
         ListViewColumnSorter lvwColumnSorter;
         ToolTip tooltip;
-        string CSVServerFolderPath = ScalesAutomation.Common.TransformToAbsolutePath(Common.Properties.Settings.Default.CSVServerFolderPath);
+        string CSVServerFolderPath = ScalesAutomation.Common.TransformToAbsolutePath(CommonNS.Properties.Settings.Default.CSVServerFolderPath);
 
         public MeasurementsCentral()
         {
@@ -123,14 +124,29 @@ namespace MeasurementsCentral
 
         private void lvwMeasurementsFiles_MouseDoubleClick(object sender, MouseEventArgs e)
         {
+            var measurementsFilename = lvwMeasurementsFiles.SelectedItems[0].Text;
+            OpenCentralizatorMasuratori(measurementsFilename);
+        }
+
+        private void lvwMeasurementsFiles_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if(e.KeyChar == (char)Keys.Enter)
+            {
+                if(lvwMeasurementsFiles.SelectedItems.Count > 0)
+                {
+                    var measurementsFilename = lvwMeasurementsFiles.SelectedItems[0].Text;
+                    OpenCentralizatorMasuratori(measurementsFilename);
+                }
+            }
+        }
+
+        private void OpenCentralizatorMasuratori(string measurementsFilename)
+        {
             if(OpenExcel.CheckIfExcelIsOpen())
                 return;
 
             var metrologyReader = new MetrologyReader();
             metrologyReader.InitializeExcel($"{CSVServerFolderPath}../CentralizatorMasuratori.xlsm");
-
-            //var measurementsFilename = Path.GetFileName(measuremetnsFilePath).Trim();
-            var measurementsFilename = lvwMeasurementsFiles.SelectedItems[0].Text;
 
             var metrologyResult = metrologyReader.GetMetrologyResult(measurementsFilename);
 
