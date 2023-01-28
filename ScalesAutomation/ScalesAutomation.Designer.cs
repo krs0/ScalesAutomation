@@ -127,7 +127,7 @@ namespace ScalesAutomation
             this.uctlLotData.Margin = new System.Windows.Forms.Padding(5, 8, 5, 8);
             this.uctlLotData.Name = "uctlLotData";
             this.uctlLotData.Size = new System.Drawing.Size(989, 329);
-            this.uctlLotData.TabIndex = 9;
+            this.uctlLotData.TabIndex = 0;
             // 
             // ShowNextLotData
             // 

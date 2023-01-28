@@ -43,7 +43,7 @@ namespace ScalesAutomation
             catch (Exception ex)
             {
                 log.Error("Error reading the Product Catalogue: " + Environment.NewLine + ex.Message + Environment.NewLine);
-                throw new Exception($"Eroare la citirea Catalogului de Produse: {filePath}");
+                //throw new Exception($"Eroare la citirea Catalogului de Produse: {filePath}"); // <- this causes error in designer
             }
         }
 
