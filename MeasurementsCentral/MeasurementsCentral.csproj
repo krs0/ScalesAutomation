@@ -1,27 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <SelfContained>false</SelfContained>
-    <PublishSingleFile>true</PublishSingleFile>
-    <PublishReadyToRun>true</PublishReadyToRun>
-	  <PublishSingleFile>true</PublishSingleFile>
-    <UseWindowsForms>true</UseWindowsForms>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	  <RootNamespace>MeasurementsCentral</RootNamespace>
-    <AssemblyName>MeasurementsCentral</AssemblyName>
-	  <AssemblyVersion>2.4.1.0</AssemblyVersion>
-  	<FileVersion>2.4.1.0</FileVersion>
-	  <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
-    <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
-    <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-    <UpdatePackageVersion>False</UpdatePackageVersion>
-	  <GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
-	  <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-  </PropertyGroup>
-  
-  	<PropertyGroup>    
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<SelfContained>false</SelfContained>
+		<PublishSingleFile>true</PublishSingleFile>
+		<PublishReadyToRun>true</PublishReadyToRun>
+		<PublishSingleFile>true</PublishSingleFile>
+		<UseWindowsForms>true</UseWindowsForms>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<RootNamespace>MeasurementsCentral</RootNamespace>
+		<AssemblyName>MeasurementsCentral</AssemblyName>
+		<AssemblyVersion>2.4.1.0</AssemblyVersion>
+		<FileVersion>2.4.1.0</FileVersion>
+		<UpdateAssemblyVersion>False</UpdateAssemblyVersion>
+		<UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
+		<UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
+		<UpdatePackageVersion>False</UpdatePackageVersion>
+		<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
+		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+	</PropertyGroup>
+	
+	<PropertyGroup>	
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
@@ -33,59 +33,58 @@
 		<IsPublishable>False</IsPublishable>
 		<BaseOutputPath>..\out\</BaseOutputPath>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-
 	</PropertyGroup>
-  
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-     <DebugType>full</DebugType>
-     <ShouldCreateLogs>True</ShouldCreateLogs>
-     <AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
-     <UpdateAssemblyVersion>True</UpdateAssemblyVersion>
-     <UpdateAssemblyFileVersion>True</UpdateAssemblyFileVersion>
-     <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-     <UpdatePackageVersion>False</UpdatePackageVersion>
-     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
-     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
-     <AssemblyVersionSettings>None.None.None.None</AssemblyVersionSettings>
-     <AssemblyFileVersionSettings>None.None.None.None</AssemblyFileVersionSettings>
-   </PropertyGroup>
-  
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-     <DebugType>full</DebugType>
-     <ShouldCreateLogs>False</ShouldCreateLogs>
-     <AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
-     <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
-     <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
-     <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-     <UpdatePackageVersion>False</UpdatePackageVersion>
-     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
-     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
-   </PropertyGroup>
-  
-   <ItemGroup>
-     <ProjectReference Include="..\Common\Common.csproj" />
-     <ProjectReference Include="..\MetrologyReader\MetrologyReader.csproj" />
-   </ItemGroup>
-  
-   <ItemGroup>
-     <Compile Update="Properties\Settings.Designer.cs">
-       <DesignTimeSharedInput>True</DesignTimeSharedInput>
-       <AutoGen>True</AutoGen>
-       <DependentUpon>Settings.settings</DependentUpon>
-     </Compile>
-   </ItemGroup>
-  
-   <ItemGroup>
-     <None Update="Images\ok.png">
-       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-     </None>
-     <None Update="Images\x.png">
-       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-     </None>
-     <None Update="Properties\Settings.settings">
-       <Generator>SettingsSingleFileGenerator</Generator>
-       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-     </None>
-   </ItemGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DebugType>full</DebugType>
+		<ShouldCreateLogs>True</ShouldCreateLogs>
+		<AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
+		<UpdateAssemblyVersion>True</UpdateAssemblyVersion>
+		<UpdateAssemblyFileVersion>True</UpdateAssemblyFileVersion>
+		<UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
+		<UpdatePackageVersion>False</UpdatePackageVersion>
+		<AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
+		<InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
+		<AssemblyVersionSettings>None.None.None.None</AssemblyVersionSettings>
+		<AssemblyFileVersionSettings>None.None.None.None</AssemblyFileVersionSettings>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DebugType>full</DebugType>
+		<ShouldCreateLogs>False</ShouldCreateLogs>
+		<AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
+		<UpdateAssemblyVersion>False</UpdateAssemblyVersion>
+		<UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
+		<UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
+		<UpdatePackageVersion>False</UpdatePackageVersion>
+		<AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
+		<InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\Common\Common.csproj" />
+		<ProjectReference Include="..\MetrologyReader\MetrologyReader.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	
+	<ItemGroup>
+		<None Update="Images\ok.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Images\x.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
 
 </Project>
