@@ -10,8 +10,6 @@
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<RootNamespace>Common</RootNamespace>
 		<AssemblyName>Common</AssemblyName>
-		<AssemblyVersion>2.4.1.0</AssemblyVersion>
-		<FileVersion>2.4.1.0</FileVersion>
 		<UpdateAssemblyVersion>False</UpdateAssemblyVersion>
 		<UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
 		<UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
