@@ -24,6 +24,8 @@
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
 		<ProduceReferenceAssemblyInOutDir>true</ProduceReferenceAssemblyInOutDir>
+		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+		<UseCommonOutputDirectory>True</UseCommonOutputDirectory>
 	</PropertyGroup>
 
 	<PropertyGroup>
