@@ -175,6 +175,12 @@
 		<NetWeight>1Kg</NetWeight>
 	</Product>
 	<Product>
+		<Name>Dolce White Joy - 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>90</PackageTare>
+		<NetWeight>1Kg</NetWeight>
+	</Product>
+	<Product>
 		<Name>Chocobake - Crema Tartinabila Termostabila 1Kg</Name>
 		<Package>Borcan PET 1L</Package>
 		<PackageTare>90</PackageTare>
@@ -265,6 +271,12 @@
 		<NetWeight>260</NetWeight>
 	</Product>
 	<Product>
+		<Name>Coji Tarte Rotunde 44mm - 33 Buc</Name>
+		<Package>Caserola</Package>
+		<PackageTare>25</PackageTare>
+		<NetWeight>340</NetWeight>
+	</Product>
+	<Product>
 		<Name>Coji Tarte Rotunde 74mm - 24 Buc</Name>
 		<Package>Caserola</Package>
 		<PackageTare>50</PackageTare>
@@ -275,6 +287,12 @@
 		<Package>Caserola</Package>
 		<PackageTare>15</PackageTare>
 		<NetWeight>250</NetWeight>
+	</Product>
+	<Product>
+		<Name>Coji Tarte Rotunde Horeca - 44mm - 33 Buc</Name>
+		<Package>Caserola</Package>
+		<PackageTare>25</PackageTare>
+		<NetWeight>340</NetWeight>
 	</Product>
 	<Product>
 		<Name>Coji de Eclere - 160mm - 12 Buc</Name>
@@ -349,7 +367,7 @@
 		<NetWeight>1Kg</NetWeight>
 	</Product>
 	<Product>
-		<Name>Cuvertura Ciocolata Neagra 53% – 1Kg</Name>
+		<Name>Cuvertura Ciocolata Neagra 53% - 1Kg</Name>
 		<Package>Punga Eurocas PE cu poliester metalizat</Package>
 		<PackageTare>25</PackageTare>
 		<NetWeight>1Kg</NetWeight>
@@ -418,6 +436,12 @@
 		<Name>Rahat Pentru Patiserie Eurocas - 1Kg</Name>
 		<Package>Cutie plastic capac</Package>
 		<PackageTare>55</PackageTare>
+		<NetWeight>1Kg</NetWeight>
+	</Product>
+	<Product>
+		<Name>Sirop de zahar caramelizat - 1Kg</Name>
+		<Package>Borcan PET 1L</Package>
+		<PackageTare>90</PackageTare>
 		<NetWeight>1Kg</NetWeight>
 	</Product>
 </catalog>
