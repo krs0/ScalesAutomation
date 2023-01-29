@@ -51,7 +51,7 @@ namespace MeasurementsCentral
             if(OpenExcel.CheckIfExcelIsOpen())
                 return;
 
-            int fileCount = 0;
+            int fileCount = 1;
 
             tbFileName.Text = path;
 
@@ -82,7 +82,7 @@ namespace MeasurementsCentral
                 item.ToolTipText = measurementsFilename;
                 lvwMeasurementsFiles.Items.Add(item);
 
-                if (fileCount > Settings.Default.MaxNoOfMeasurementFiles)
+                if (fileCount >= Settings.Default.MaxNoOfMeasurementFiles)
                     break;
 
                 fileCount++;
