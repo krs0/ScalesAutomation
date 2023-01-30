@@ -7,15 +7,10 @@
 		<SelfContained>false</SelfContained>
 		<PublishSingleFile>true</PublishSingleFile>
 		<PublishReadyToRun>true</PublishReadyToRun>
-		<PublishSingleFile>true</PublishSingleFile>
 		<UseWindowsForms>true</UseWindowsForms>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<RootNamespace>LogParser</RootNamespace>
 		<AssemblyName>LogParser</AssemblyName>
-		<UpdateAssemblyVersion>False</UpdateAssemblyVersion>
-		<UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
-		<UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-		<UpdatePackageVersion>False</UpdatePackageVersion>
 		<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
 		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
 	</PropertyGroup>
@@ -31,7 +26,7 @@
 
 	<PropertyGroup>
 		<StartupObject></StartupObject>
-		<IsPublishable>False</IsPublishable>
+		<IsPublishable>True</IsPublishable>
 		<BaseOutputPath>..\out\</BaseOutputPath>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 	</PropertyGroup>
