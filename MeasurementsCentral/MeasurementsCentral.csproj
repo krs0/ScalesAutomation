@@ -3,13 +3,11 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net6.0-windows</TargetFramework>
-		<SelfContained>false</SelfContained>
-		<PublishSingleFile>false</PublishSingleFile>
-		<PublishReadyToRun>false</PublishReadyToRun>
-		<UseWindowsForms>true</UseWindowsForms>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<RootNamespace>MeasurementsCentral</RootNamespace>
-		<AssemblyName>MeasurementsCentral</AssemblyName>
+	<SelfContained>false</SelfContained>
+    <UseWindowsForms>true</UseWindowsForms>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<RootNamespace>MeasurementsCentral</RootNamespace>
+    <AssemblyName>MeasurementsCentral</AssemblyName>
 		<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
 		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
 	</PropertyGroup>
@@ -20,7 +18,6 @@
 		<GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
 		<ProduceReferenceAssemblyInOutDir>true</ProduceReferenceAssemblyInOutDir>
 		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
-		<UseCommonOutputDirectory>True</UseCommonOutputDirectory>
 	</PropertyGroup>
 	
 	<PropertyGroup>
@@ -29,32 +26,6 @@
 		<BaseOutputPath>..\out\</BaseOutputPath>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-	</PropertyGroup>
-	
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DebugType>full</DebugType>
-		<ShouldCreateLogs>True</ShouldCreateLogs>
-		<AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
-		<UpdateAssemblyVersion>True</UpdateAssemblyVersion>
-		<UpdateAssemblyFileVersion>True</UpdateAssemblyFileVersion>
-		<UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-		<UpdatePackageVersion>False</UpdatePackageVersion>
-		<AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
-		<InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
-		<AssemblyVersionSettings>None.None.None.None</AssemblyVersionSettings>
-		<AssemblyFileVersionSettings>None.None.None.None</AssemblyFileVersionSettings>
-	</PropertyGroup>
-	
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<DebugType>full</DebugType>
-		<ShouldCreateLogs>False</ShouldCreateLogs>
-		<AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
-		<UpdateAssemblyVersion>False</UpdateAssemblyVersion>
-		<UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
-		<UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-		<UpdatePackageVersion>False</UpdatePackageVersion>
-		<AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
-		<InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
 	</PropertyGroup>
 	
 	<ItemGroup>
