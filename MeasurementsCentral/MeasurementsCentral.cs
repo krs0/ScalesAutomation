@@ -19,10 +19,7 @@ namespace MeasurementsCentral
         public MeasurementsCentral()
         {
             ImageList imageList = new ImageList();
-
             imageList.ImageSize = new Size(32, 32);
-
-            // Add images to the image list
             imageList.Images.Add(Image.FromFile("Images/ok.png"));
             imageList.Images.Add(Image.FromFile("Images/x.png"));
 
@@ -30,30 +27,26 @@ namespace MeasurementsCentral
 
             Shown += MeasurementsCentral_Shown; // Start filling the measurements file list only after main Form is Shown.
 
-            lvwColumnSorter = new ListViewColumnSorter();
-            lvwMeasurementsFiles.ListViewItemSorter = lvwColumnSorter;
+            numUDMaxFileNumber.Value = Settings.Default.MaxNoOfMeasurementFiles;
 
+            lvwColumnSorter = new ListViewColumnSorter();
+            lvwMeasurementsFiles.SmallImageList = imageList;
+            lvwMeasurementsFiles.ListViewItemSorter = lvwColumnSorter;
             lvwMeasurementsFiles.ShowItemToolTips = true;
 
             dlgFolderBrowser = new FolderBrowserDialog();
             dlgFolderBrowser.RootFolder = Environment.SpecialFolder.Recent;
-
-            lvwMeasurementsFiles.SmallImageList = imageList;
+            tbFileName.Text = Settings.Default.LastSelectedFolder;
         }
 
-        private void MeasurementsCentral_Shown(object sender, EventArgs e)
-        {
-            PpopulatelvwMeasurementsFiles(Settings.Default.LastSelectedFolder);
-        }
-
-        private void PpopulatelvwMeasurementsFiles(string path)
+        private void PpopulatelvwMeasurementsFiles()
         {
             if(OpenExcel.CheckIfExcelIsOpen())
                 return;
 
             int fileCount = 1;
 
-            tbFileName.Text = path;
+            string path = tbFileName.Text;
 
             // Get all filePaths in the directory
             string[] filePaths = Directory.GetFiles(path);
@@ -91,13 +84,37 @@ namespace MeasurementsCentral
             metrologyReader.Dispose();
         }
 
+        private void OpenCentralizatorMasuratori(string measurementsFilename)
+        {
+            if(OpenExcel.CheckIfExcelIsOpen())
+                return;
+
+            var metrologyReader = new MetrologyReader();
+            metrologyReader.InitializeExcel($"{CSVServerFolderPath}../CentralizatorMasuratori.xlsm");
+
+            var metrologyResult = metrologyReader.GetMetrologyResult(measurementsFilename);
+
+            metrologyReader.Dispose();
+
+            var excelFilePath = $"{CSVServerFolderPath}..\\CentralizatorMasuratori.xlsm";
+            OpenExcel.OpenWorkbook(excelFilePath);
+        }
+
+        private void MeasurementsCentral_Shown(object sender, EventArgs e)
+        {
+            PpopulatelvwMeasurementsFiles();
+        }
+
         private void btnBrowse_Click(object sender, EventArgs e)
         {
             if(dlgFolderBrowser.ShowDialog() == DialogResult.OK)
             {
-                string path = dlgFolderBrowser.SelectedPath;
+                string measurementsFolderPath = dlgFolderBrowser.SelectedPath;
+                tbFileName.Text = measurementsFolderPath;
+                Settings.Default["LastSelectedFolder"] = measurementsFolderPath;
+                Settings.Default.Save();
 
-                PpopulatelvwMeasurementsFiles(path);
+                PpopulatelvwMeasurementsFiles();
             }
         }
 
@@ -141,20 +158,18 @@ namespace MeasurementsCentral
             }
         }
 
-        private void OpenCentralizatorMasuratori(string measurementsFilename)
+        private void numUDMaxFileNumber_Validated(object sender, EventArgs e)
         {
-            if(OpenExcel.CheckIfExcelIsOpen())
-                return;
+            Settings.Default["MaxNoOfMeasurementFiles"] = (int)numUDMaxFileNumber.Value;
+            Settings.Default.Save();
 
-            var metrologyReader = new MetrologyReader();
-            metrologyReader.InitializeExcel($"{CSVServerFolderPath}../CentralizatorMasuratori.xlsm");
+            PpopulatelvwMeasurementsFiles();
+        }
 
-            var metrologyResult = metrologyReader.GetMetrologyResult(measurementsFilename);
-
-            metrologyReader.Dispose();
-
-            var excelFilePath = $"{CSVServerFolderPath}..\\CentralizatorMasuratori.xlsm";
-            OpenExcel.OpenWorkbook(excelFilePath);
+        private void numUDMaxFileNumber_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if(e.KeyChar == (char)Keys.Enter)
+                numUDMaxFileNumber_Validated(sender, e);
         }
     }
 

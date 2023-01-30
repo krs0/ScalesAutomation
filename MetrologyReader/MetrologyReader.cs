@@ -2,6 +2,7 @@
 using System;
 using System.Reflection;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Runtime.InteropServices;
 
 namespace MetrologyReaderNS
 {
@@ -60,17 +61,17 @@ namespace MetrologyReaderNS
             // Check this for info https://www.add-in-express.com/creating-addins-blog/2013/11/05/release-excel-com-objects/
 
             // Release the Excel objects
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(rangeFileName);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(rangeStatus);
+            if(rangeFileName != null) Marshal.ReleaseComObject(rangeFileName);
+            if(rangeStatus != null) Marshal.ReleaseComObject(rangeStatus);
 
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(worksheet);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(worksheets);
+            if(worksheet != null) Marshal.ReleaseComObject(worksheet);
+            if(worksheets != null) Marshal.ReleaseComObject(worksheets);
             workbook.Save();
             workbook.Close(true);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(workbooks);
+            if(workbook != null) Marshal.ReleaseComObject(workbook);
+            if(workbooks != null) Marshal.ReleaseComObject(workbooks);
             excelApp.Quit();
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
+            if(excelApp != null) Marshal.ReleaseComObject(excelApp);
         }
 
         ~MetrologyReader()
