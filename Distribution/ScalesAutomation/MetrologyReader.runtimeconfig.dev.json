@@ -1,13 +1,8 @@
 {
   "runtimeOptions": {
     "additionalProbingPaths": [
-<<<<<<< refs/remotes/origin/master
-      "C:\\Users\\krs\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\krs\\.nuget\\packages"
-=======
       "C:\\Users\\Olivera\\.dotnet\\store\\|arch|\\|tfm|",
       "C:\\Users\\Olivera\\.nuget\\packages"
->>>>>>> Compilation for office 2013
     ]
   }
 }
