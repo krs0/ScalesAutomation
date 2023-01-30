@@ -5,8 +5,8 @@
 		<TargetFramework>net6.0-windows</TargetFramework>
 		<RuntimeIdentifier>win10-x64</RuntimeIdentifier>
 		<SelfContained>false</SelfContained>
-		<PublishSingleFile>true</PublishSingleFile>
-		<PublishReadyToRun>true</PublishReadyToRun>
+		<PublishSingleFile>false</PublishSingleFile>
+		<PublishReadyToRun>false</PublishReadyToRun>
 		<UseWindowsForms>true</UseWindowsForms>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<RootNamespace>ScalesAutomation</RootNamespace>
@@ -26,9 +26,10 @@
 
 	<PropertyGroup>
 		<StartupObject></StartupObject>
-		<IsPublishable>True</IsPublishable>
+		<IsPublishable>false</IsPublishable>
 		<BaseOutputPath>..\out\</BaseOutputPath>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<ApplicationIcon>Scales.ico</ApplicationIcon>
 	</PropertyGroup>
 	
