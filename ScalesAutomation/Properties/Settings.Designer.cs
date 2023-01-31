@@ -70,7 +70,52 @@ namespace ScalesAutomation.Properties {
                 this["CSVBackupPath"] = value;
             }
         }
-        
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("..\\Server\\Cantariri_Automate\\")]
+        public string CSVServerFolderPath
+        {
+            get
+            {
+                return ((string)(this["CSVServerFolderPath"]));
+            }
+            set
+            {
+                this["CSVServerFolderPath"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Logs\\")]
+        public string LogFolderPath
+        {
+            get
+            {
+                return ((string)(this["LogFolderPath"]));
+            }
+            set
+            {
+                this["LogFolderPath"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("..\\Server\\CatalogProduseEurocas.xml")]
+        public string ProductCatalogFilePath
+        {
+            get
+            {
+                return ((string)(this["ProductCatalogFilePath"]));
+            }
+            set
+            {
+                this["ProductCatalogFilePath"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]

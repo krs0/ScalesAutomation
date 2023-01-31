@@ -8,5 +8,8 @@
     <Setting Name="MaxNoOfMeasurementFiles" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">2</Value>
     </Setting>
+    <Setting Name="CSVServerFolderPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">..\Server\Cantariri_Automate\</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

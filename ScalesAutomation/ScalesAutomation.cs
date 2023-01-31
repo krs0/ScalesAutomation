@@ -29,8 +29,8 @@ namespace ScalesAutomation
 
         private readonly bool simulationEnabled;
         private CsvHelper csvHelper;
-        private readonly string csvServerFolderPath = Common.TransformToAbsolutePath(CommonNS.Properties.Settings.Default.CSVServerFolderPath);
-        private readonly string logFolderPath = Common.TransformToAbsolutePath(CommonNS.Properties.Settings.Default.LogFolderPath);
+        private readonly string csvServerFolderPath = Common.TransformToAbsolutePath(Settings.Default.CSVServerFolderPath);
+        private readonly string logFolderPath = Common.TransformToAbsolutePath(Settings.Default.LogFolderPath);
         private string logFilePath = "";
 
         private int zeroThreshold;

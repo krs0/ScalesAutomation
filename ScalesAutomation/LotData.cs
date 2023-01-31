@@ -179,7 +179,7 @@ namespace ScalesAutomation
 
         void InitializeGuiBackendFromXml()
         {
-            string productCatalogFilePath = Common.TransformToAbsolutePath(CommonNS.Properties.Settings.Default.ProductCatalogFilePath);
+            string productCatalogFilePath = Common.TransformToAbsolutePath(Settings.Default.ProductCatalogFilePath);
             try
             {
                 XmlHandler.ReadCatalogue(productCatalogFilePath);

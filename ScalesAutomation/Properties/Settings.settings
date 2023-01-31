@@ -14,6 +14,15 @@
     <Setting Name="CSVBackupPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">CSVBackup\</Value>
     </Setting>
+    <Setting Name="CSVServerFolderPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">..\Server\Cantariri_Automate\</Value>
+    </Setting>
+    <Setting Name="LogFolderPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Logs\</Value>
+    </Setting>
+    <Setting Name="ProductCatalogFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">..\Server\CatalogProduseEurocas.xml</Value>
+    </Setting>
     <Setting Name="ZeroThreshold" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>

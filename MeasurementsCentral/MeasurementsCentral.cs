@@ -14,7 +14,7 @@ namespace MeasurementsCentral
         FolderBrowserDialog dlgFolderBrowser;
         ListView lvwMeasurementsFiles;
         ListViewColumnSorter lvwColumnSorter;
-        string CSVServerFolderPath = Common.TransformToAbsolutePath(CommonNS.Properties.Settings.Default.CSVServerFolderPath);
+        string CSVServerFolderPath = Common.TransformToAbsolutePath(Settings.Default.CSVServerFolderPath);
 
         public MeasurementsCentral()
         {

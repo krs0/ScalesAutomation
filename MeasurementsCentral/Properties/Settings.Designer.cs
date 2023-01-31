@@ -46,5 +46,17 @@ namespace MeasurementsCentral.Properties {
                 this["MaxNoOfMeasurementFiles"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("..\\Server\\Cantariri_Automate\\")]
+        public string CSVServerFolderPath {
+            get {
+                return ((string)(this["CSVServerFolderPath"]));
+            }
+            set {
+                this["CSVServerFolderPath"] = value;
+            }
+        }
     }
 }
