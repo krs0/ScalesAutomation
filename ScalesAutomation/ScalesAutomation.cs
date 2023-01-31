@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Threading;
@@ -60,11 +61,18 @@ namespace ScalesAutomation
 
         void ScalesAutomation_Load(object sender, EventArgs e)
         {
+            var imageColumn = new DataGridViewImageColumn();
+            imageColumn.Image = Image.FromFile("Images/ok.png");
+            imageColumn.HeaderText = "";
+            imageColumn.Name = "Status";
+            dataGridViewMeasurements.Columns.Add(imageColumn);
+
             dataTable.Columns.Add("#", typeof(int));
             dataTable.Columns.Add("Weight", typeof(string));
             dataTable.Columns.Add("TimeStamp", typeof(string));
             dataGridViewMeasurements.DataSource = dataTable;
 
+            dataGridViewMeasurements.Columns["Status"].Width = 32;
             dataGridViewMeasurements.Columns["#"].Width = 50;
             dataGridViewMeasurements.Columns["Weight"].Width = 100;
             dataGridViewMeasurements.Columns["TimeStamp"].Width = 100;
@@ -336,11 +344,24 @@ namespace ScalesAutomation
             var nrOfRowsInDataTable = dataTable.Rows.Count;
             for (int i = nrOfRowsInDataTable, j = 0; i < nrOfRowsInDataTable + validMeasurements.Count; i++, j++)
             {
+                var measurement = validMeasurements[j].TotalWeight;
+
+                // Add measurement info to dataTable
                 var row = dataTable.NewRow();
                 row["#"] = i+1;
-                row["Weight"] = validMeasurements[j].TotalWeight;
+                row["Weight"] = measurement;
                 row["TimeStamp"] = DateTime.Now.ToString("HH:mm:ss");
                 dataTable.Rows.Add(row);
+
+                // Add icon according to Status
+                Image image;
+                if(measurement > 960) // ToDo: CrLa - Crude aproximation here. Replace with something meaningful.
+                    image =  Image.FromFile("Images/ok_24.png");
+                else
+                    image = Image.FromFile("Images/x_24.png");
+
+                dataGridViewMeasurements.Rows[i].Cells["Status"].Value = image;
+
 
                 // Add row to excel: - do not write in output file when using parser (Bilanciai), because it will be overwritten by parser anyway
                 if(Settings.Default.ScaleType == "Constalaris")
