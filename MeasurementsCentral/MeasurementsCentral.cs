@@ -6,11 +6,15 @@ using System.Windows.Forms;
 using System;
 using System.Drawing;
 using System.IO;
+using log4net;
+using System.Reflection;
 
 namespace MeasurementsCentral
 {
     public partial class MeasurementsCentral : Form
     {
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         FolderBrowserDialog dlgFolderBrowser;
         ListView lvwMeasurementsFiles;
         ListViewColumnSorter lvwColumnSorter;
@@ -41,7 +45,7 @@ namespace MeasurementsCentral
 
         private void PpopulatelvwMeasurementsFiles()
         {
-            if(OpenExcel.CheckIfExcelIsOpen())
+            if(OpenExcel.CloseExcelIfOpen())
                 return;
 
             int fileCount = 1;
@@ -86,7 +90,7 @@ namespace MeasurementsCentral
 
         private void OpenCentralizatorMasuratori(string measurementsFilename)
         {
-            if(OpenExcel.CheckIfExcelIsOpen())
+            if(OpenExcel.CloseExcelIfOpen())
                 return;
 
             var metrologyReader = new MetrologyReader();

@@ -13,6 +13,8 @@ namespace MetrologyReaderNS
         {
             string centralizatorFilePath, measurementsFileName;
 
+            log.Info($"Starting Metrology Reader...{Environment.NewLine}");
+
             try
             {
                 ParseArgs(args, out centralizatorFilePath, out measurementsFileName);
@@ -29,6 +31,8 @@ namespace MetrologyReaderNS
             {
                 log.Error($"Error: {ex.Message}");
             }
+
+            log.Info($"Finished Metrology Reader!{Environment.NewLine}");
         }
 
         private static void ParseArgs(string[] args, out string centralizatorFilePath, out string measurementsFileName)
@@ -41,9 +45,9 @@ namespace MetrologyReaderNS
 
             centralizatorFilePath = args[0];
             measurementsFileName = args[1];
-            log.Info($"Metrology Reader Started with the following arguments:{System.Environment.NewLine}" +
-                $"Centralizator Masuratori File Path = {centralizatorFilePath}{System.Environment.NewLine}" +
-                $"Measurements File Name = {measurementsFileName}{System.Environment.NewLine}");
+            log.Info($"The following arguments were provided:{System.Environment.NewLine}" +
+                $"\tCentralizator Masuratori File Path '{centralizatorFilePath}'{System.Environment.NewLine}" +
+                $"\tMeasurements File Name '{measurementsFileName}'{System.Environment.NewLine}");
 
             if(!File.Exists(centralizatorFilePath))
             {

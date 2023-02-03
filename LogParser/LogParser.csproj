@@ -49,5 +49,11 @@
 	<ItemGroup>
 		<ProjectReference Include="..\ScalesAutomation\ScalesAutomation.csproj" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Update="log4Net.config">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
 
 </Project>

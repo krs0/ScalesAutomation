@@ -21,8 +21,10 @@ namespace ScalesAutomation
             }
         }
 
-        public static void ChangeLoggingFile(this ILog log, string newFileName)
+        public static void ChangeLoggingFile(this ILog log, string logFileName)
         {
+            log.Info($"Changing logging to: '{logFileName}'");
+
             var logger = (Logger)log.Logger;
 
             while(logger != null)
@@ -31,12 +33,30 @@ namespace ScalesAutomation
                 {
                     if(appender is FileAppender fileAppender)
                     {
-                        fileAppender.File = newFileName;
+                        fileAppender.File = logFileName;
                         fileAppender.ActivateOptions();
                     }
                 }
                 logger = logger.Parent;
             }
+        }
+
+        public static string GetLoggingFile(this ILog log)
+        {
+            string logFileName = "";
+            var logger = (Logger)log.Logger;
+
+            while(logger != null)
+            {
+                foreach(var appender in logger.Appenders)
+                {
+                    if(appender is FileAppender fileAppender)
+                        logFileName = fileAppender.File;
+                }
+                logger = logger.Parent;
+            }
+
+            return logFileName;
         }
 
         public static void AppendFiles(string inputFilePath, string outputFilePath)

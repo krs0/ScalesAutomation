@@ -35,7 +35,7 @@ namespace ScalesAutomation
         }
 
         /// <summary> Kill no name EXCEL processes. Detect if Centralizator Masuratori Open. </summary>
-        public static bool CheckIfExcelIsOpen()
+        public static bool CloseExcelIfOpen()
         {
             bool result = false;
 

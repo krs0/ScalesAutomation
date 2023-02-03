@@ -1,8 +1,8 @@
-using log4net;
+﻿using log4net;
 using System;
 using System.Reflection;
-using Excel = Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace MetrologyReaderNS
 {
@@ -33,7 +33,7 @@ namespace MetrologyReaderNS
 
             rangeStatus = worksheet.Range["A2"];
             string measurementsOverallStatus = rangeStatus.Text.ToString();
-            log.Info($"Measurement overall status: {measurementsOverallStatus}");
+            log.Info($"Measurement overall status: {measurementsOverallStatus}! FileName: '{measurementsFileName}'");
 
             // write in console so that calling process can catch this result
             Console.WriteLine(measurementsOverallStatus);

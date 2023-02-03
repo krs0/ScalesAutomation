@@ -73,7 +73,7 @@ namespace ScalesAutomation
             int rawLogLineLength = 0;
 
             string simulatedFilePath = Settings.Default.SerialTransmissionSimulationPath;
-            log.Info($"Start Loading Simulated Data from: {simulatedFilePath}");
+            log.Info($"Start Loading Simulated Data from: '{simulatedFilePath}'");
 
             var lineCount = File.ReadLines(simulatedFilePath).Count();
             simulatedMeasurements = new byte[lineCount][]; // max possible size (including non measurements lines)
