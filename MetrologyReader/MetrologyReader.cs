@@ -1,4 +1,4 @@
-﻿using log4net;
+using log4net;
 using System;
 using System.Reflection;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -66,8 +66,10 @@ namespace MetrologyReaderNS
 
             if(worksheet != null) Marshal.ReleaseComObject(worksheet);
             if(worksheets != null) Marshal.ReleaseComObject(worksheets);
+            excelApp.DisplayAlerts = false;
             workbook.Save();
             workbook.Close(true);
+            excelApp.DisplayAlerts = true;
             if(workbook != null) Marshal.ReleaseComObject(workbook);
             if(workbooks != null) Marshal.ReleaseComObject(workbooks);
             excelApp.Quit();
