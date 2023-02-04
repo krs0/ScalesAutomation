@@ -8,7 +8,7 @@ namespace ScalesAutomation
 {
     public static class StartMetrologyReader
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
 
         /// <summary>Launch the Metrology Reader application and read its metrologyResult</summary>
         public static string GetMetrologyResults(string logFileName, string serverFolderPath)

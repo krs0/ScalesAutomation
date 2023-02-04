@@ -1,4 +1,5 @@
 using log4net;
+using log4net.Appender;
 using System;
 using System.IO;
 using System.Reflection;
@@ -7,10 +8,13 @@ namespace MetrologyReaderNS
 {
     class Program
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
+        private static readonly ILog logFile = LogManager.GetLogger("measurementLog");
 
         static void Main(string[] args)
         {
+            log4net.Util.LogLog.InternalDebugging = true;
+
             string centralizatorFilePath, measurementsFileName;
 
             log.Info($"Starting Metrology Reader...{Environment.NewLine}");
@@ -33,6 +37,9 @@ namespace MetrologyReaderNS
             }
 
             log.Info($"Finished Metrology Reader!{Environment.NewLine}");
+            logFile.ChangeLoggingFile("./Logs/b.log");
+            logFile.Info($"log in B");
+            log.Info($"Log in rolling");
         }
 
         private static void ParseArgs(string[] args, out string centralizatorFilePath, out string measurementsFileName)
@@ -54,6 +61,26 @@ namespace MetrologyReaderNS
                 log.Error($"Centralizator File does not exist!");
                 throw new Exception();
             }
+        }
+    }
+
+    public static class UtilityForLogging
+    {
+        public static void ChangeLoggingFile(this ILog localLog, string logFileName)
+        {
+            var rootRepository = log4net.LogManager.GetRepository();
+            foreach(var appender in rootRepository.GetAppenders())
+            {
+                if(appender.Name.Equals("LogToFile") && appender is FileAppender)
+                {
+                    var fileAppender = appender as FileAppender;
+                    fileAppender.File = logFileName;
+                    fileAppender.ActivateOptions();
+                    break;  // Appender found and name changed to NewFilename
+                }
+            }
+
+            localLog.Info($"Measurements logging will be done to: '{logFileName}'");
         }
     }
 }

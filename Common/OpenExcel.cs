@@ -9,7 +9,7 @@ namespace ScalesAutomation
 {
     public static class OpenExcel
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
 
         /// <summary>Launch Excel application for the selected xls file.</summary>
         public static void OpenWorkbook(string xlsFilePath)

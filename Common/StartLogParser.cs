@@ -7,7 +7,7 @@ namespace ScalesAutomation
 {
     public static class StartLogParser
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
 
         /// <summary>Launch the log parsing application with some options set.</summary>
         public static void ParseLog(string logFilePath, string outputFolderPath)

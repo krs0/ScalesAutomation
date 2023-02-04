@@ -7,7 +7,7 @@ namespace ScalesAutomation
 {
     public class PathHelper
     {
-        readonly static ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
 
         #region Public Methods
 

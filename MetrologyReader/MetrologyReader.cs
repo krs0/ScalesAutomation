@@ -6,9 +6,11 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace MetrologyReaderNS
 {
+
     public class MetrologyReader : IDisposable
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
+        private static readonly ILog logFile = LogManager.GetLogger("measurementLog");
 
         private bool disposed = false; // flag to indicate whether the resource has already been disposed 
 
