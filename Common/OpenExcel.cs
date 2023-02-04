@@ -1,4 +1,4 @@
-﻿using CommonNS.Properties;
+using CommonNS.Properties;
 using log4net;
 using System;
 using System.Diagnostics;
@@ -24,7 +24,7 @@ namespace ScalesAutomation
 
             try
             {
-                log.Info($"Starting excel app with arguments: {xlsFilePath}");
+                log.Info($"Starting excel app with arguments: '{xlsFilePath}'");
                 using var parserProcess = Process.Start(startInfo);
 
             }

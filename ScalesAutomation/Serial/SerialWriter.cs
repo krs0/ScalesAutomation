@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
@@ -42,7 +42,7 @@ namespace ScalesAutomation
             }
             catch(Exception ex)
             {
-                log.Info("Error in Serial Writer!" + ex.Message);
+                log.Info($"Error in Serial Writer! {ex.Message}");
             }
             finally
             {
@@ -107,7 +107,7 @@ namespace ScalesAutomation
 
             Array.Resize(ref simulatedMeasurements, simulatedMeasurementsIndex); // correct the size because we had non-measurement lines
 
-            log.Info($"Loaded {simulatedMeasurementsIndex} measurements.");
+            log.Info($"Loaded {simulatedMeasurementsIndex} measurements");
             log.Info($"Finished Loading Simulated Data {Environment.NewLine}");
         }
 
@@ -208,7 +208,7 @@ namespace ScalesAutomation
             }
             catch(Exception ex)
             {
-                log.Error("Cannot Dispose of serial port:" + ex.Message + Environment.NewLine);
+                log.Error($"Cannot Dispose of serial port! {ex.Message}{Environment.NewLine}");
                 throw;
             }
         }

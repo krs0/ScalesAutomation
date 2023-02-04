@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using log4net;
 using System.Reflection;
@@ -55,7 +55,8 @@ namespace ScalesAutomation
             }
             catch(Exception ex)
             {
-                log.Error("Cannot copy file:" + fileName + " From " + sourceFolderPath + " to " + destinationFolderPath + ex.Message + Environment.NewLine);
+                log.Error($"Cannot copy file: '{fileName}' from '{sourceFolderPath}' to '{destinationFolderPath}'" +
+                    $"{Environment.NewLine}{ex.Message}{Environment.NewLine}");
                 throw;
             }
         }
@@ -71,7 +72,7 @@ namespace ScalesAutomation
             }
             catch(Exception ex)
             {
-                log.Error("Folder does not exist or is unreachable:" + folderPath + ex.Message + Environment.NewLine);
+                log.Error($"Folder does not exist or is unreachable: '{folderPath}'{Environment.NewLine}{ex.Message}{Environment.NewLine}");
                 throw;
             }
 

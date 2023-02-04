@@ -1,4 +1,4 @@
-﻿using log4net;
+using log4net;
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -25,7 +25,7 @@ namespace ScalesAutomation
             {
                 // Start the process with the info we specified.
                 // Call WaitForExit and then the using-statement will close.
-                log.Info("Starting parser with arguments: " + startInfo.Arguments);
+                log.Info($"Starting parser with arguments: {startInfo.Arguments}");
                 using(var parserProcess = Process.Start(startInfo))
                 {
                     parserProcess?.WaitForExit();

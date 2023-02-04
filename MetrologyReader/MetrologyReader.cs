@@ -1,4 +1,4 @@
-﻿using log4net;
+using log4net;
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -29,7 +29,7 @@ namespace MetrologyReaderNS
 
             excelApp.EnableEvents = false; // disable Excel events again
 
-            log.Debug($"Written value in MeasurementsFileName Range: {rangeFileName.Text.ToString()}");
+            log.Debug($"Written value in MeasurementsFileName Range: '{rangeFileName.Text.ToString()}'");
 
             rangeStatus = worksheet.Range["A2"];
             string measurementsOverallStatus = rangeStatus.Text.ToString();

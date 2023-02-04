@@ -45,9 +45,9 @@ namespace MetrologyReaderNS
 
             centralizatorFilePath = args[0];
             measurementsFileName = args[1];
-            log.Info($"The following arguments were provided:{System.Environment.NewLine}" +
-                $"\tCentralizator Masuratori File Path '{centralizatorFilePath}'{System.Environment.NewLine}" +
-                $"\tMeasurements File Name '{measurementsFileName}'{System.Environment.NewLine}");
+            log.Info($"The following arguments were provided:{Environment.NewLine}" +
+                $"\tCentralizator Masuratori File Path '{centralizatorFilePath}'{Environment.NewLine}" +
+                $"\tMeasurements File Name '{measurementsFileName}'{Environment.NewLine}");
 
             if(!File.Exists(centralizatorFilePath))
             {
