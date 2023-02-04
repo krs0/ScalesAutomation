@@ -10,7 +10,7 @@ namespace ScalesAutomation
 {
     class XmlHelper
     {
-        private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
 
         public List<Product> Catalogue = new List<Product>();
 

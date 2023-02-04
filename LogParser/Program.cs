@@ -12,7 +12,7 @@ namespace LogParser
 
     static class Program
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
 
         /// <summary>
         /// The main entry point for the application. Args[0] - logFilePath, Args[1] - outputFolderPath

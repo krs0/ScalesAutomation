@@ -13,7 +13,8 @@ namespace ScalesAutomation
 {
     public class MySerialReader : IDisposable
     {
-        readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
+        private static readonly ILog logM = LogManager.GetLogger("measurementLog");
 
         public SynchronizedCollection<Measurement> Measurements;
         public SynchronizedCollection<Measurement> rawMeasurements;
@@ -323,7 +324,7 @@ namespace ScalesAutomation
                     // log.Info("Package Received: " + BitConverter.ToString(packageAsByteArray) + "  Stable: " + (measurement.IsStable ? "T" : "F") + " - Weight: " + measurement.TotalWeight);
 
                     // Logging short format
-                    log.Info("S: " + (measurement.IsStable ? "T" : "F") + " - W: " + measurement.TotalWeight);
+                    logM.Info("S: " + (measurement.IsStable ? "T" : "F") + " - W: " + measurement.TotalWeight);
 
                     // Everything up to ZeroThreshold grams is converted to 0
                     ApplyZeroThresholdCorrection(ref measurement);

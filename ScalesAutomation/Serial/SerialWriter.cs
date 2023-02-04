@@ -11,7 +11,7 @@ namespace ScalesAutomation
 {
     public class MySerialWriter : IDisposable
     {
-        private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
         private SerialPort serialPort;
 
         public MySerialWriter()

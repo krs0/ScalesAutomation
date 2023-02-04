@@ -7,7 +7,7 @@ namespace ScalesAutomation
 {
     public class LotInfo
     {
-        readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
 
         public string Lot;
         public string ProductName;

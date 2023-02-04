@@ -19,7 +19,8 @@ namespace ScalesAutomation
 
         public static volatile bool stopPressed = false; // will also be used to stop the Write Thread in simulation mode
 
-        private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
+        private static readonly ILog logM = LogManager.GetLogger("measurementLog");
 
         private Timer timer;
         private readonly DataTable dataTable = new DataTable();
@@ -195,7 +196,7 @@ namespace ScalesAutomation
                 if (result != DialogResult.Yes)
                     return;
 
-                log.ChangeLoggingFile(logFilePath);
+                logM.ChangeLoggingFile(logFilePath);
                 lotInfo.AppendToLot = true;
 
                 log.Info("Button Start Clicked" + Environment.NewLine);
@@ -204,7 +205,7 @@ namespace ScalesAutomation
             else
             {
                 logFilePath = logFolderPath + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "_" + lotInfo.Id + ".log";
-                log.ChangeLoggingFile(logFilePath);
+                logM.ChangeLoggingFile(logFilePath);
                 lotInfo.AppendToLot = false;
 
                 log.Info("Button Start Clicked" + Environment.NewLine);

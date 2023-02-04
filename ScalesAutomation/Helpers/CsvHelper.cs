@@ -10,7 +10,7 @@ namespace ScalesAutomation
 {
     public class CsvHelper
     {
-        readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
 
         public static string OutputFilePath;
         public static string OutputFolderPath;

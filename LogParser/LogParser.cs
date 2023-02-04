@@ -12,7 +12,7 @@ namespace LogParser
 {
     public partial class LogParser : Form
     {
-        readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
 
         class MeasurementInfo
         {

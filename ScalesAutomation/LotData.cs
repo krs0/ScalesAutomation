@@ -10,7 +10,7 @@ namespace ScalesAutomation
 {
     public partial class LotData : UserControl
     {
-        readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        readonly ILog log = LogManager.GetLogger("generalLog");
 
         XmlHelper XmlHandler = new XmlHelper();
 
