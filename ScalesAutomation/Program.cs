@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
@@ -16,26 +17,35 @@ namespace ScalesAutomation
         [STAThread]
         static void Main()
         {
-            log.Info($"Starting Scales Automation...");
-
-            if(mutex.WaitOne(TimeSpan.Zero, true))
+            try
             {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                if(Settings.Default.DataImporterEnabled)
-                    Application.Run(new DataImporter());
+                log.Info($"Starting Scales Automation...");
+
+                if(mutex.WaitOne(TimeSpan.Zero, true))
+                {
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                    if(Settings.Default.DataImporterEnabled)
+                        Application.Run(new DataImporter());
+                    else
+                        Application.Run(new ScalesAutomationForm());
+
+                    mutex.ReleaseMutex();
+                }
                 else
-                    Application.Run(new ScalesAutomationForm());
-
-                mutex.ReleaseMutex();
+                {
+                    log.Info($"Error: Application already open!");
+                    MessageBox.Show("Doar o singura instanta a aplicatiei poate rula la un moment dat!");
+                }
             }
-            else
+            catch(Exception ex)
             {
-                MessageBox.Show("Doar o singura instanta a aplicatiei poate rula la un moment dat!");
+                log.Error($"Error: {ex.Message}");
             }
-
-            log.Info($"Finished Scales Automation!");
-
+            finally
+            {
+                log.Info($"Finished Scales Automation!");
+            }
         }
     }
 }

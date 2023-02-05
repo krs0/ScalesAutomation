@@ -20,22 +20,32 @@ namespace LogParser
         [STAThread]
         static void Main(string[] args)
         {
-            log.Info($"Starting Log Parser...");
-
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
-            if (args.Length == 0)
-                Application.Run(new LogParser());
-            else
+            try
             {
-                var logParser = new LogParser();
-                
-                logParser.Initialize(Path.GetDirectoryName(args[0]), Path.GetDirectoryName(args[1]));
-                logParser.ParseLog(args[0]);
-            }
+                log.Info($"Starting Log Parser...");
 
-            log.Info($"Finished Log Parser");
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+
+                if(args.Length == 0)
+                    Application.Run(new LogParser());
+                else
+                {
+                    var logParser = new LogParser();
+
+                    logParser.Initialize(Path.GetDirectoryName(args[0]), Path.GetDirectoryName(args[1]));
+                    logParser.ParseLog(args[0]);
+                }
+            }
+            catch(Exception ex)
+            {
+                log.Error($"Error: {ex.Message}");
+            }
+            finally
+            {
+                log.Info($"Finished Log Parser");
+            } 
+            
         }
     }
 }

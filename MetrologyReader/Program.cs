@@ -14,10 +14,10 @@ namespace MetrologyReaderNS
         {
             string centralizatorFilePath, measurementsFileName;
 
-            log.Info($"Starting Metrology Reader...");
-
             try
             {
+                log.Info($"Starting Metrology Reader...");
+
                 ParseArgs(args, out centralizatorFilePath, out measurementsFileName);
 
                 MetrologyReader metrologyReader = new MetrologyReader();
@@ -32,8 +32,10 @@ namespace MetrologyReaderNS
             {
                 log.Error($"Error: {ex.Message}");
             }
-
-            log.Info($"Finished Metrology Reader!");
+            finally
+            {
+                log.Info($"Finished Metrology Reader!");
+            }
         }
 
         private static void ParseArgs(string[] args, out string centralizatorFilePath, out string measurementsFileName)

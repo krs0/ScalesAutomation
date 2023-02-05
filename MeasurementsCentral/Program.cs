@@ -16,15 +16,25 @@ namespace MeasurementsCentral
         [STAThread]
         static void Main()
         {
-            log.Info($"Starting Measurements Central...");
+            try
+            {
+                log.Info($"Starting Measurements Central...");
 
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
-            Application.Run(new MeasurementsCentral());
-
-            log.Info($"Finished Measurements Central!");
-
+                // To customize application configuration such as set high DPI settings or default font,
+                // see https://aka.ms/applicationconfiguration.
+                ApplicationConfiguration.Initialize();
+                Application.Run(new MeasurementsCentral());
+            }
+            catch(Exception ex)
+            {
+                log.Error($"Error: {ex.Message}");
+                MessageBox.Show(ex.Message);
+                throw;
+            }
+            finally
+            {
+                log.Info($"Finished Measurements Central!");
+            }
         }
     }
     public static class UtilityForLogging
