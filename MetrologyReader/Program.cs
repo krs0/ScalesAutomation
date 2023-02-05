@@ -1,4 +1,5 @@
 using log4net;
+using log4net.Appender;
 using System;
 using System.IO;
 using System.Reflection;
@@ -7,13 +8,13 @@ namespace MetrologyReaderNS
 {
     class Program
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
 
         static void Main(string[] args)
         {
             string centralizatorFilePath, measurementsFileName;
 
-            log.Info($"Starting Metrology Reader...{Environment.NewLine}");
+            log.Info($"Starting Metrology Reader...");
 
             try
             {
@@ -32,7 +33,7 @@ namespace MetrologyReaderNS
                 log.Error($"Error: {ex.Message}");
             }
 
-            log.Info($"Finished Metrology Reader!{Environment.NewLine}");
+            log.Info($"Finished Metrology Reader!");
         }
 
         private static void ParseArgs(string[] args, out string centralizatorFilePath, out string measurementsFileName)
@@ -47,7 +48,7 @@ namespace MetrologyReaderNS
             measurementsFileName = args[1];
             log.Info($"The following arguments were provided:{Environment.NewLine}" +
                 $"\tCentralizator Masuratori File Path '{centralizatorFilePath}'{Environment.NewLine}" +
-                $"\tMeasurements File Name '{measurementsFileName}'{Environment.NewLine}");
+                $"\tMeasurements File Name '{measurementsFileName}'");
 
             if(!File.Exists(centralizatorFilePath))
             {

@@ -7,7 +7,7 @@ namespace ScalesAutomation
 {
     public class PathHelper
     {
-        readonly static ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
 
         #region Public Methods
 
@@ -56,7 +56,7 @@ namespace ScalesAutomation
             catch(Exception ex)
             {
                 log.Error($"Cannot copy file: '{fileName}' from '{sourceFolderPath}' to '{destinationFolderPath}'" +
-                    $"{Environment.NewLine}{ex.Message}{Environment.NewLine}");
+                    $"{Environment.NewLine}{ex.Message}");
                 throw;
             }
         }
@@ -72,7 +72,7 @@ namespace ScalesAutomation
             }
             catch(Exception ex)
             {
-                log.Error($"Folder does not exist or is unreachable: '{folderPath}'{Environment.NewLine}{ex.Message}{Environment.NewLine}");
+                log.Error($"Folder does not exist or is unreachable: '{folderPath}'{Environment.NewLine}{ex.Message}");
                 throw;
             }
 

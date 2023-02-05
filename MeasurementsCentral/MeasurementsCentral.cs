@@ -13,7 +13,7 @@ namespace MeasurementsCentral
 {
     public partial class MeasurementsCentral : Form
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
 
         FolderBrowserDialog dlgFolderBrowser;
         ListView lvwMeasurementsFiles;

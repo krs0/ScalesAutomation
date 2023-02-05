@@ -11,7 +11,7 @@ namespace ScalesAutomation
 {
     public class MySerialWriter : IDisposable
     {
-        private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
         private SerialPort serialPort;
 
         public MySerialWriter()
@@ -73,7 +73,7 @@ namespace ScalesAutomation
             int rawLogLineLength = 0;
 
             string simulatedFilePath = Settings.Default.SerialTransmissionSimulationPath;
-            log.Info($"Start Loading Simulated Data from: '{simulatedFilePath}'");
+            log.Info($"Starting Scales Simulation...{Environment.NewLine}\tLoading Simulated Data from: '{simulatedFilePath}'");
 
             var lineCount = File.ReadLines(simulatedFilePath).Count();
             simulatedMeasurements = new byte[lineCount][]; // max possible size (including non measurements lines)
@@ -108,7 +108,7 @@ namespace ScalesAutomation
             Array.Resize(ref simulatedMeasurements, simulatedMeasurementsIndex); // correct the size because we had non-measurement lines
 
             log.Info($"Loaded {simulatedMeasurementsIndex} measurements");
-            log.Info($"Finished Loading Simulated Data {Environment.NewLine}");
+            log.Info($"Finished Scales Simulation!");
         }
 
         private static void AddRawLogLineToSimulatedMeasurements(byte[][] simulatedMeasurements, ref int simulatedMeasurementsIndex, byte[] rawLogLine, int rawLogLineLength)
@@ -180,7 +180,7 @@ namespace ScalesAutomation
                 serialPort.Write(simulatedMeasurements[i], 0, simulatedMeasurements[i].Length);
                 Thread.Sleep(10); // in reality is 100ms for ustable measurement and 200ms for stable measurement
 
-                if(ScalesAutomationForm.stopPressed) // stop this thread when stop lot is pressed in main
+                if(ScalesAutomationForm.stopTransmission) // stop this thread when stop lot is pressed in main
                     break;
             }
         }
@@ -208,7 +208,7 @@ namespace ScalesAutomation
             }
             catch(Exception ex)
             {
-                log.Error($"Cannot Dispose of serial port! {ex.Message}{Environment.NewLine}");
+                log.Error($"Cannot Dispose of serial port!{Environment.NewLine}{ex.Message}");
                 throw;
             }
         }

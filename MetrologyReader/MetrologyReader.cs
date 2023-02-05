@@ -6,9 +6,10 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace MetrologyReaderNS
 {
+
     public class MetrologyReader : IDisposable
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
 
         private bool disposed = false; // flag to indicate whether the resource has already been disposed 
 
@@ -33,7 +34,7 @@ namespace MetrologyReaderNS
 
             rangeStatus = worksheet.Range["A2"];
             string measurementsOverallStatus = rangeStatus.Text.ToString();
-            log.Info($"Measurement overall status: {measurementsOverallStatus}! FileName: '{measurementsFileName}'");
+            log.Info($"Measurement overall status: {measurementsOverallStatus}!");
 
             // write in console so that calling process can catch this result
             Console.WriteLine(measurementsOverallStatus);

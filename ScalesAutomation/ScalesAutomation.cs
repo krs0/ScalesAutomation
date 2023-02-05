@@ -17,9 +17,10 @@ namespace ScalesAutomation
     {
         public SynchronizedCollection<Measurement> Measurements;
 
-        public static volatile bool stopPressed = false; // will also be used to stop the Write Thread in simulation mode
+        public static volatile bool stopTransmission = false; // will also be used to stop the Write Thread in simulation mode
 
-        private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
+        private static readonly ILog logM = LogManager.GetLogger("measurementLog");
 
         private Timer timer;
         private readonly DataTable dataTable = new DataTable();
@@ -50,11 +51,6 @@ namespace ScalesAutomation
             Measurements = new SynchronizedCollection<Measurement>();
 
             CreateTimer();
-        }
-
-        public bool IsStopPressed()
-        {
-            return stopPressed;
         }
 
         #region "Events"
@@ -91,7 +87,7 @@ namespace ScalesAutomation
             int measurementEndPosition = 0;
             bool endOfMeasurementFound = false;
 
-            if (stopPressed) return; // Do not process any more measurements
+            if (stopTransmission) return; // Do not process any more measurements
 
             if (Measurements.Count > 1)
             {
@@ -156,7 +152,7 @@ namespace ScalesAutomation
                         break;
                 }
 
-                if (stopPressed)
+                if (stopTransmission)
                     return; // Do not process any more measurements. Stop could be pressed in middle of loop
 
                 // Add all valid measurements to DataTable and excel
@@ -176,7 +172,9 @@ namespace ScalesAutomation
 
         void btnStart_Click(object sender, EventArgs e)
         {
-            stopPressed = false;
+            log.Info($"Button Start Clicked");
+
+            stopTransmission = false;
             btnPause.Enabled = false;
 
             if (!uctlLotData.AreInputControlsValid()) return;
@@ -195,21 +193,21 @@ namespace ScalesAutomation
                 if (result != DialogResult.Yes)
                     return;
 
-                log.ChangeLoggingFile(logFilePath);
+                logM.ChangeLoggingFile(logFilePath);
                 lotInfo.AppendToLot = true;
 
-                log.Info("Button Start Clicked" + Environment.NewLine);
-                log.Info("### Lot " + lotInfo.Id + " Resumed on " + lotInfo.Date + " ###");
+                logM.Info($"### Lot {lotInfo.Id} resumed on {lotInfo.Date} ###{Environment.NewLine}");
             }
             else
             {
                 logFilePath = logFolderPath + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "_" + lotInfo.Id + ".log";
-                log.ChangeLoggingFile(logFilePath);
+                logM.ChangeLoggingFile(logFilePath);
                 lotInfo.AppendToLot = false;
 
-                log.Info("Button Start Clicked" + Environment.NewLine);
                 LogLotInfo(lotInfo);
             }
+
+            log.Info($"Measurements logging will be done to: '{logFilePath}'");
 
             var CSVOutputFolderPath = Path.Combine(Common.AssemblyPath, Settings.Default.CSVOutputPath);
             csvHelper = new CsvHelper();
@@ -237,29 +235,30 @@ namespace ScalesAutomation
             btnStopLot.Enabled = true;
 
             uctlLotData.DisableInputControls();
-
         }
 
         void btnPause_Click(object sender, EventArgs e)
         {
-            log.Info("Button Pause Clicked" + Environment.NewLine);
+            log.Info("Button Pause Clicked");
 
             btnPause.Enabled = false;
             btnStart.Enabled = true;
             btnStopLot.Enabled = true;
+
+            stopTransmission = true;
 
             CloseSerialCommunication();
         }
 
         void btnStopLot_Click(object sender, EventArgs e)
         {
-            log.Info("Button Stop Clicked" + Environment.NewLine);
+            log.Info("Button Stop Clicked");
 
             btnStart.Enabled = true;
             btnPause.Enabled = false;
             btnStopLot.Enabled = false;
 
-            stopPressed = true;
+            stopTransmission = true;
 
             CloseSerialCommunication();
 
@@ -329,14 +328,14 @@ namespace ScalesAutomation
 
         private void LogLotInfo(LotInfo lotInfo)
         {
-            log.Info("### Lot Info ###");
-            log.Info("Lot: " + lotInfo.Lot);
-            log.Info("Product Name: " + lotInfo.ProductName);
-            log.Info("Package: " + lotInfo.Package.Type);
-            log.Info("Net Weight: " + lotInfo.Package.NetWeight);
-            log.Info("Tare: " + lotInfo.Package.Tare);
-            log.Info("Zero Threshold: " + zeroThreshold);
-            log.Info("Date: " + lotInfo.Date + Environment.NewLine);
+            logM.Info("### Lot Info ###");
+            logM.Info("Lot: " + lotInfo.Lot);
+            logM.Info("Product Name: " + lotInfo.ProductName);
+            logM.Info("Package: " + lotInfo.Package.Type);
+            logM.Info("Net Weight: " + lotInfo.Package.NetWeight);
+            logM.Info("Tare: " + lotInfo.Package.Tare);
+            logM.Info("Zero Threshold: " + zeroThreshold);
+            logM.Info("Date: " + lotInfo.Date + Environment.NewLine);
         }
 
         private void AddValidMeasurementToDataTableAndExcel(List<Measurement> validMeasurements)
@@ -367,7 +366,7 @@ namespace ScalesAutomation
                 if(Settings.Default.ScaleType == "Constalaris")
                     csvHelper.WriteLineToOutputFile(row, dataTable.Columns.Count);
 
-                log.Info("Measurement Detected: " + row["#"] + " - Weight: " + row["Weight"] + " - at: " + row["TimeStamp"]);
+                logM.Info("Measurement Detected: " + row["#"] + " - Weight: " + row["Weight"] + " - at: " + row["TimeStamp"]);
             }
         }
 

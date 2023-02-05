@@ -13,7 +13,8 @@ namespace ScalesAutomation
 {
     public class MySerialReader : IDisposable
     {
-        readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
+        private static readonly ILog logM = LogManager.GetLogger("measurementLog");
 
         public SynchronizedCollection<Measurement> Measurements;
         public SynchronizedCollection<Measurement> rawMeasurements;
@@ -213,7 +214,7 @@ namespace ScalesAutomation
             default:
                 throw new Exception($"Model cantar incorect: {Settings.Default.ScaleType} - " +
                     $"Modelele suportate sunt: Bilanciai sau Constalaris.{Environment.NewLine}" +
-                    "Verifica setarea ScaleType in ScalesAutomation.dll.config!");
+                    "Verificati setarea ScaleType in ScalesAutomation.dll.config!");
             }
 
             serialPort.ReadTimeout = 1000;
@@ -245,7 +246,7 @@ namespace ScalesAutomation
         void EnableCyclicTransmission()
         {
             byte[] txBuffer = new byte[] { 0x73, 0x78, 0x0D }; // CR = end character
-            log.Info($"Enabling Cyclic Transmission... {BitConverter.ToString(txBuffer)}{Environment.NewLine}");
+            log.Info($"Enabling Cyclic Transmission...{BitConverter.ToString(txBuffer)}{Environment.NewLine}");
 
             serialPort.Write(txBuffer, 0, txBuffer.Length);
             Thread.Sleep(10);
@@ -255,7 +256,7 @@ namespace ScalesAutomation
         {
             byte[] data = new byte[serialPort.BytesToRead];
             var bytesRed = serialPort.Read(data, 0, data.Length);
-            log.Debug($"Bytes Read: {bytesRed}{Environment.NewLine}");
+            log.Debug($"Bytes Read: {bytesRed}");
 
             data.ToList().ForEach(b => recievedData.Enqueue(b));
 
@@ -265,13 +266,13 @@ namespace ScalesAutomation
         private void ReadFromSerialConstalaris()
         {
             var readData = serialPort.ReadLine();
-            log.Debug($"Recieved Data: {readData}{Environment.NewLine}");
+            log.Debug($"Recieved Data: {readData}");
 
             if(readData == null || readData.Count() != serialPackageLength - 1)
                 throw new Exception("Wrong fromatted package received");
 
             readData.ToList().ForEach(b => recievedData.Enqueue(Convert.ToByte(b)));
-            log.Debug($"Recieved Data size: {recievedData.Count}{Environment.NewLine}");
+            log.Debug($"Recieved Data size: {recievedData.Count}");
         }
 
         void AddToRawMeasurements()
@@ -323,7 +324,7 @@ namespace ScalesAutomation
                     // log.Info("Package Received: " + BitConverter.ToString(packageAsByteArray) + "  Stable: " + (measurement.IsStable ? "T" : "F") + " - Weight: " + measurement.TotalWeight);
 
                     // Logging short format
-                    log.Info("S: " + (measurement.IsStable ? "T" : "F") + " - W: " + measurement.TotalWeight);
+                    logM.Info("S: " + (measurement.IsStable ? "T" : "F") + " - W: " + measurement.TotalWeight);
 
                     // Everything up to ZeroThreshold grams is converted to 0
                     ApplyZeroThresholdCorrection(ref measurement);
@@ -415,7 +416,7 @@ namespace ScalesAutomation
             }
             catch(Exception ex)
             {
-                log.Error($"Cannot Dispose of serial port: {ex.Message}{Environment.NewLine}");
+                log.Error($"Cannot Dispose of serial port!{Environment.NewLine}{ex.Message}");
                 throw;
             }
         }

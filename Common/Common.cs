@@ -11,7 +11,7 @@ namespace ScalesAutomation
 {
     public static class Common
     {
-        readonly static ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
 
         public static string AssemblyPath
         {
@@ -21,23 +21,18 @@ namespace ScalesAutomation
             }
         }
 
-        public static void ChangeLoggingFile(this ILog log, string logFileName)
+        public static void ChangeLoggingFile(this ILog localLog, string logFilePath)
         {
-            log.Info($"Changing logging to: '{logFileName}'");
-
-            var logger = (Logger)log.Logger;
-
-            while(logger != null)
+            var rootRepository = log4net.LogManager.GetRepository();
+            foreach(var appender in rootRepository.GetAppenders())
             {
-                foreach(var appender in logger.Appenders)
+                if(appender.Name.Equals("LogToFile") && appender is FileAppender)
                 {
-                    if(appender is FileAppender fileAppender)
-                    {
-                        fileAppender.File = logFileName;
-                        fileAppender.ActivateOptions();
-                    }
+                    var fileAppender = appender as FileAppender;
+                    fileAppender.File = logFilePath;
+                    fileAppender.ActivateOptions();
+                    break;  // Appender found and name changed to NewFilename
                 }
-                logger = logger.Parent;
             }
         }
 

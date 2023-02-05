@@ -10,7 +10,7 @@ namespace ScalesAutomation
 {
     class XmlHelper
     {
-        private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger("generalLog");
 
         public List<Product> Catalogue = new List<Product>();
 
@@ -42,7 +42,7 @@ namespace ScalesAutomation
             }
             catch (Exception ex)
             {
-                log.Error($"Error reading the Product Catalogue:{Environment.NewLine}{ex.Message}{Environment.NewLine}");
+                log.Error($"Error reading the Product Catalogue:{Environment.NewLine}{ex.Message}");
                 //throw new Exception($"Eroare la citirea Catalogului de Produse: {filePath}"); // <- this causes error in designer
             }
         }
