@@ -87,5 +87,49 @@ namespace ScalesAutomation
 
             return packageAsIntArray;
         }
+
+        /// <summary>
+        ///             // ENT in %,g sau ml will be calculated according to the following table
+
+        // 5 <= Qn <= 50 9%
+        // 50 <= Qn <= 100 4.5g
+        // 100 <= Qn <= 200 4.5%
+        // 200 <= Qn <= 300 9g
+        // 300 <= Qn <= 500 3%
+        // 500 <= Qn <= 1000 15g
+        // 1000 <= Qn <= 10000 1.5%
+        /// </summary>
+        /// <param name="nominalQuantity">Nominal Quantity</param>
+        /// <param name="unit">optional measurement unit: Kg, g. Default is in grams</param>
+        public static double CalculateNegativeToleratedError(int nominalQuantity, string unit = "g")
+        {
+            double ENT; // NegativeToleratedError
+            double Qn; // local Nominal Quantity
+            var unitDivider = 1; // default for grams
+
+            if(unit == "Kg")
+                unitDivider = 1000;
+
+            Qn = Convert.ToDouble(nominalQuantity) * unitDivider; // first we transform everything in grams
+
+            if(Qn >= 5 && Qn < 50)
+                ENT = Qn * 9 / 100;
+            else if(Qn >= 50 && Qn < 100)
+                ENT = 4.5;
+            else if(Qn >= 100 && Qn < 200)
+                ENT = Qn * 4.5 / 100;
+            else if(Qn >= 200 && Qn < 300)
+                ENT = 9;
+            else if(Qn >= 300 && Qn < 500)
+                ENT = Qn * 3 / 100;
+            else if(Qn >= 500 && Qn < 1000)
+                ENT = 15;
+            else if(Qn >= 1000 && Qn < 10000)
+                ENT = Qn * 1.5 / 100;
+            else
+                ENT = Qn * 1.5 / 100;
+
+            return ENT / unitDivider; // we transform ENT in same unit as input Qn: Kg or g
+        }
     }
 }

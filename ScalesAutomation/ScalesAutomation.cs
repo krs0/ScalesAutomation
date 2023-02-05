@@ -38,6 +38,7 @@ namespace ScalesAutomation
         private int zeroThreshold;
         private int measurementTolerance;
         private int netWeight;
+        private double ENT;
 
         private LotInfo lotInfo;
         private NextLotData nextLotData;
@@ -185,6 +186,7 @@ namespace ScalesAutomation
             netWeight = lotInfo.Package.NetWeight;
             measurementTolerance = (int)(netWeight * Settings.Default.MeasurementTollerace) / 100;
             zeroThreshold = (int)(netWeight * Settings.Default.ZeroThreshold) / 100;
+            ENT = Common.CalculateNegativeToleratedError(lotInfo.Package.NetWeight);
 
             // for each LOT save logs in separate files. (If a log file was already created for a lot reuse it)
             if (PathHelper.GetLogFilePath(lotInfo.Id, logFolderPath, ref logFilePath))
@@ -354,13 +356,12 @@ namespace ScalesAutomation
 
                 // Add icon according to Status
                 Image image;
-                if(measurement > 960) // ToDo: CrLa - Crude aproximation here. Replace with something meaningful.
+                if (lotInfo.Package.NetWeight - measurement < 2 * ENT) // Negative Error(Qn - Qmeas) > 2*ENT (Total Negative Error)
                     image =  Image.FromFile("Images/ok_24.png");
                 else
                     image = Image.FromFile("Images/x_24.png");
 
                 dataGridViewMeasurements.Rows[i].Cells["Status"].Value = image;
-
 
                 // Add row to excel: - do not write in output file when using parser (Bilanciai), because it will be overwritten by parser anyway
                 if(Settings.Default.ScaleType == "Constalaris")
