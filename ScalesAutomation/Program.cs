@@ -16,10 +16,7 @@ namespace ScalesAutomation
         [STAThread]
         static void Main()
         {
-            log4net.Util.LogLog.InternalDebugging = true;
-
             log.Info($"Starting Scales Automation...");
-            //var savedLogFileName = log.GetLoggingFile();
 
             if(mutex.WaitOne(TimeSpan.Zero, true))
             {
@@ -37,7 +34,6 @@ namespace ScalesAutomation
                 MessageBox.Show("Doar o singura instanta a aplicatiei poate rula la un moment dat!");
             }
 
-            //log.ChangeLoggingFile(savedLogFileName);
             log.Info($"Finished Scales Automation!");
 
         }

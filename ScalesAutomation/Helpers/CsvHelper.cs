@@ -74,7 +74,7 @@ namespace ScalesAutomation
             }
             catch (Exception ex)
             {
-                log.Error($"Cannot write measurement to csv file... '{OutputFilePath}'{Environment.NewLine}{ex.Message}{Environment.NewLine}");
+                log.Error($"Cannot write measurement to csv file... '{OutputFilePath}'{Environment.NewLine}{ex.Message}");
                 throw;
             }
         }
@@ -92,7 +92,7 @@ namespace ScalesAutomation
             catch (Exception ex)
             {
                 log.Error($"Cannot copy file to server: '{OutputFileFullName}'. Trying to copy '{OutputFilePath}' to '{serverFolderPath}'" +
-                    $"{ex.Message}{Environment.NewLine}");
+                    $"{Environment.NewLine}{ex.Message}");
                 throw;
             }
         }
@@ -141,7 +141,7 @@ namespace ScalesAutomation
             }
             catch (Exception ex)
             {
-                log.Error($"Cannot calculate CSV output file Path... '{OutputFilePath}'{Environment.NewLine}{ex.Message}{Environment.NewLine}");
+                log.Error($"Cannot calculate CSV output file Path... '{OutputFilePath}'{Environment.NewLine}{ex.Message}");
                 throw;
             }
         }

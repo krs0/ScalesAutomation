@@ -21,7 +21,7 @@ namespace ScalesAutomation
             }
         }
 
-        public static void ChangeLoggingFile(this ILog localLog, string logFileName)
+        public static void ChangeLoggingFile(this ILog localLog, string logFilePath)
         {
             var rootRepository = log4net.LogManager.GetRepository();
             foreach(var appender in rootRepository.GetAppenders())
@@ -29,34 +29,12 @@ namespace ScalesAutomation
                 if(appender.Name.Equals("LogToFile") && appender is FileAppender)
                 {
                     var fileAppender = appender as FileAppender;
-                    fileAppender.File = logFileName;
+                    fileAppender.File = logFilePath;
                     fileAppender.ActivateOptions();
                     break;  // Appender found and name changed to NewFilename
                 }
             }
-
-            localLog.Info($"Measurements logging will be done to: '{logFileName}'");
         }
-
-        //public static void ChangeLoggingFile(this ILog log, string logFileName)
-        //{
-        //    log.Info($"Changing logging to: '{logFileName}'");
-
-        //    var logger = (Logger)log.Logger;
-
-        //    while(logger != null)
-        //    {
-        //        foreach(var appender in logger.Appenders)
-        //        {
-        //            if(appender is FileAppender fileAppender)
-        //            {
-        //                fileAppender.File = logFileName;
-        //                fileAppender.ActivateOptions();
-        //            }
-        //        }
-        //        logger = logger.Parent;
-        //    }
-        //}
 
         public static string GetLoggingFile(this ILog log)
         {

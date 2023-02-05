@@ -30,7 +30,7 @@ namespace ScalesAutomation
             try
             {
                 // Start the process with the info we specified, read from its std metrologyResult and WaitForExit
-                log.Info($"Starting Metrology Reader with arguments: {startInfo.Arguments}");
+                log.Debug($"Starting Metrology Reader with arguments: {startInfo.Arguments}");
 
                 using var metrologyReaderProcess = Process.Start(startInfo);
 
@@ -39,8 +39,7 @@ namespace ScalesAutomation
                 metrologyResult = reader.ReadToEnd();
                 metrologyResult = metrologyResult.TrimEnd();
 
-                // Write the redirected metrologyResult to this application's window.
-                log.Info($"Metrology Result: {metrologyResult}");
+                log.Debug($"Metrology Result: {metrologyResult}");
 
                 metrologyReaderProcess?.WaitForExit();
             }

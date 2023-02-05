@@ -9,7 +9,6 @@ namespace MeasurementsCentral
     internal static class Program
     {
         private static readonly ILog log = LogManager.GetLogger("generalLog");
-        private static readonly ILog logFile = LogManager.GetLogger("measurementLog");
 
         /// <summary>
         ///  The main entry point for the application.
@@ -17,20 +16,14 @@ namespace MeasurementsCentral
         [STAThread]
         static void Main()
         {
-            log4net.Util.LogLog.InternalDebugging = true;
-
-            log.Info($"Starting Measurements Central...{Environment.NewLine}");
+            log.Info($"Starting Measurements Central...");
 
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             Application.Run(new MeasurementsCentral());
 
-            log.Info($"log in Rolling");
-            logFile.Info($"log in A");
-            logFile.ChangeLoggingFile("./Logs/b.log");
-            logFile.Info($"log in B");
-            log.Info($"Finished Measurements Central!{Environment.NewLine}");
+            log.Info($"Finished Measurements Central!");
 
         }
     }
