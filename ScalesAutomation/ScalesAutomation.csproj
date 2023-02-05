@@ -55,18 +55,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Update="Images\ok.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Images\ok_24.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Images\x.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Images\x_24.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -81,6 +69,7 @@ if not exist ..\Server\Fara_Metrologie mkdir ..\Server\Fara_Metrologie
 copy /Y "$(OutDir)..\..\Resources\CentralizatorMasuratori.xlsm" "$(OutDir)..\Server\CentralizatorMasuratori.xlsm"
 copy /Y "$(OutDir)..\..\Resources\CatalogProduseMargarita.xml" "$(OutDir)..\Server\CatalogProduseMargarita.xml"
 copy /Y "$(OutDir)..\..\Resources\CatalogProduseEurocas.xml" "$(OutDir)..\Server\CatalogProduseEurocas.xml"
+xcopy "$(SolutionDir)Resources\Images\*" "$(OutDir)Images\"  /S /Y /I /D
 
 </PostBuildEvent>
     <StartupObject></StartupObject>

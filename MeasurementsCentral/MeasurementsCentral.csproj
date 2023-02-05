@@ -42,12 +42,6 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-		<None Update="Images\ok.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Images\x.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
 		<None Update="log4Net.config">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
@@ -56,5 +50,9 @@
 			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
 		</None>
 	</ItemGroup>
+	
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="xcopy &quot;$(SolutionDir)Resources\Images\*&quot; &quot;$(OutDir)Images\&quot;  /S /Y /I /D&#xD;&#xA;" />
+	</Target>
 
 </Project>
