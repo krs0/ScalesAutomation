@@ -79,6 +79,9 @@ namespace MeasurementsCentral
                 item.ToolTipText = measurementsFilename;
                 lvwMeasurementsFiles.Items.Add(item);
 
+                if(lvwMeasurementsFiles.Items.Count > 0)
+                    lvwMeasurementsFiles.EnsureVisible(lvwMeasurementsFiles.Items.Count - 1);
+
                 if (fileCount >= Settings.Default.MaxNoOfMeasurementFiles)
                     break;
 
@@ -173,7 +176,11 @@ namespace MeasurementsCentral
         private void numUDMaxFileNumber_KeyPress(object sender, KeyPressEventArgs e)
         {
             if(e.KeyChar == (char)Keys.Enter)
+            {
                 numUDMaxFileNumber_Validated(sender, e);
+                e.Handled = true;
+            }
+
         }
     }
 
