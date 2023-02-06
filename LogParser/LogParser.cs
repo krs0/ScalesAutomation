@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.IO;
 using LogParser.Properties;
 using ScalesAutomation;
+using CommonNS;
 
 namespace LogParser
 {

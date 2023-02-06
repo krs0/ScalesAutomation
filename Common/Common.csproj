@@ -5,7 +5,7 @@
 	<SelfContained>false</SelfContained>
     <UseWindowsForms>true</UseWindowsForms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	<RootNamespace>Common</RootNamespace>
+	<RootNamespace>CommonNS</RootNamespace>
     <AssemblyName>Common</AssemblyName>
 	<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
 	<SatelliteResourceLanguages>en</SatelliteResourceLanguages>

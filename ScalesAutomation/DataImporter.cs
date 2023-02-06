@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using ScalesAutomation.Properties;
+using CommonNS;
 
 namespace ScalesAutomation
 {

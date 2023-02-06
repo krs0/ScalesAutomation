@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace ScalesAutomation
+namespace CommonNS
 {
     public static class OpenExcel
     {

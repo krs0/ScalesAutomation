@@ -3,7 +3,7 @@ using System.IO;
 using log4net;
 using System.Reflection;
 
-namespace ScalesAutomation
+namespace CommonNS
 {
     public class PathHelper
     {

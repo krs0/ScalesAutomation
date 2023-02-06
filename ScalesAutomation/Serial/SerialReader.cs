@@ -8,6 +8,7 @@ using System.Threading;
 using ScalesAutomation.Properties;
 using System.Collections.Concurrent;
 using System.Collections;
+using CommonNS;
 
 namespace ScalesAutomation
 {

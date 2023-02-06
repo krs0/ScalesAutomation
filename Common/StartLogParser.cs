@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace ScalesAutomation
+namespace CommonNS
 {
     public static class StartLogParser
     {

@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
-namespace ScalesAutomation
+namespace CommonNS
 {
     public static class StartMetrologyReader
     {

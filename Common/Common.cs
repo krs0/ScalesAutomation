@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace ScalesAutomation
+namespace CommonNS
 {
     public static class Common
     {

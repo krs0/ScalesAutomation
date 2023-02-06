@@ -9,7 +9,6 @@ using System.Windows.Forms;
 
 namespace LogParser
 {
-
     static class Program
     {
         private static readonly ILog log = LogManager.GetLogger("generalLog");

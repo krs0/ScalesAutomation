@@ -1,13 +1,13 @@
 using MetrologyReaderNS;
 using MeasurementsCentral.Properties;
 using System.Collections;
-using ScalesAutomation;
 using System.Windows.Forms;
 using System;
 using System.Drawing;
 using System.IO;
 using log4net;
 using System.Reflection;
+using CommonNS;
 
 namespace MeasurementsCentral
 {
