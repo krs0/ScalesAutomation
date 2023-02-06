@@ -26,7 +26,12 @@
 		<BaseOutputPath>..\out\</BaseOutputPath>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<ApplicationIcon>MeasurementCentral.ico</ApplicationIcon>
 	</PropertyGroup>
+	
+	<ItemGroup>
+	  <Content Include="MeasurementCentral.ico" />
+	</ItemGroup>
 	
 	<ItemGroup>
 		<ProjectReference Include="..\Common\Common.csproj" />
