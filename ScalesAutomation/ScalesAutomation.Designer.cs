@@ -53,7 +53,7 @@ namespace ScalesAutomation
             // btnStart
             // 
             this.btnStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnStart.Location = new System.Drawing.Point(332, 371);
+            this.btnStart.Location = new System.Drawing.Point(329, 457);
             this.btnStart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(200, 77);
@@ -66,7 +66,7 @@ namespace ScalesAutomation
             // 
             this.btnPause.Enabled = false;
             this.btnPause.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnPause.Location = new System.Drawing.Point(576, 371);
+            this.btnPause.Location = new System.Drawing.Point(573, 457);
             this.btnPause.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnPause.Name = "btnPause";
             this.btnPause.Size = new System.Drawing.Size(200, 77);
@@ -104,7 +104,7 @@ namespace ScalesAutomation
             this.dataGridViewMeasurements.ReadOnly = true;
             this.dataGridViewMeasurements.RowHeadersWidth = 10;
             this.dataGridViewMeasurements.RowTemplate.Height = 25;
-            this.dataGridViewMeasurements.Size = new System.Drawing.Size(320, 600);
+            this.dataGridViewMeasurements.Size = new System.Drawing.Size(320, 725);
             this.dataGridViewMeasurements.TabIndex = 3;
             this.dataGridViewMeasurements.TabStop = false;
             // 
@@ -112,7 +112,7 @@ namespace ScalesAutomation
             // 
             this.btnStopLot.Enabled = false;
             this.btnStopLot.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnStopLot.Location = new System.Drawing.Point(449, 478);
+            this.btnStopLot.Location = new System.Drawing.Point(446, 564);
             this.btnStopLot.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnStopLot.Name = "btnStopLot";
             this.btnStopLot.Size = new System.Drawing.Size(200, 77);
@@ -133,7 +133,7 @@ namespace ScalesAutomation
             // 
             this.ShowNextLotData.Font = new System.Drawing.Font("Consolas", 30F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.ShowNextLotData.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.ShowNextLotData.Location = new System.Drawing.Point(47, 371);
+            this.ShowNextLotData.Location = new System.Drawing.Point(46, 368);
             this.ShowNextLotData.Margin = new System.Windows.Forms.Padding(4);
             this.ShowNextLotData.Name = "ShowNextLotData";
             this.ShowNextLotData.Size = new System.Drawing.Size(70, 70);
@@ -147,7 +147,7 @@ namespace ScalesAutomation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1322, 633);
+            this.ClientSize = new System.Drawing.Size(1322, 753);
             this.Controls.Add(this.ShowNextLotData);
             this.Controls.Add(this.uctlLotData);
             this.Controls.Add(this.btnStopLot);
