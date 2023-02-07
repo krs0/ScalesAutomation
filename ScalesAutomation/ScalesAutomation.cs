@@ -66,13 +66,13 @@ namespace ScalesAutomation
 
             dataTable.Columns.Add("#", typeof(int));
             dataTable.Columns.Add("Weight", typeof(string));
-            dataTable.Columns.Add("TimeStamp", typeof(string));
+            dataTable.Columns.Add("Time", typeof(string));
             dataGridViewMeasurements.DataSource = dataTable;
 
             dataGridViewMeasurements.Columns["Status"].Width = 32;
             dataGridViewMeasurements.Columns["#"].Width = 50;
             dataGridViewMeasurements.Columns["Weight"].Width = 100;
-            dataGridViewMeasurements.Columns["TimeStamp"].Width = 100;
+            dataGridViewMeasurements.Columns["Time"].Width = 100;
 
             // Set Columns not sortable
             foreach (DataGridViewColumn column in dataGridViewMeasurements.Columns)
@@ -351,7 +351,7 @@ namespace ScalesAutomation
                 var row = dataTable.NewRow();
                 row["#"] = i+1;
                 row["Weight"] = measurement;
-                row["TimeStamp"] = DateTime.Now.ToString("HH:mm:ss");
+                row["Time"] = DateTime.Now.ToString("HH:mm:ss");
                 dataTable.Rows.Add(row);
 
                 // Add icon according to Status
@@ -367,7 +367,7 @@ namespace ScalesAutomation
                 if(Settings.Default.ScaleType == "Constalaris")
                     csvHelper.WriteLineToOutputFile(row, dataTable.Columns.Count);
 
-                logM.Info("Measurement Detected: " + row["#"] + " - Weight: " + row["Weight"] + " - at: " + row["TimeStamp"]);
+                logM.Info("Measurement Detected: " + row["#"] + " - Weight: " + row["Weight"] + " - at: " + row["Time"]);
             }
         }
 

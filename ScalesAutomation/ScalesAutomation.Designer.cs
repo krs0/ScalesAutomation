@@ -40,7 +40,7 @@ namespace ScalesAutomation
             this.scalesAutomationBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.measurementBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.btnStopLot = new System.Windows.Forms.Button();
-            this.uctlLotData = new LotData();
+            this.uctlLotData = new ScalesAutomation.LotData();
             this.ShowNextLotData = new System.Windows.Forms.Button();
             this.toolTipPrepareNextLot = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMeasurements)).BeginInit();
@@ -53,7 +53,7 @@ namespace ScalesAutomation
             // btnStart
             // 
             this.btnStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnStart.Location = new System.Drawing.Point(355, 442);
+            this.btnStart.Location = new System.Drawing.Point(332, 371);
             this.btnStart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(200, 77);
@@ -66,7 +66,7 @@ namespace ScalesAutomation
             // 
             this.btnPause.Enabled = false;
             this.btnPause.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnPause.Location = new System.Drawing.Point(599, 442);
+            this.btnPause.Location = new System.Drawing.Point(576, 371);
             this.btnPause.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnPause.Name = "btnPause";
             this.btnPause.Size = new System.Drawing.Size(200, 77);
@@ -90,7 +90,7 @@ namespace ScalesAutomation
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewMeasurements.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewMeasurements.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -98,13 +98,13 @@ namespace ScalesAutomation
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewMeasurements.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridViewMeasurements.Location = new System.Drawing.Point(1019, 43);
+            this.dataGridViewMeasurements.Location = new System.Drawing.Point(990, 15);
             this.dataGridViewMeasurements.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dataGridViewMeasurements.Name = "dataGridViewMeasurements";
             this.dataGridViewMeasurements.ReadOnly = true;
-            this.dataGridViewMeasurements.RowHeadersWidth = 51;
+            this.dataGridViewMeasurements.RowHeadersWidth = 10;
             this.dataGridViewMeasurements.RowTemplate.Height = 25;
-            this.dataGridViewMeasurements.Size = new System.Drawing.Size(409, 782);
+            this.dataGridViewMeasurements.Size = new System.Drawing.Size(320, 600);
             this.dataGridViewMeasurements.TabIndex = 3;
             this.dataGridViewMeasurements.TabStop = false;
             // 
@@ -112,7 +112,7 @@ namespace ScalesAutomation
             // 
             this.btnStopLot.Enabled = false;
             this.btnStopLot.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnStopLot.Location = new System.Drawing.Point(484, 677);
+            this.btnStopLot.Location = new System.Drawing.Point(449, 478);
             this.btnStopLot.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnStopLot.Name = "btnStopLot";
             this.btnStopLot.Size = new System.Drawing.Size(200, 77);
@@ -123,20 +123,20 @@ namespace ScalesAutomation
             // 
             // uctlLotData
             // 
-            this.uctlLotData.Location = new System.Drawing.Point(16, 43);
+            this.uctlLotData.Location = new System.Drawing.Point(5, 5);
             this.uctlLotData.Margin = new System.Windows.Forms.Padding(5, 8, 5, 8);
             this.uctlLotData.Name = "uctlLotData";
-            this.uctlLotData.Size = new System.Drawing.Size(989, 329);
+            this.uctlLotData.Size = new System.Drawing.Size(980, 329);
             this.uctlLotData.TabIndex = 0;
             // 
             // ShowNextLotData
             // 
-            this.ShowNextLotData.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.ShowNextLotData.Font = new System.Drawing.Font("Consolas", 30F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.ShowNextLotData.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.ShowNextLotData.Location = new System.Drawing.Point(64, 442);
-            this.ShowNextLotData.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.ShowNextLotData.Location = new System.Drawing.Point(47, 371);
+            this.ShowNextLotData.Margin = new System.Windows.Forms.Padding(4);
             this.ShowNextLotData.Name = "ShowNextLotData";
-            this.ShowNextLotData.Size = new System.Drawing.Size(67, 77);
+            this.ShowNextLotData.Size = new System.Drawing.Size(70, 70);
             this.ShowNextLotData.TabIndex = 10;
             this.ShowNextLotData.Text = "+";
             this.toolTipPrepareNextLot.SetToolTip(this.ShowNextLotData, "Pregateste datele pentru urmatorul Lot");
@@ -147,7 +147,7 @@ namespace ScalesAutomation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1461, 863);
+            this.ClientSize = new System.Drawing.Size(1322, 633);
             this.Controls.Add(this.ShowNextLotData);
             this.Controls.Add(this.uctlLotData);
             this.Controls.Add(this.btnStopLot);

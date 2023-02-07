@@ -48,7 +48,7 @@
             this.cbProduct.FormattingEnabled = true;
             this.cbProduct.Location = new System.Drawing.Point(180, 80);
             this.cbProduct.Name = "cbProduct";
-            this.cbProduct.Size = new System.Drawing.Size(784, 32);
+            this.cbProduct.Size = new System.Drawing.Size(790, 32);
             this.cbProduct.TabIndex = 2;
             this.cbProduct.SelectedIndexChanged += new System.EventHandler(this.cbProduct_SelectedIndexChanged);
             // 
@@ -114,7 +114,7 @@
             this.cbPackage.FormattingEnabled = true;
             this.cbPackage.Location = new System.Drawing.Point(180, 145);
             this.cbPackage.Name = "cbPackage";
-            this.cbPackage.Size = new System.Drawing.Size(784, 32);
+            this.cbPackage.Size = new System.Drawing.Size(790, 32);
             this.cbPackage.TabIndex = 3;
             this.cbPackage.SelectedIndexChanged += new System.EventHandler(this.cbPackage_SelectedIndexChanged);
             // 
@@ -125,7 +125,7 @@
             this.txtPackageTare.Location = new System.Drawing.Point(180, 209);
             this.txtPackageTare.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtPackageTare.Name = "txtPackageTare";
-            this.txtPackageTare.Size = new System.Drawing.Size(784, 30);
+            this.txtPackageTare.Size = new System.Drawing.Size(790, 30);
             this.txtPackageTare.TabIndex = 4;
             this.txtPackageTare.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPackageTare_KeyPress);
             this.txtPackageTare.Validated += new System.EventHandler(this.txtPackageTare_Validated);
@@ -137,7 +137,7 @@
             this.txtNominalWeight.Location = new System.Drawing.Point(180, 279);
             this.txtNominalWeight.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtNominalWeight.Name = "txtNominalWeight";
-            this.txtNominalWeight.Size = new System.Drawing.Size(784, 30);
+            this.txtNominalWeight.Size = new System.Drawing.Size(790, 30);
             this.txtNominalWeight.TabIndex = 6;
             // 
             // txtLot
@@ -146,7 +146,7 @@
             this.txtLot.Location = new System.Drawing.Point(180, 15);
             this.txtLot.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtLot.Name = "txtLot";
-            this.txtLot.Size = new System.Drawing.Size(784, 30);
+            this.txtLot.Size = new System.Drawing.Size(790, 30);
             this.txtLot.TabIndex = 1;
             this.txtLot.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtLot_KeyPress);
             this.txtLot.Validated += new System.EventHandler(this.txtLot_Validated);
@@ -181,7 +181,7 @@
             this.Controls.Add(this.txtLot);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "LotData";
-            this.Size = new System.Drawing.Size(989, 328);
+            this.Size = new System.Drawing.Size(990, 320);
             this.ResumeLayout(false);
             this.PerformLayout();
 
