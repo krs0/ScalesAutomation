@@ -108,7 +108,7 @@ namespace MeasurementsCentral
             // 
             // MeasurementsCentral
             // 
-            this.ClientSize = new System.Drawing.Size(1006, 721);
+            this.ClientSize = new System.Drawing.Size(1006, 703);
             this.Controls.Add(this.numUDMaxFileNumber);
             this.Controls.Add(this.lblMaxNoOfProcessedFiles);
             this.Controls.Add(this.lblMeasurementsFolder);

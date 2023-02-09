@@ -52,8 +52,10 @@ namespace MeasurementsCentral
 
             string path = tbFileName.Text;
 
-            // Get all filePaths in the directory
+            // Get all filePaths in the directory sorted newest first
             string[] filePaths = Directory.GetFiles(path);
+            Array.Sort(filePaths);
+            Array.Reverse(filePaths);
 
             lvwMeasurementsFiles.Items.Clear();
 
@@ -177,10 +179,11 @@ namespace MeasurementsCentral
         {
             if(e.KeyChar == (char)Keys.Enter)
             {
-                numUDMaxFileNumber_Validated(sender, e);
                 e.Handled = true;
-            }
 
+                // Set focus to next control in tab order
+                this.SelectNextControl((Control)sender, true, true, true, true);
+            }
         }
     }
 
