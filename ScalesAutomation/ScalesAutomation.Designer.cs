@@ -29,8 +29,8 @@ namespace ScalesAutomation
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScalesAutomationForm));
             this.btnStart = new System.Windows.Forms.Button();
             this.btnPause = new System.Windows.Forms.Button();
@@ -41,7 +41,7 @@ namespace ScalesAutomation
             this.measurementBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.btnStopLot = new System.Windows.Forms.Button();
             this.uctlLotData = new ScalesAutomation.LotData();
-            this.ShowNextLotData = new System.Windows.Forms.Button();
+            this.btnShowNextLotData = new System.Windows.Forms.Button();
             this.toolTipPrepareNextLot = new System.Windows.Forms.ToolTip(this.components);
             this.btnDeleteLastMeasurement = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMeasurements)).BeginInit();
@@ -81,24 +81,24 @@ namespace ScalesAutomation
             this.dataGridViewMeasurements.AllowUserToAddRows = false;
             this.dataGridViewMeasurements.AllowUserToDeleteRows = false;
             this.dataGridViewMeasurements.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.RoyalBlue;
-            dataGridViewCellStyle1.NullValue = null;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewMeasurements.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.RoyalBlue;
+            dataGridViewCellStyle3.NullValue = null;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewMeasurements.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridViewMeasurements.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewMeasurements.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewMeasurements.DefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridViewMeasurements.Location = new System.Drawing.Point(990, 15);
             this.dataGridViewMeasurements.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dataGridViewMeasurements.MultiSelect = false;
@@ -132,19 +132,19 @@ namespace ScalesAutomation
             this.uctlLotData.Size = new System.Drawing.Size(980, 329);
             this.uctlLotData.TabIndex = 0;
             // 
-            // ShowNextLotData
+            // btnShowNextLotData
             // 
-            this.ShowNextLotData.Font = new System.Drawing.Font("Consolas", 30F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.ShowNextLotData.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.ShowNextLotData.Location = new System.Drawing.Point(46, 368);
-            this.ShowNextLotData.Margin = new System.Windows.Forms.Padding(4);
-            this.ShowNextLotData.Name = "ShowNextLotData";
-            this.ShowNextLotData.Size = new System.Drawing.Size(70, 70);
-            this.ShowNextLotData.TabIndex = 10;
-            this.ShowNextLotData.Text = "+";
-            this.toolTipPrepareNextLot.SetToolTip(this.ShowNextLotData, "Pregateste datele pentru urmatorul Lot");
-            this.ShowNextLotData.UseVisualStyleBackColor = true;
-            this.ShowNextLotData.Click += new System.EventHandler(this.btnShowNextLotData_Click);
+            this.btnShowNextLotData.Font = new System.Drawing.Font("Consolas", 30F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnShowNextLotData.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.btnShowNextLotData.Location = new System.Drawing.Point(46, 368);
+            this.btnShowNextLotData.Margin = new System.Windows.Forms.Padding(4);
+            this.btnShowNextLotData.Name = "btnShowNextLotData";
+            this.btnShowNextLotData.Size = new System.Drawing.Size(70, 70);
+            this.btnShowNextLotData.TabIndex = 10;
+            this.btnShowNextLotData.Text = "+";
+            this.toolTipPrepareNextLot.SetToolTip(this.btnShowNextLotData, "Pregateste datele pentru urmatorul Lot");
+            this.btnShowNextLotData.UseVisualStyleBackColor = true;
+            this.btnShowNextLotData.Click += new System.EventHandler(this.btnShowNextLotData_Click);
             // 
             // btnDeleteLastMeasurement
             // 
@@ -166,7 +166,7 @@ namespace ScalesAutomation
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1322, 753);
             this.Controls.Add(this.btnDeleteLastMeasurement);
-            this.Controls.Add(this.ShowNextLotData);
+            this.Controls.Add(this.btnShowNextLotData);
             this.Controls.Add(this.uctlLotData);
             this.Controls.Add(this.btnStopLot);
             this.Controls.Add(this.dataGridViewMeasurements);
@@ -198,7 +198,7 @@ namespace ScalesAutomation
         private System.Windows.Forms.BindingSource measurementBindingSource1;
         private System.Windows.Forms.Button btnStopLot;
         private LotData uctlLotData;
-        private System.Windows.Forms.Button ShowNextLotData;
+        private System.Windows.Forms.Button btnShowNextLotData;
         private System.Windows.Forms.ToolTip toolTipPrepareNextLot;
         private System.Windows.Forms.Button btnDeleteLastMeasurement;
     }

@@ -50,6 +50,9 @@ namespace ScalesAutomation
 
             simulationEnabled = Settings.Default.SimulationEnabled;
 
+            if(Settings.Default.ScaleType != "Bilanciai")
+                btnShowNextLotData.Visible = false;
+
             Measurements = new SynchronizedCollection<Measurement>();
 
             CreateTimer();
@@ -413,11 +416,14 @@ namespace ScalesAutomation
 
         private void btnDeleteLastMeasurement_Click(object sender, EventArgs e)
         {
+            var lastMeasurementIndex = dataTable.Rows.Count - 1;
+            if(lastMeasurementIndex < 0)
+                return;
+
             var dlgResult = MessageBox.Show("Ultima masuratoare va fi stearsa, continuati?", "Sterge ultima masuratoare", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if(dlgResult == DialogResult.No)
                 return;
 
-            var lastMeasurementIndex = dataTable.Rows.Count - 1;
             var lastMeasurement = dataTable.Rows[lastMeasurementIndex]["Weight"];
             dataTable.Rows.RemoveAt(lastMeasurementIndex);
             dataGridViewMeasurements.Refresh();
