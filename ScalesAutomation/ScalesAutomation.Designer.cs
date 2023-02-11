@@ -43,6 +43,7 @@ namespace ScalesAutomation
             this.uctlLotData = new ScalesAutomation.LotData();
             this.ShowNextLotData = new System.Windows.Forms.Button();
             this.toolTipPrepareNextLot = new System.Windows.Forms.ToolTip(this.components);
+            this.btnDeleteLastMeasurement = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMeasurements)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.measurementBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.scalesAutomationBindingSource)).BeginInit();
@@ -100,10 +101,12 @@ namespace ScalesAutomation
             this.dataGridViewMeasurements.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridViewMeasurements.Location = new System.Drawing.Point(990, 15);
             this.dataGridViewMeasurements.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.dataGridViewMeasurements.MultiSelect = false;
             this.dataGridViewMeasurements.Name = "dataGridViewMeasurements";
             this.dataGridViewMeasurements.ReadOnly = true;
             this.dataGridViewMeasurements.RowHeadersWidth = 10;
             this.dataGridViewMeasurements.RowTemplate.Height = 25;
+            this.dataGridViewMeasurements.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewMeasurements.Size = new System.Drawing.Size(320, 725);
             this.dataGridViewMeasurements.TabIndex = 3;
             this.dataGridViewMeasurements.TabStop = false;
@@ -143,11 +146,26 @@ namespace ScalesAutomation
             this.ShowNextLotData.UseVisualStyleBackColor = true;
             this.ShowNextLotData.Click += new System.EventHandler(this.btnShowNextLotData_Click);
             // 
+            // btnDeleteLastMeasurement
+            // 
+            this.btnDeleteLastMeasurement.Font = new System.Drawing.Font("Consolas", 30F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnDeleteLastMeasurement.ForeColor = System.Drawing.Color.Red;
+            this.btnDeleteLastMeasurement.Location = new System.Drawing.Point(912, 670);
+            this.btnDeleteLastMeasurement.Margin = new System.Windows.Forms.Padding(4);
+            this.btnDeleteLastMeasurement.Name = "btnDeleteLastMeasurement";
+            this.btnDeleteLastMeasurement.Size = new System.Drawing.Size(70, 70);
+            this.btnDeleteLastMeasurement.TabIndex = 11;
+            this.btnDeleteLastMeasurement.Text = "X";
+            this.toolTipPrepareNextLot.SetToolTip(this.btnDeleteLastMeasurement, "Sterge ultima masuratoare!");
+            this.btnDeleteLastMeasurement.UseVisualStyleBackColor = true;
+            this.btnDeleteLastMeasurement.Click += new System.EventHandler(this.btnDeleteLastMeasurement_Click);
+            // 
             // ScalesAutomationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1322, 753);
+            this.Controls.Add(this.btnDeleteLastMeasurement);
             this.Controls.Add(this.ShowNextLotData);
             this.Controls.Add(this.uctlLotData);
             this.Controls.Add(this.btnStopLot);
@@ -182,6 +200,7 @@ namespace ScalesAutomation
         private LotData uctlLotData;
         private System.Windows.Forms.Button ShowNextLotData;
         private System.Windows.Forms.ToolTip toolTipPrepareNextLot;
+        private System.Windows.Forms.Button btnDeleteLastMeasurement;
     }
 }
 

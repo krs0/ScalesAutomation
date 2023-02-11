@@ -63,6 +63,20 @@ namespace CommonNS
             }
         }
 
+        public static void DeleteLastLineFromFile(string filePath)
+        {
+            try
+            {
+                var lines = File.ReadAllLines(filePath);
+                File.WriteAllLines(filePath, lines.Take(lines.Length - 1).ToArray());
+            }
+            catch(Exception ex)
+            {
+                log.Error($"Cannot delete last line from... '{filePath}'{Environment.NewLine}{ex.Message}");
+                throw;
+            }
+        }
+
         public static bool IsAbsolutePath(string filePath)
         {
             return filePath.Contains(':');

@@ -33,6 +33,7 @@ namespace ScalesAutomation
         private CsvHelper csvHelper;
         private readonly string csvServerFolderPath = Common.TransformToAbsolutePath(Settings.Default.CSVServerFolderPath);
         private readonly string logFolderPath = Common.TransformToAbsolutePath(Settings.Default.LogFolderPath);
+        private readonly string csvOutputFolderPath = Path.Combine(Common.AssemblyPath, Settings.Default.CSVOutputPath);
         private string logFilePath = "";
 
         private int zeroThreshold;
@@ -211,9 +212,8 @@ namespace ScalesAutomation
 
             log.Info($"Measurements logging will be done to: '{logFilePath}'");
 
-            var CSVOutputFolderPath = Path.Combine(Common.AssemblyPath, Settings.Default.CSVOutputPath);
             csvHelper = new CsvHelper();
-            csvHelper.PrepareOutputFile(CSVOutputFolderPath, lotInfo);
+            csvHelper.PrepareOutputFile(csvOutputFolderPath, lotInfo);
 
             readPort?.Dispose();
             readPort = new MySerialReader(Measurements, zeroThreshold, lotInfo.Package.Tare, lotInfo.TareIsSet);
@@ -409,6 +409,22 @@ namespace ScalesAutomation
         {
             if(!btnStart.Enabled)
                 btnStopLot_Click(sender, e);
+        }
+
+        private void btnDeleteLastMeasurement_Click(object sender, EventArgs e)
+        {
+            var dlgResult = MessageBox.Show("Ultima masuratoare va fi stearsa, continuati?", "Sterge ultima masuratoare", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if(dlgResult == DialogResult.No)
+                return;
+
+            var lastMeasurementIndex = dataTable.Rows.Count - 1;
+            var lastMeasurement = dataTable.Rows[lastMeasurementIndex]["Weight"];
+            dataTable.Rows.RemoveAt(lastMeasurementIndex);
+            dataGridViewMeasurements.Refresh();
+
+            csvHelper.DeleteLastLineFromOutputFile();
+
+            logM.Info($"Measurement DELETED!: #{lastMeasurementIndex + 1} - {lastMeasurement}");
         }
     }
 }

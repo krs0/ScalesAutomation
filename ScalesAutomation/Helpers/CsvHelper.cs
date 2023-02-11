@@ -80,6 +80,11 @@ namespace ScalesAutomation
             }
         }
 
+        public void DeleteLastLineFromOutputFile()
+        {
+            Common.DeleteLastLineFromFile(OutputFilePath);
+        }
+
         public void CopyOutputFileToServer(string serverFolderPath)
         {
             try
