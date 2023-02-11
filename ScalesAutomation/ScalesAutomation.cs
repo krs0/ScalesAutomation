@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
@@ -218,6 +219,10 @@ namespace ScalesAutomation
             csvHelper = new CsvHelper();
             csvHelper.PrepareOutputFile(csvOutputFolderPath, lotInfo);
 
+            // If lot already exists, and no measurements in GUI, load existin measurements from file
+            if(lotInfo.AppendToLot && dataGridViewMeasurements.Rows.Count <= 0)
+                LoadMeasurementsFromOutputFile();
+
             readPort?.Dispose();
             readPort = new MySerialReader(Measurements, zeroThreshold, lotInfo.Package.Tare, lotInfo.TareIsSet);
             if(!readPort.Initialize())
@@ -239,7 +244,9 @@ namespace ScalesAutomation
             btnPause.Enabled = true;
             btnStopLot.Enabled = true;
 
-            uctlLotData.DisableInputControls();
+            btnDeleteLastMeasurement.Enabled = true;
+
+            uctlLotData.DisableLotControls();
         }
 
         void btnPause_Click(object sender, EventArgs e)
@@ -249,6 +256,8 @@ namespace ScalesAutomation
             btnPause.Enabled = false;
             btnStart.Enabled = true;
             btnStopLot.Enabled = true;
+
+            btnDeleteLastMeasurement.Enabled = true;
 
             stopTransmission = true;
 
@@ -263,6 +272,8 @@ namespace ScalesAutomation
             btnPause.Enabled = false;
             btnStopLot.Enabled = false;
 
+            btnDeleteLastMeasurement.Enabled = false;
+
             stopTransmission = true;
 
             CloseSerialCommunication();
@@ -270,7 +281,7 @@ namespace ScalesAutomation
             Thread.Sleep(500);
 
             // parse logs only for Bilanciai, for Constalaris we log exactly what's in the GUI
-            if(!(Settings.Default.ScaleType == "Constalaris"))
+            if(Settings.Default.ScaleType == "Bilanciai")
                 StartLogParser.ParseLog(logFilePath, CsvHelper.OutputFolderPath);
 
             csvHelper.BackupOutputFile(Settings.Default.CSVBackupPath);
@@ -372,6 +383,37 @@ namespace ScalesAutomation
 
                 logM.Info("Measurement Detected: " + row["#"] + " - Weight: " + row["Weight"] + " - at: " + row["Time"]);
             }
+        }
+
+        private void AddCvsMeasurementToDataTable(string measurementLine)
+        {
+            var splittedLine = measurementLine.Split(";");
+            var weight = Int32.Parse(splittedLine[1]);
+            var measurementIndex = dataTable.Rows.Count;
+
+            // Add measurement info to dataTable
+            var row = dataTable.NewRow();
+            row["#"] = measurementIndex + 1;
+            row["Weight"] = splittedLine[1];
+            row["Time"] = splittedLine[2];
+            dataTable.Rows.Add(row);
+
+            // Add icon according to Status
+            Image image;
+            if(lotInfo.Package.NetWeight - weight < 2 * ENT) // Negative Error(Qn - Qmeas) > 2*ENT (Total Negative Error)
+                image = Image.FromFile("Images/ok_24.png");
+            else
+                image = Image.FromFile("Images/x_24.png");
+
+            dataGridViewMeasurements.Rows[measurementIndex].Cells["Status"].Value = image;
+        }
+
+        private void LoadMeasurementsFromOutputFile()
+        {
+            var lines = File.ReadAllLines(CsvHelper.OutputFilePath);
+            lines = lines.Skip(1).ToArray(); // remove lot info from first line
+            foreach(var line in lines)
+                AddCvsMeasurementToDataTable(line);
         }
 
         private void CloseSerialCommunication()

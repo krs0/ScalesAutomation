@@ -151,7 +151,7 @@ namespace ScalesAutomation
             txtNominalWeight.Enabled = false;
         }
 
-        public void DisableInputControls()
+        public void DisableLotControls()
         {
             txtLot.Enabled = false;
             cbProduct.Enabled = false;
