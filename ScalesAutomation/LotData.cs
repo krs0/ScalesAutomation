@@ -132,8 +132,24 @@ namespace ScalesAutomation
 
             if ((txtLot.Text == "") || (cbProduct.SelectedIndex == -1) || (cbPackage.SelectedIndex == -1) || (txtPackageTare.Text == "") || (txtNominalWeight.Text == ""))
             {
-                log.Info("Invalid Lot configuration detected!" + Environment.NewLine);
+                log.Info($"Invalid Lot configuration detected!{Environment.NewLine}");
                 MessageBox.Show("Configuratie de Lot invalida! Asigurati-va ca toate campurile sunt completate si au valori corecte.",
+                    "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                inputsAreValid = false;
+            }
+
+            if (!PathHelper.IsPathValid(txtLot.Text))
+            {
+                log.Info($"Lot Name {txtLot.Text} contains invalid characters!{Environment.NewLine}");
+                MessageBox.Show("Numele lotului contine caractere invalide! Asigurati-va ca nu contine caractere speciale ca: \", *, /, :, <, >, ?, \\, |",
+                    "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                inputsAreValid = false;
+            }
+
+            if(!PathHelper.IsPathValid(cbProduct.Text))
+            {
+                log.Info($"Product Name {cbProduct.Text} contains invalid characters!{Environment.NewLine}");
+                MessageBox.Show("Numele Sortimentului contine caractere invalide! Asigurati-va ca nu contine caractere speciale ca: \", *, /, :, <, >, ?, \\, |",
                     "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 inputsAreValid = false;
             }
