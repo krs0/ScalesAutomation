@@ -2,12 +2,16 @@ using System;
 using System.IO;
 using log4net;
 using System.Reflection;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace CommonNS
 {
     public class PathHelper
     {
         private static readonly ILog log = LogManager.GetLogger("generalLog");
+
+        private static HashSet<char> invalidCharacters = new HashSet<char>(Path.GetInvalidPathChars());
 
         #region Public Methods
 
@@ -26,8 +30,9 @@ namespace CommonNS
                     result = true;
                 }
             }
-            catch(Exception)
+            catch(Exception ex)
             {
+                log.Error($"GetFilePath error: '{lotId}' '{folderPath}'{Environment.NewLine}{ex.Message}");
                 throw;
             }
 
@@ -77,6 +82,17 @@ namespace CommonNS
             }
 
             return exists;
+        }
+
+        public static bool IsPathValid(string filePath)
+        {
+            char[] charactersToAdd = { '*', '/', ':', '<', '>', '?', '\\', '|' };
+
+            // Add the characters to the invalidCharacters set
+            foreach(char c in charactersToAdd)
+                invalidCharacters.Add(c);
+
+            return !string.IsNullOrEmpty(filePath) && !filePath.Any(pc => invalidCharacters.Contains(pc));
         }
 
         #endregion
