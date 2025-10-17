@@ -103,10 +103,11 @@ namespace MeasurementsCentral
 
             var metrologyResult = metrologyReader.GetMetrologyResult(measurementsFilename);
 
-            metrologyReader.Dispose();
+            // Make the workbook visible and detach it from MetrologyReader so we don't start Excel a second time.
+            metrologyReader.DetachAndMakeVisible();
 
-            var excelFilePath = $"{CSVServerFolderPath}..\\CentralizatorMasuratori.xlsm";
-            OpenExcel.OpenWorkbook(excelFilePath);
+            // Dispose the reader but do not close the Excel instance (DetachAndMakeVisible prevents CloseExcel()).
+            metrologyReader.Dispose();
         }
 
         private void MeasurementsCentral_Shown(object sender, EventArgs e)
