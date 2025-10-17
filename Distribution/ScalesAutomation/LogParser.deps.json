@@ -371,7 +371,10 @@
           "log4net": "2.0.15"
         },
         "runtime": {
-          "Common.dll": {}
+          "Common.dll": {
+            "assemblyVersion": "2.6.4.8430",
+            "fileVersion": "2.6.4.8430"
+          }
         }
       },
       "ScalesAutomation/1.0.0": {
@@ -383,7 +386,10 @@
           "log4net": "2.0.15"
         },
         "runtime": {
-          "ScalesAutomation.dll": {}
+          "ScalesAutomation.dll": {
+            "assemblyVersion": "2.6.4.8430",
+            "fileVersion": "2.6.4.8430"
+          }
         }
       }
     }
