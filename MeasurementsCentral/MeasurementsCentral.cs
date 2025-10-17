@@ -18,7 +18,6 @@ namespace MeasurementsCentral
         FolderBrowserDialog dlgFolderBrowser;
         ListView lvwMeasurementsFiles;
         ListViewColumnSorter lvwColumnSorter;
-        string CSVServerFolderPath = Common.TransformToAbsolutePath(Settings.Default.CSVServerFolderPath);
 
         public MeasurementsCentral()
         {
@@ -50,17 +49,17 @@ namespace MeasurementsCentral
 
             int fileCount = 1;
 
-            string path = tbFileName.Text;
+            string measurementsPath = tbFileName.Text;
 
             // Get all filePaths in the directory sorted newest first
-            string[] filePaths = Directory.GetFiles(path);
+            string[] filePaths = Directory.GetFiles(measurementsPath);
             Array.Sort(filePaths);
             Array.Reverse(filePaths);
 
             lvwMeasurementsFiles.Items.Clear();
 
             var metrologyReader = new MetrologyReader();
-            metrologyReader.InitializeExcel($"{CSVServerFolderPath}../CentralizatorMasuratori.xlsm");
+            metrologyReader.InitializeExcel($"{measurementsPath}\\..\\CentralizatorMasuratori.xlsm");
 
             // Add each measurements file to the ListView
             foreach(string measuremetnsFilePath in filePaths)
@@ -98,8 +97,10 @@ namespace MeasurementsCentral
             if(OpenExcel.CloseExcelIfOpen())
                 return;
 
+            string measurementsPath = tbFileName.Text;
+
             var metrologyReader = new MetrologyReader();
-            metrologyReader.InitializeExcel($"{CSVServerFolderPath}../CentralizatorMasuratori.xlsm");
+            metrologyReader.InitializeExcel($"{measurementsPath}\\..\\CentralizatorMasuratori.xlsm");
 
             var metrologyResult = metrologyReader.GetMetrologyResult(measurementsFilename);
 
