@@ -8,3 +8,4 @@ Notes: Excel path is stored in Common/settings.
 To make a release run on Office2013 branch makeDistribution.bat. This will create the deploy files. Make sure to not overwrite any .config settings!
 
 Note: In Measurements Central app, CentralizatorMasuratori.xls is taken from 1 folder up of the selected measurements folder. The excel file will work with measurements from either Cantariri_Automate if found or CSVOutput if not. This way same xls fiel can be used on Server and local.
+Note: User Settings for Measurements Central App are stored under: c:\Users\Cantar\AppData\Local\MeasurementsCentral\MeasurementsCentral_Url_nap1anxfund0p3ogzkyj5wnir1gsuvmt\2.6.2.8430\user.config
