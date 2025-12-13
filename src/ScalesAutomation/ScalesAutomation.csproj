@@ -20,6 +20,15 @@
 		<ProduceReferenceAssemblyInOutDir>true</ProduceReferenceAssemblyInOutDir>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<StartupObject></StartupObject>
+		<IsPublishable>False</IsPublishable>
+		<BaseOutputPath>..\..\out\</BaseOutputPath>
+		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+		<ApplicationIcon>Scales.ico</ApplicationIcon>
+		<FileVersion>2.4.1.0</FileVersion>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<PackageReference Include="log4net" Version="2.0.15" />
 		<PackageReference Include="System.IO.Ports" Version="10.0.0" />
@@ -28,20 +37,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Content Include="Scales.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="App.config" />
 		<None Include="log4net.config">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="packages.config" />
 		<None Include="Properties\DataSources\ScalesAutomation.datasource" />
 		<None Include="Properties\DataSources\ScalesAutomation.measurement.datasource" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Include="App.config" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Content Include="Scales.ico" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -73,12 +79,6 @@ copy /Y "$(OutDir)..\..\Resources\CatalogProduseMargarita.xml" "$(OutDir)..\Serv
 copy /Y "$(OutDir)..\..\Resources\CatalogProduseEurocas.xml" "$(OutDir)..\Server\CatalogProduseEurocas.xml"
 xcopy "$(SolutionDir)src\resources\Images\*" "$(OutDir)Images\"  /S /Y /I /D
 </PostBuildEvent>
-		<StartupObject></StartupObject>
-		<IsPublishable>False</IsPublishable>
-		<BaseOutputPath>..\..\out\</BaseOutputPath>
-		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-		<ApplicationIcon>Scales.ico</ApplicationIcon>
-		<FileVersion>2.4.1.0</FileVersion>
 	</PropertyGroup>
 
 	<Target Name="MakeMyDir" AfterTargets="Build">

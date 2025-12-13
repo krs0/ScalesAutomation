@@ -30,20 +30,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="packages.config" />
-		<None Include="Properties\Settings.settings">
-			<Generator>SettingsSingleFileGenerator</Generator>
-			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
-		</None>
+		<PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
+		<PackageReference Include="System.ServiceModel.Primitives" Version="4.10.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="App.config" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
-		<PackageReference Include="System.ServiceModel.Primitives" Version="4.10.0" />
+		<None Include="packages.config" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -53,6 +46,10 @@
 	<ItemGroup>
 		<None Update="log4Net.config">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
 		</None>
 	</ItemGroup>
 
