@@ -1,0 +1,76 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/ScalesAutomation.sln",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary;ForceNoAlign"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "build-release",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/ScalesAutomation.sln",
+                "-c",
+                "Release",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary;ForceNoAlign"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": "build"
+        },
+        {
+            "label": "clean",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "clean",
+                "${workspaceFolder}/ScalesAutomation.sln"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "rebuild",
+            "dependsOn": [
+                "clean",
+                "build"
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": []
+        },
+         {
+            "label": "make-distribution",
+            "command": "cmd",
+            "args": ["/c", "makeDistribution.bat"],
+            "type": "shell",
+            "problemMatcher": []
+        },
+        {
+            "label": "run-all-tests",
+            "command": "dotnet",
+            "args": ["test", "${workspaceFolder}/ScalesAutomation.sln"],
+            "type": "process",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "clean-output",
+            "command": "powershell",
+            "args": ["-Command", "Remove-Item src/out -Recurse -Force -ErrorAction SilentlyContinue"],
+            "type": "shell"
+        }
+    ]
+}
+

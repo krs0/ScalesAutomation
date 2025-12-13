@@ -1,0 +1,41 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch ScalesAutomation",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/out/Debug/ScalesAutomation.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/out/Debug",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Launch MeasurementsCentral",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/out/Debug/MeasurementsCentral.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/out/Debug",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Launch LogParser",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/out/Debug/LogParser.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/out/Debug",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        }
+    ]
+}
