@@ -74,7 +74,7 @@ xcopy "$(SolutionDir)src\resources\Images\*" "$(OutDir)Images\"  /S /Y /I /D
 </PostBuildEvent>
     <StartupObject></StartupObject>
     <IsPublishable>False</IsPublishable>
-    <BaseOutputPath>..\out\</BaseOutputPath>
+    <BaseOutputPath>..\..\out\</BaseOutputPath>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <ApplicationIcon>Scales.ico</ApplicationIcon>
     <FileVersion>2.4.1.0</FileVersion>

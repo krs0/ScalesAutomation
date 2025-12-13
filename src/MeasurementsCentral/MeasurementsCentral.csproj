@@ -23,7 +23,7 @@
 	<PropertyGroup>
 		<StartupObject></StartupObject>
 		<IsPublishable>false</IsPublishable>
-		<BaseOutputPath>..\out\</BaseOutputPath>
+		<BaseOutputPath>..\..\out\</BaseOutputPath>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<ApplicationIcon>MeasurementCentral.ico</ApplicationIcon>

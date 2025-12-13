@@ -11,7 +11,7 @@
 	<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
 	</PropertyGroup>
 	
-	<PropertyGroup>    
+	<PropertyGroup>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
@@ -21,7 +21,7 @@
 	<PropertyGroup>
 		<StartupObject></StartupObject>
 		<IsPublishable>false</IsPublishable>
-		<BaseOutputPath>..\out\</BaseOutputPath>
+		<BaseOutputPath>..\..\out\</BaseOutputPath>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	</PropertyGroup>
