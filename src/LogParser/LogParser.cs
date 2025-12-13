@@ -67,6 +67,13 @@ namespace LogParser
         {
             lotInfo = lotInfo.ReadLotInfoFromLog(logFilePath);
 
+            // Check if lot info was found
+            if (string.IsNullOrEmpty(lotInfo.Lot))
+            {
+                log.Warn($"No lot info found in file: {logFilePath}. Skipping this file.");
+                throw new Exception($"No lot info found in file: {Path.GetFileName(logFilePath)}. This file does not contain measurement data.");
+            }
+
             // we rewrite whole logs. no appending
             if (!PathHelper.GetOutputFilePath(lotInfo.GetUniqueLotId(), outputFolderPath, ref outputFilePath))
             {
@@ -81,6 +88,8 @@ namespace LogParser
             CsvHelper.InitializeOutputFileContents(outputFilePath, lotInfo.MakeMeasurementFileHeader());
 
             var normalizedMeasurements = ReadAndNormalizeMeasurements(logFilePath, lotInfo.ZeroThreshold);
+            log.Info($"Found {normalizedMeasurements.Count} measurements");
+
             RemoveFakeMeasurements(normalizedMeasurements);
             // normalizedMeasurementsFilePath = Path.Combine(outputFolderPath, logFileName + ".out");
             // SaveListToFile(normalizedMeasurements, normalizedMeasurementsFilePath); // Generic list save does not work
@@ -90,15 +99,37 @@ namespace LogParser
             AddPositionToEachMeasurement(finalMeasurements, startingMeasurementIndex);
             SaveListToFile(finalMeasurements, outputFilePath);
 
+            log.Info($"Saved {finalMeasurements.Count} final measurements to: {outputFilePath}");
+
         }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            var logFilePaths = GetListOfFiles(logFolderPath, "*.log");
-
-            foreach (var logFilePath in logFilePaths)
+            try
             {
-                ParseLog(logFilePath);
+                log.Info($"Looking for log files in: {logFolderPath}");
+                var logFilePaths = GetListOfFiles(logFolderPath, "*.log");
+                log.Info($"Found {logFilePaths.Count} log file(s)");
+
+                if (logFilePaths.Count == 0)
+                {
+                    MessageBox.Show($"No .log files found in folder: {logFolderPath}", "No Files Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                foreach (var logFilePath in logFilePaths)
+                {
+                    log.Info($"Parsing log file: {logFilePath}");
+                    ParseLog(logFilePath);
+                    log.Info($"Successfully parsed: {logFilePath}");
+                }
+
+                MessageBox.Show($"Successfully parsed {logFilePaths.Count} log file(s).\nOutput saved to: {outputFolderPath}", "Parsing Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                log.Error($"Error during parsing: {ex.Message}");
+                MessageBox.Show($"Error during parsing:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
