@@ -2,22 +2,22 @@
 
 	<PropertyGroup>
 		<TargetFramework>net10.0-windows</TargetFramework>
-	<SelfContained>false</SelfContained>
-    <UseWindowsForms>true</UseWindowsForms>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	<RootNamespace>CommonNS</RootNamespace>
-    <AssemblyName>Common</AssemblyName>
-	<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
-	<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+		<SelfContained>false</SelfContained>
+		<UseWindowsForms>true</UseWindowsForms>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<RootNamespace>CommonNS</RootNamespace>
+		<AssemblyName>Common</AssemblyName>
+		<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
+		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
 	</PropertyGroup>
-	
+
 	<PropertyGroup>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
 		<ProduceReferenceAssemblyInOutDir>true</ProduceReferenceAssemblyInOutDir>
 	</PropertyGroup>
-	
+
 	<PropertyGroup>
 		<StartupObject></StartupObject>
 		<IsPublishable>false</IsPublishable>
@@ -25,11 +25,11 @@
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	</PropertyGroup>
-	
+
 	<ItemGroup>
 		<PackageReference Include="log4net" Version="2.0.15" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
 		<Compile Update="Properties\Settings.Designer.cs">
 			<DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -37,10 +37,10 @@
 			<DependentUpon>Settings.settings</DependentUpon>
 		</Compile>
 	</ItemGroup>
-	
+
 	<ItemGroup>
 		<None Update="log4Net.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Properties\Settings.settings">
 			<Generator>SettingsSingleFileGenerator</Generator>

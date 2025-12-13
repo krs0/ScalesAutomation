@@ -4,8 +4,8 @@
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net10.0-windows</TargetFramework>
 		<SelfContained>false</SelfContained>
-    <UseWindowsForms>true</UseWindowsForms>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<UseWindowsForms>true</UseWindowsForms>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<RootNamespace>MetrologyReader</RootNamespace>
 		<AssemblyName>MetrologyReader</AssemblyName>
 		<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
@@ -34,9 +34,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="log4Net.config">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
+		<None Update="log4Net.config">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 </Project>

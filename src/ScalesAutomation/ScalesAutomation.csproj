@@ -1,68 +1,70 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net10.0-windows</TargetFramework>
-	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
-	<SelfContained>false</SelfContained>
-    <UseWindowsForms>true</UseWindowsForms>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	<RootNamespace>ScalesAutomation</RootNamespace>
-    <AssemblyName>ScalesAutomation</AssemblyName>
-	<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
-	<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-  </PropertyGroup>
-  
-	<PropertyGroup>    
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net10.0-windows</TargetFramework>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<SelfContained>false</SelfContained>
+		<UseWindowsForms>true</UseWindowsForms>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<RootNamespace>ScalesAutomation</RootNamespace>
+		<AssemblyName>ScalesAutomation</AssemblyName>
+		<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
+		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+	</PropertyGroup>
+
+	<PropertyGroup>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
 		<ProduceReferenceAssemblyInOutDir>true</ProduceReferenceAssemblyInOutDir>
 	</PropertyGroup>
-  
-   <ItemGroup>
-    <PackageReference Include="log4net" Version="2.0.15" />
-	<PackageReference Include="System.IO.Ports" Version="10.0.0" />
-	<PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
-	<PackageReference Include="System.ServiceModel.Primitives" Version="4.10.0" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <None Include="log4net.config"> <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></None>
-    <None Include="packages.config" />
-    <None Include="Properties\DataSources\ScalesAutomation.datasource" />
-    <None Include="Properties\DataSources\ScalesAutomation.measurement.datasource" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Content Include="Scales.ico" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  
-   <PropertyGroup>
-    <PostBuildEvent>if not exist ..\Server\ mkdir ..\Server\
+
+	<ItemGroup>
+		<PackageReference Include="log4net" Version="2.0.15" />
+		<PackageReference Include="System.IO.Ports" Version="10.0.0" />
+		<PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
+		<PackageReference Include="System.ServiceModel.Primitives" Version="4.10.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="log4net.config">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="packages.config" />
+		<None Include="Properties\DataSources\ScalesAutomation.datasource" />
+		<None Include="Properties\DataSources\ScalesAutomation.measurement.datasource" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="App.config" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Scales.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Common\Common.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
+
+	<PropertyGroup>
+		<PostBuildEvent>if not exist ..\Server\ mkdir ..\Server\
 if not exist ..\Server\Cantariri_Automate mkdir ..\Server\Cantariri_Automate
 if not exist ..\Server\Cantariri_Manuale mkdir ..\Server\Cantariri_Manuale
 if not exist ..\Server\Fara_Metrologie mkdir ..\Server\Fara_Metrologie
@@ -70,17 +72,16 @@ copy /Y "$(OutDir)..\..\Resources\CentralizatorMasuratori.xlsm" "$(OutDir)..\Ser
 copy /Y "$(OutDir)..\..\Resources\CatalogProduseMargarita.xml" "$(OutDir)..\Server\CatalogProduseMargarita.xml"
 copy /Y "$(OutDir)..\..\Resources\CatalogProduseEurocas.xml" "$(OutDir)..\Server\CatalogProduseEurocas.xml"
 xcopy "$(SolutionDir)src\resources\Images\*" "$(OutDir)Images\"  /S /Y /I /D
-
 </PostBuildEvent>
-    <StartupObject></StartupObject>
-    <IsPublishable>False</IsPublishable>
-    <BaseOutputPath>..\..\out\</BaseOutputPath>
-    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-    <ApplicationIcon>Scales.ico</ApplicationIcon>
-    <FileVersion>2.4.1.0</FileVersion>
-  </PropertyGroup>
-  
-  	<Target Name="MakeMyDir" AfterTargets="Build">
+		<StartupObject></StartupObject>
+		<IsPublishable>False</IsPublishable>
+		<BaseOutputPath>..\..\out\</BaseOutputPath>
+		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+		<ApplicationIcon>Scales.ico</ApplicationIcon>
+		<FileVersion>2.4.1.0</FileVersion>
+	</PropertyGroup>
+
+	<Target Name="MakeMyDir" AfterTargets="Build">
 		<MakeDir Directories="$(OutDir)CSVBackup" />
 		<MakeDir Directories="$(OutDir)CSVOutput" />
 		<MakeDir Directories="$(OutDir)Logs" />

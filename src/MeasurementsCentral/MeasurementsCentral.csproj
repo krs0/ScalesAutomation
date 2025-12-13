@@ -3,23 +3,23 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net10.0-windows</TargetFramework>
-	<SelfContained>false</SelfContained>
-    <UseWindowsForms>true</UseWindowsForms>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	<RootNamespace>MeasurementsCentral</RootNamespace>
-    <AssemblyName>MeasurementsCentral</AssemblyName>
+		<SelfContained>false</SelfContained>
+		<UseWindowsForms>true</UseWindowsForms>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<RootNamespace>MeasurementsCentral</RootNamespace>
+		<AssemblyName>MeasurementsCentral</AssemblyName>
 		<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
 		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
 	</PropertyGroup>
-	
-	<PropertyGroup>	
+
+	<PropertyGroup>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
 		<ProduceReferenceAssemblyInOutDir>true</ProduceReferenceAssemblyInOutDir>
 		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
 	</PropertyGroup>
-	
+
 	<PropertyGroup>
 		<StartupObject></StartupObject>
 		<IsPublishable>false</IsPublishable>
@@ -28,16 +28,16 @@
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<ApplicationIcon>MeasurementCentral.ico</ApplicationIcon>
 	</PropertyGroup>
-	
+
 	<ItemGroup>
-	  <Content Include="MeasurementCentral.ico" />
+		<Content Include="MeasurementCentral.ico" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
 		<ProjectReference Include="..\Common\Common.csproj" />
 		<ProjectReference Include="..\MetrologyReader\MetrologyReader.csproj" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
 		<Compile Update="Properties\Settings.Designer.cs">
 			<DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -45,19 +45,19 @@
 			<DependentUpon>Settings.settings</DependentUpon>
 		</Compile>
 	</ItemGroup>
-	
+
 	<ItemGroup>
 		<None Update="log4Net.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Properties\Settings.settings">
 			<Generator>SettingsSingleFileGenerator</Generator>
 			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
 		</None>
 	</ItemGroup>
-	
+
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-	  <Exec Command="xcopy &quot;$(SolutionDir)src\resources\Images\*&quot; &quot;$(OutDir)Images\&quot;  /S /Y /I /D&#xD;&#xA;" />
+		<Exec Command="xcopy &quot;$(SolutionDir)src\resources\Images\*&quot; &quot;$(OutDir)Images\&quot;  /S /Y /I /D&#xD;&#xA;" />
 	</Target>
 
 </Project>
