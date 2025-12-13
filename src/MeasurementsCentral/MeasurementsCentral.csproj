@@ -57,7 +57,7 @@
 	</ItemGroup>
 	
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-	  <Exec Command="xcopy &quot;$(SolutionDir)Resources\Images\*&quot; &quot;$(OutDir)Images\&quot;  /S /Y /I /D&#xD;&#xA;" />
+	  <Exec Command="xcopy &quot;$(SolutionDir)src\resources\Images\*&quot; &quot;$(OutDir)Images\&quot;  /S /Y /I /D&#xD;&#xA;" />
 	</Target>
 
 </Project>
