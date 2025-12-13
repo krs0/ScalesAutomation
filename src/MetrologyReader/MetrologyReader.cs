@@ -13,7 +13,7 @@ namespace MetrologyReaderNS
 
         private bool disposed = false; // flag to indicate whether the resource has already been disposed 
 
-        // When true, Dispose/Close will not quit Excel — used to "detach" the workbook so user can inspect it.
+        // When true, Dispose/Close will not quit Excel ï¿½ used to "detach" the workbook so user can inspect it.
         private bool leaveOpen = false;
 
         Excel.Application excelApp;
@@ -47,17 +47,28 @@ namespace MetrologyReaderNS
 
         public void InitializeExcel(string centralizatorFilePath)
         {
-            // Open Excel in non-visible mode
-            excelApp = new Excel.Application
+            try
             {
-                Visible = false,
-                DisplayAlerts = false,
-                AlertBeforeOverwriting = false
-            };
-            workbooks = excelApp.Workbooks;
-            workbook = workbooks.Open(centralizatorFilePath);
-            worksheets = workbook.Worksheets;
-            worksheet = (Excel.Worksheet)worksheets["Metrologie"];
+                // Open Excel in non-visible mode
+                excelApp = new Excel.Application
+                {
+                    Visible = false,
+                    DisplayAlerts = false,
+                    AlertBeforeOverwriting = false
+                };
+                workbooks = excelApp.Workbooks;
+                workbook = workbooks.Open(centralizatorFilePath);
+                worksheets = workbook.Worksheets;
+                worksheet = (Excel.Worksheet)worksheets["Metrologie"];
+            }
+            catch (System.IO.FileNotFoundException ex)
+            {
+                throw new InvalidOperationException("Aplicatia Microsoft Office/Excel nu este instalata.", ex);
+            }
+            catch (System.Runtime.InteropServices.COMException ex)
+            {
+                throw new InvalidOperationException("Erroare la initializarea Excel. Aplicatia Microsoft Office/Excel nu este instalata sau este configurata incorect.", ex);
+            }
         }
 
         /// <summary>

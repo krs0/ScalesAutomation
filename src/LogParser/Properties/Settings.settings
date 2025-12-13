@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="LogFolderPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">c:\Home\Krs\Work\Cantar\ScalesAutomation\Resources\Eurocas\2019-03-04_OK\Logs\</Value>
+      <Value Profile="(Default)">Logs\</Value>
     </Setting>
     <Setting Name="OutputFolderPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">c:\Home\Krs\Work\Cantar\ScalesAutomation\Resources\Eurocas\2019-03-04_OK\CSVOutput\</Value>
+      <Value Profile="(Default)">CSVOutput\</Value>
     </Setting>
     <Setting Name="ConfidenceLevel" Type="System.Byte" Scope="User">
       <Value Profile="(Default)">97</Value>

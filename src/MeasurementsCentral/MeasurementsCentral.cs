@@ -58,8 +58,30 @@ namespace MeasurementsCentral
 
             lvwMeasurementsFiles.Items.Clear();
 
-            var metrologyReader = new MetrologyReader();
-            metrologyReader.InitializeExcel($"{measurementsPath}\\..\\CentralizatorMasuratori.xlsm");
+            MetrologyReader metrologyReader = null;
+            try
+            {
+                metrologyReader = new MetrologyReader();
+                metrologyReader.InitializeExcel($"{measurementsPath}\\..\\CentralizatorMasuratori.xlsm");
+            }
+            catch (InvalidOperationException ex)
+            {
+                MessageBox.Show(
+                    ex.Message + "\n\nApplicatia va countinua fara a verifica loturile.",
+                    "Aplicatia Excel nu e disponibila",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                metrologyReader = null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Errore la initializarea Excel: {ex.Message}\n\nApplicatia va countinua fara a verifica loturile.",
+                    "Erroare InitializareExcel",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                metrologyReader = null;
+            }
 
             // Add each measurements file to the ListView
             foreach(string measuremetnsFilePath in filePaths)
@@ -69,12 +91,20 @@ namespace MeasurementsCentral
                 item.Tag = measuremetnsFilePath;
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item, ""));
 
-                var metrologyResult = metrologyReader.GetMetrologyResult(measurementsFilename);
+                if (metrologyReader != null)
+                {
+                    var metrologyResult = metrologyReader.GetMetrologyResult(measurementsFilename);
 
-                if(metrologyResult == "Lot Acceptat")
-                    item.ImageIndex = 0;
+                    if(metrologyResult == "Lot Acceptat")
+                        item.ImageIndex = 0;
+                    else
+                        item.ImageIndex = 1;
+                }
                 else
-                    item.ImageIndex = 1;
+                {
+                    // No Excel available, show no icon
+                    item.ImageIndex = -1;
+                }
 
                 // Add the measuremetnsFilePath name to the tooltip
                 item.ToolTipText = measurementsFilename;
@@ -89,7 +119,10 @@ namespace MeasurementsCentral
                 fileCount++;
             }
 
-            metrologyReader.Dispose();
+            if (metrologyReader != null)
+            {
+                metrologyReader.Dispose();
+            }
         }
 
         private void OpenCentralizatorMasuratori(string measurementsFilename)

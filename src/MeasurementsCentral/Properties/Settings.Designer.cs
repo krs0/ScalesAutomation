@@ -25,7 +25,7 @@ namespace MeasurementsCentral.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("d:\\temp\\Krs\\ScalesAutomation\\out\\Server\\Cantariri_Automate\\")]
+        [global::System.Configuration.DefaultSettingValueAttribute("..\\Server\\Cantariri_Automate\\")]
         public string LastSelectedFolder {
             get {
                 return ((string)(this["LastSelectedFolder"]));

@@ -181,8 +181,7 @@ namespace ScalesAutomation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("d:\\temp\\Krs\\ScalesAutomation\\Resources\\Temp\\logs_constalaris\\Logs\\2023-01-09-21-2" +
-            "1-31_111_Rhapsody Apricot - Crema cu Caise 1Kg_Borcan PET 1L.log")]
+        [global::System.Configuration.DefaultSettingValueAttribute("..\\..\\..\\..\\resources\\Constalaris\\Recorded Transmission.txt")]
         public string SerialTransmissionSimulationPath {
             get {
                 return ((string)(this["SerialTransmissionSimulationPath"]));
