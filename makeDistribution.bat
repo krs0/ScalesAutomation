@@ -1,4 +1,4 @@
-robocopy *.* .\out\Release\ .\Distribution\ScalesAutomation\
-robocopy *.* .\Resources\Images\ .\Distribution\ScalesAutomation\Images\
-robocopy *.* .\Resources .\Distribution\Server CentralizatorMasuratori.xlsm /XF "Manual - Automatizare Cantar.docx"
-robocopy .\Resources .\Distribution\ScalesAutomation CentralizatorMasuratori.xlsm
+robocopy *.* .\src\out\Release\ .\distribution\ScalesAutomation\
+robocopy *.* .\resources\Images\ .\distribution\ScalesAutomation\Images\
+robocopy *.* .\resources .\distribution\Server CentralizatorMasuratori.xlsm /XF "Manual - Automatizare Cantar.docx"
+robocopy .\resources .\distribution\ScalesAutomation CentralizatorMasuratori.xlsm
