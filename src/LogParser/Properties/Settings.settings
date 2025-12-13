@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="LogFolderPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Logs\</Value>
+      <Value Profile="(Default)">..\..\tests\resources\Logs\</Value>
     </Setting>
     <Setting Name="OutputFolderPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">CSVOutput\</Value>

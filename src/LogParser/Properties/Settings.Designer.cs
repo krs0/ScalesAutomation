@@ -25,7 +25,7 @@ namespace LogParser.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Logs\\")]
+        [global::System.Configuration.DefaultSettingValueAttribute("..\\..\\tests\\resources\\Logs\\")]
         public string LogFolderPath {
             get {
                 return ((string)(this["LogFolderPath"]));

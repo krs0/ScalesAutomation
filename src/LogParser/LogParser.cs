@@ -47,7 +47,7 @@ namespace LogParser
         LotInfo lotInfo;
 
         string logFolderPath = Settings.Default.LogFolderPath;
-        string outputFolderPath = Settings.Default.LogFolderPath;
+        string outputFolderPath = Settings.Default.OutputFolderPath;
         string outputFilePath = "";
         int startingMeasurementIndex = 0;
 
