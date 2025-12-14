@@ -1,3 +1,5 @@
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/krs0/ScalesAutomation)
+
 # ScalesAutomation
 Measurements automation and log parser and metrics for an industrial grade scale
 
