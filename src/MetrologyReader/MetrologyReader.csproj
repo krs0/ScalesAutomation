@@ -37,6 +37,7 @@
 	<ItemGroup>
 		<PackageReference Include="log4net" Version="3.2.0" />
 		<PackageReference Include="Microsoft.Office.Interop.Excel" Version="16.0.18925.20022" />
+		<PackageReference Include="Spectre.Console.Cli" Version="0.53.1" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,4 +1,6 @@
 using log4net;
+using Spectre.Console.Cli;
+using System.ComponentModel;
 
 namespace MetrologyReaderNS;
 
@@ -6,52 +8,77 @@ class Program
 {
     private static readonly ILog log = LogManager.GetLogger("generalLog");
 
-    static void Main(string[] args)
+    static int Main(string[] args)
     {
-        string centralizatorFilePath, measurementsFileName;
-
         try
         {
             log.Info($"Starting Metrology Reader...");
 
-            ParseArgs(args, out centralizatorFilePath, out measurementsFileName);
-
-            MetrologyReader metrologyReader = new MetrologyReader();
-
-            metrologyReader.InitializeExcel(centralizatorFilePath);
-
-            metrologyReader.GetMetrologyResult(measurementsFileName);
-
-            metrologyReader.Dispose();
+            var app = new CommandApp<MetrologyCommand>();
+            return app.Run(args);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             log.Error($"Error: {ex.Message}");
+            return 1;
         }
         finally
         {
             log.Info($"Finished Metrology Reader!");
         }
     }
+}
 
-    private static void ParseArgs(string[] args, out string centralizatorFilePath, out string measurementsFileName)
+public class MetrologySettings : CommandSettings
+{
+    [CommandArgument(0, "<MEASUREMENTS_CENTRALIZER_FILE_PATH>")]
+    [Description("Path to the measurements centralizer excel file")]
+    public string MeasurementsCentralizerFilePath { get; set; } = string.Empty;
+
+    [CommandArgument(1, "<MEASUREMENTS_FILE>")]
+    [Description("Measurements file name to be interrogated")]
+    public string MeasurementsFileName { get; set; } = string.Empty;
+}
+
+public class MetrologyCommand : Command<MetrologySettings>
+{
+    private static readonly ILog log = LogManager.GetLogger("generalLog");
+
+    public override int Execute(CommandContext context, MetrologySettings settings, CancellationToken cancellationToken = default)
     {
-        if(args.Length < 2)
+        try
         {
-            log.Error($"Please provide the filepath for centralizator masuratori and the desired measurements file name to be interrogated as arguments.");
-            throw new Exception();
+            // Validate arguments
+            if (string.IsNullOrEmpty(settings.MeasurementsCentralizerFilePath) || string.IsNullOrEmpty(settings.MeasurementsFileName))
+            {
+                log.Error($"Please provide the filepath for measurements centralizer excel file and the filepath for the measurements file to be interrogated as arguments.");
+                return 1;
+            }
+
+            log.Info($"The following arguments were provided:{Environment.NewLine}" +
+                $"\tMeasurement Centralizer File Path '{settings.MeasurementsCentralizerFilePath}'{Environment.NewLine}" +
+                $"\tMeasurements File Name '{settings.MeasurementsFileName}'");
+
+            if (!File.Exists(settings.MeasurementsCentralizerFilePath))
+            {
+                log.Error($"Measureemnts Centralizer file does not exist!");
+                return 1;
+            }
+
+            var metrologyReader = new MetrologyReader();
+
+            metrologyReader.InitializeExcel(settings.MeasurementsCentralizerFilePath);
+
+            metrologyReader.GetMetrologyResult(settings.MeasurementsFileName);
+
+            metrologyReader.Dispose();
+
+            return 0;
         }
-
-        centralizatorFilePath = args[0];
-        measurementsFileName = args[1];
-        log.Info($"The following arguments were provided:{Environment.NewLine}" +
-            $"\tCentralizator Masuratori File Path '{centralizatorFilePath}'{Environment.NewLine}" +
-            $"\tMeasurements File Name '{measurementsFileName}'");
-
-        if(!File.Exists(centralizatorFilePath))
+        catch (Exception ex)
         {
-            log.Error($"Centralizator File does not exist!");
-            throw new Exception();
+            log.Error($"Error: {ex.Message}");
+            return 1;
         }
     }
 }
