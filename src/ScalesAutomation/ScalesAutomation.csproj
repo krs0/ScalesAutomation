@@ -31,9 +31,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="log4net" Version="2.0.15" />
-		<PackageReference Include="System.IO.Ports" Version="10.0.0" />
+		<PackageReference Include="log4net" Version="3.2.0" />
+		<PackageReference Include="System.IO.Ports" Version="10.0.1" />
 		<PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
+		<PackageReference Include="System.Private.Uri" Version="4.3.2" />
+		<PackageReference Include="System.ServiceModel.Primitives" Version="10.0.652802" />
 	</ItemGroup>
 
 	<ItemGroup>

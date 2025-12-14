@@ -35,7 +35,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="System.IO.Ports" Version="10.0.1" />
 		<PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
+		<PackageReference Include="System.Private.Uri" Version="4.3.2" />
+		<PackageReference Include="System.ServiceModel.Primitives" Version="10.0.652802" />
 	</ItemGroup>
 
 	<ItemGroup>
