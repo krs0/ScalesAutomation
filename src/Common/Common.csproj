@@ -27,6 +27,10 @@
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	</PropertyGroup>
 
+	<PropertyGroup>
+	  <NoWarn>1701;1702;NETSDK1233</NoWarn>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<PackageReference Include="log4net" Version="2.0.15" />
 	</ItemGroup>

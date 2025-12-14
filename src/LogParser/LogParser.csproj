@@ -30,9 +30,12 @@
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<NoWarn>1701;1702;NETSDK1233</NoWarn>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
-		<PackageReference Include="System.ServiceModel.Primitives" Version="4.10.0" />
 	</ItemGroup>
 
 	<ItemGroup>

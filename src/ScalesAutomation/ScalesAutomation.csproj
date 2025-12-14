@@ -34,7 +34,6 @@
 		<PackageReference Include="log4net" Version="2.0.15" />
 		<PackageReference Include="System.IO.Ports" Version="10.0.0" />
 		<PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
-		<PackageReference Include="System.ServiceModel.Primitives" Version="4.10.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -80,6 +79,10 @@ copy /Y "$(OutDir)..\..\Resources\CatalogProduseMargarita.xml" "$(OutDir)..\Serv
 copy /Y "$(OutDir)..\..\Resources\CatalogProduseEurocas.xml" "$(OutDir)..\Server\CatalogProduseEurocas.xml"
 xcopy "$(SolutionDir)src\resources\Images\*" "$(OutDir)Images\"  /S /Y /I /D
 </PostBuildEvent>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<NoWarn>1701;1702;NETSDK1233</NoWarn>
 	</PropertyGroup>
 
 	<Target Name="MakeMyDir" AfterTargets="Build">

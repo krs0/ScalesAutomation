@@ -31,6 +31,10 @@
 		<ApplicationIcon>MeasurementCentral.ico</ApplicationIcon>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<NoWarn>1701;1702;NETSDK1233</NoWarn>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<Content Include="MeasurementCentral.ico" />
 	</ItemGroup>
