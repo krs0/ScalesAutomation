@@ -11,6 +11,7 @@
 		<AssemblyName>ScalesAutomation</AssemblyName>
 		<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
 		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
 	<PropertyGroup>

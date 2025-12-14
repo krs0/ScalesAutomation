@@ -1,10 +1,5 @@
-using System;
-using System.Windows.Forms;
-using System.Text.RegularExpressions;
 using log4net;
-using System.Reflection;
 using ScalesAutomation.Properties;
-using System.IO;
 using CommonNS;
 
 namespace ScalesAutomation

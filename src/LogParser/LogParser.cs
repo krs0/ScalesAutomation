@@ -1,395 +1,388 @@
-using System;
-using System.Collections.Generic;
 using log4net;
-using System.Reflection;
-using System.Linq;
-using System.Windows.Forms;
-using System.IO;
 using LogParser.Properties;
 using ScalesAutomation;
 using CommonNS;
 
-namespace LogParser
+namespace LogParser;
+
+public partial class LogParser : Form
 {
-    public partial class LogParser : Form
+    private static readonly ILog log = LogManager.GetLogger("generalLog");
+
+    class MeasurementInfo
     {
-        private static readonly ILog log = LogManager.GetLogger("generalLog");
+        public int Position;
+        public string Time;
+        public bool IsStable;
+        public int Measurement;
 
-        class MeasurementInfo
+        public MeasurementInfo(int position, string time, bool isStable, int measurement)
         {
-            public int Position;
-            public string Time;
-            public bool IsStable;
-            public int Measurement;
-
-            public MeasurementInfo(int position, string time, bool isStable, int measurement)
-            {
-                Position = position;
-                Time = time;
-                IsStable = isStable;
-                Measurement = measurement;
-            }
-
-            public MeasurementInfo()
-            {
-                Position = 0;
-                Time = "";
-                IsStable = false;
-                Measurement = 0;
-            }
-
-            public override string ToString()
-            {
-                return Position + ";" + Measurement + ";" + Time;
-            }
+            Position = position;
+            Time = time;
+            IsStable = isStable;
+            Measurement = measurement;
         }
 
-        LotInfo lotInfo;
-
-        string logFolderPath = Settings.Default.LogFolderPath;
-        string outputFolderPath = Settings.Default.OutputFolderPath;
-        string outputFilePath = "";
-        int startingMeasurementIndex = 0;
-
-        public LogParser()
+        public MeasurementInfo()
         {
-            InitializeComponent();
-            lotInfo = new LotInfo();
+            Position = 0;
+            Time = "";
+            IsStable = false;
+            Measurement = 0;
         }
 
-        public void Initialize(string logFolderPath, string outputFolderPath)
+        public override string ToString()
         {
-            this.logFolderPath = logFolderPath;
-            this.outputFolderPath = outputFolderPath;
+            return Position + ";" + Measurement + ";" + Time;
+        }
+    }
+
+    LotInfo lotInfo;
+
+    string logFolderPath = Settings.Default.LogFolderPath;
+    string outputFolderPath = Settings.Default.OutputFolderPath;
+    string outputFilePath = "";
+    int startingMeasurementIndex = 0;
+
+    public LogParser()
+    {
+        InitializeComponent();
+        lotInfo = new LotInfo();
+    }
+
+    public void Initialize(string logFolderPath, string outputFolderPath)
+    {
+        this.logFolderPath = logFolderPath;
+        this.outputFolderPath = outputFolderPath;
+    }
+
+    public void ParseLog(string logFilePath)
+    {
+        lotInfo = lotInfo.ReadLotInfoFromLog(logFilePath);
+
+        // Check if lot info was found
+        if (string.IsNullOrEmpty(lotInfo.Lot))
+        {
+            log.Warn($"No lot info found in file: {logFilePath}. Skipping this file.");
+            throw new Exception($"No lot info found in file: {Path.GetFileName(logFilePath)}. This file does not contain measurement data.");
         }
 
-        public void ParseLog(string logFilePath)
+        // we rewrite whole logs. no appending
+        if (!PathHelper.GetOutputFilePath(lotInfo.GetUniqueLotId(), outputFolderPath, ref outputFilePath))
         {
-            lotInfo = lotInfo.ReadLotInfoFromLog(logFilePath);
+            var logFileName = Path.GetFileNameWithoutExtension(logFilePath);
+            outputFilePath = Path.Combine(outputFolderPath, logFileName + ".csv");
+        }
+        else
+        {
+            //startingMeasurementIndex = int.Parse(CsvHelper.GetLastMeasurementIndex(outputFilePath));
+        }
 
-            // Check if lot info was found
-            if (string.IsNullOrEmpty(lotInfo.Lot))
+        CsvHelper.InitializeOutputFileContents(outputFilePath, lotInfo.MakeMeasurementFileHeader());
+
+        var normalizedMeasurements = ReadAndNormalizeMeasurements(logFilePath, lotInfo.ZeroThreshold);
+        log.Info($"Found {normalizedMeasurements.Count} measurements");
+
+        RemoveFakeMeasurements(normalizedMeasurements);
+        // normalizedMeasurementsFilePath = Path.Combine(outputFolderPath, logFileName + ".out");
+        // SaveListToFile(normalizedMeasurements, normalizedMeasurementsFilePath); // Generic list save does not work
+
+        var finalMeasurements = ExtractFinalMeasurements(normalizedMeasurements, lotInfo.Package.NetWeight);
+        RemoveLastMeasurementIfNotInTolerance(finalMeasurements);
+        AddPositionToEachMeasurement(finalMeasurements, startingMeasurementIndex);
+        SaveListToFile(finalMeasurements, outputFilePath);
+
+        log.Info($"Saved {finalMeasurements.Count} final measurements to: {outputFilePath}");
+
+    }
+
+    private void btnStart_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            log.Info($"Looking for log files in: {logFolderPath}");
+            var logFilePaths = GetListOfFiles(logFolderPath, "*.log");
+            log.Info($"Found {logFilePaths.Count} log file(s)");
+
+            if (logFilePaths.Count == 0)
             {
-                log.Warn($"No lot info found in file: {logFilePath}. Skipping this file.");
-                throw new Exception($"No lot info found in file: {Path.GetFileName(logFilePath)}. This file does not contain measurement data.");
+                MessageBox.Show($"No .log files found in folder: {logFolderPath}", "No Files Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
 
-            // we rewrite whole logs. no appending
-            if (!PathHelper.GetOutputFilePath(lotInfo.GetUniqueLotId(), outputFolderPath, ref outputFilePath))
+            foreach (var logFilePath in logFilePaths)
             {
-                var logFileName = Path.GetFileNameWithoutExtension(logFilePath);
-                outputFilePath = Path.Combine(outputFolderPath, logFileName + ".csv");
+                log.Info($"Parsing log file: {logFilePath}");
+                ParseLog(logFilePath);
+                log.Info($"Successfully parsed: {logFilePath}");
+            }
+
+            MessageBox.Show($"Successfully parsed {logFilePaths.Count} log file(s).\nOutput saved to: {outputFolderPath}", "Parsing Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        catch (Exception ex)
+        {
+            log.Error($"Error during parsing: {ex.Message}");
+            MessageBox.Show($"Error during parsing:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    /// <summary>
+    /// This method goes through normalized measurements from back to front and
+    /// detects / decides what were the measurements for each interval between consecutive zeroes.
+    /// Zero measurements are usually triggers for reseting variables (if beginning) or
+    /// adding a measurement to the final list (if ending a series of measurements).
+    /// There are 3 things detected:
+    /// Stable measurements within tolerance. Once this is detected we add it to list and noting more is done on that interval.
+    /// Stable measurements not within tolerance. First potential candidate: a stable measurement close to scale unloading, but does not fit within tolerance.
+    /// Best Guesses: Continously, independent if Stable or not we compare each measurement to the desired net weight. This is used when nothing stable is found.
+    /// </summary>
+    private static List<MeasurementInfo> ExtractFinalMeasurements(List<MeasurementInfo> normalizedMeasurements, int netWeight)
+    {
+        var measurementsDetected = false;
+        var stableMeasurementFound = false;
+        var finalMeasurements = new List<MeasurementInfo>();
+        var potentialMeasurementIndex = 0;
+        var firstNonZeroIndex = 0;
+        MeasurementInfo bestFit = new MeasurementInfo();
+
+        var tolerance = Settings.Default.ConfidenceLevel;
+
+        for (var i = normalizedMeasurements.Count - 1; i >= 0; i--)
+        {
+            var currentMeasurement = normalizedMeasurements[i];
+
+            if (currentMeasurement.Measurement == 0)
+            {
+                if (measurementsDetected && !stableMeasurementFound)
+                {
+                    if (potentialMeasurementIndex > 0)
+                    {
+                        finalMeasurements.Add(normalizedMeasurements[potentialMeasurementIndex]);
+                        potentialMeasurementIndex = 0;
+                    }
+                    else
+                    {
+                        // mark measurement as not stable by chainging milliseconds time to 42
+                        bestFit.Time = bestFit.Time.Split(',')[0] + ",42";
+                        finalMeasurements.Add(bestFit);
+                    }
+
+                    bestFit = new MeasurementInfo();
+                }
+
+                measurementsDetected = false;
+                stableMeasurementFound = false;
             }
             else
             {
-                //startingMeasurementIndex = int.Parse(CsvHelper.GetLastMeasurementIndex(outputFilePath));
-            }
+                if (stableMeasurementFound) continue;
 
-            CsvHelper.InitializeOutputFileContents(outputFilePath, lotInfo.MakeMeasurementFileHeader());
-
-            var normalizedMeasurements = ReadAndNormalizeMeasurements(logFilePath, lotInfo.ZeroThreshold);
-            log.Info($"Found {normalizedMeasurements.Count} measurements");
-
-            RemoveFakeMeasurements(normalizedMeasurements);
-            // normalizedMeasurementsFilePath = Path.Combine(outputFolderPath, logFileName + ".out");
-            // SaveListToFile(normalizedMeasurements, normalizedMeasurementsFilePath); // Generic list save does not work
-
-            var finalMeasurements = ExtractFinalMeasurements(normalizedMeasurements, lotInfo.Package.NetWeight);
-            RemoveLastMeasurementIfNotInTolerance(finalMeasurements);
-            AddPositionToEachMeasurement(finalMeasurements, startingMeasurementIndex);
-            SaveListToFile(finalMeasurements, outputFilePath);
-
-            log.Info($"Saved {finalMeasurements.Count} final measurements to: {outputFilePath}");
-
-        }
-
-        private void btnStart_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                log.Info($"Looking for log files in: {logFolderPath}");
-                var logFilePaths = GetListOfFiles(logFolderPath, "*.log");
-                log.Info($"Found {logFilePaths.Count} log file(s)");
-
-                if (logFilePaths.Count == 0)
+                if (IsBetterFit(currentMeasurement, bestFit, netWeight))
                 {
-                    MessageBox.Show($"No .log files found in folder: {logFolderPath}", "No Files Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
+                    bestFit = currentMeasurement;
+                }
+                
+
+                if (!measurementsDetected)
+                {
+                    measurementsDetected = true;
+                    firstNonZeroIndex = i;
                 }
 
-                foreach (var logFilePath in logFilePaths)
+                // find the "first" aka last 4 stable measurements
+                if (!currentMeasurement.IsStable || i <= 4) continue;
+
+                // find if stable more than 3
+                if (normalizedMeasurements[i - 1].IsStable && normalizedMeasurements[i - 2].IsStable)
                 {
-                    log.Info($"Parsing log file: {logFilePath}");
-                    ParseLog(logFilePath);
-                    log.Info($"Successfully parsed: {logFilePath}");
-                }
-
-                MessageBox.Show($"Successfully parsed {logFilePaths.Count} log file(s).\nOutput saved to: {outputFolderPath}", "Parsing Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                log.Error($"Error during parsing: {ex.Message}");
-                MessageBox.Show($"Error during parsing:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        /// <summary>
-        /// This method goes through normalized measurements from back to front and
-        /// detects / decides what were the measurements for each interval between consecutive zeroes.
-        /// Zero measurements are usually triggers for reseting variables (if beginning) or
-        /// adding a measurement to the final list (if ending a series of measurements).
-        /// There are 3 things detected:
-        /// Stable measurements within tolerance. Once this is detected we add it to list and noting more is done on that interval.
-        /// Stable measurements not within tolerance. First potential candidate: a stable measurement close to scale unloading, but does not fit within tolerance.
-        /// Best Guesses: Continously, independent if Stable or not we compare each measurement to the desired net weight. This is used when nothing stable is found.
-        /// </summary>
-        private static List<MeasurementInfo> ExtractFinalMeasurements(List<MeasurementInfo> normalizedMeasurements, int netWeight)
-        {
-            var measurementsDetected = false;
-            var stableMeasurementFound = false;
-            var finalMeasurements = new List<MeasurementInfo>();
-            var potentialMeasurementIndex = 0;
-            var firstNonZeroIndex = 0;
-            MeasurementInfo bestFit = new MeasurementInfo();
-
-            var tolerance = Settings.Default.ConfidenceLevel;
-
-            for (var i = normalizedMeasurements.Count - 1; i >= 0; i--)
-            {
-                var currentMeasurement = normalizedMeasurements[i];
-
-                if (currentMeasurement.Measurement == 0)
-                {
-                    if (measurementsDetected && !stableMeasurementFound)
+                    if (potentialMeasurementIndex == 0)
                     {
-                        if (potentialMeasurementIndex > 0)
+                        if (normalizedMeasurements[i - 3].IsStable && normalizedMeasurements[i - 4].IsStable)
                         {
-                            finalMeasurements.Add(normalizedMeasurements[potentialMeasurementIndex]);
-                            potentialMeasurementIndex = 0;
+                            if (firstNonZeroIndex - i < 10)
+                                potentialMeasurementIndex = i - 2 ;
+                            else if (firstNonZeroIndex - i < 15)
+                                potentialMeasurementIndex = i - 2;
+                            else if (firstNonZeroIndex - i < 20)
+                                potentialMeasurementIndex = i - 2;
                         }
-                        else
-                        {
-                            // mark measurement as not stable by chainging milliseconds time to 42
-                            bestFit.Time = bestFit.Time.Split(',')[0] + ",42";
-                            finalMeasurements.Add(bestFit);
-                        }
+                    }
 
+                    if (IsWithinSkewedTolerance(currentMeasurement.Measurement, netWeight, tolerance))
+                    {
+                        stableMeasurementFound = true;
+                        finalMeasurements.Add(normalizedMeasurements[i - 1]);
+                        potentialMeasurementIndex = 0;
                         bestFit = new MeasurementInfo();
                     }
-
-                    measurementsDetected = false;
-                    stableMeasurementFound = false;
-                }
-                else
-                {
-                    if (stableMeasurementFound) continue;
-
-                    if (IsBetterFit(currentMeasurement, bestFit, netWeight))
-                    {
-                        bestFit = currentMeasurement;
-                    }
-                    
-
-                    if (!measurementsDetected)
-                    {
-                        measurementsDetected = true;
-                        firstNonZeroIndex = i;
-                    }
-
-                    // find the "first" aka last 4 stable measurements
-                    if (!currentMeasurement.IsStable || i <= 4) continue;
-
-                    // find if stable more than 3
-                    if (normalizedMeasurements[i - 1].IsStable && normalizedMeasurements[i - 2].IsStable)
-                    {
-                        if (potentialMeasurementIndex == 0)
-                        {
-                            if (normalizedMeasurements[i - 3].IsStable && normalizedMeasurements[i - 4].IsStable)
-                            {
-                                if (firstNonZeroIndex - i < 10)
-                                    potentialMeasurementIndex = i - 2 ;
-                                else if (firstNonZeroIndex - i < 15)
-                                    potentialMeasurementIndex = i - 2;
-                                else if (firstNonZeroIndex - i < 20)
-                                    potentialMeasurementIndex = i - 2;
-                            }
-                        }
-
-                        if (IsWithinSkewedTolerance(currentMeasurement.Measurement, netWeight, tolerance))
-                        {
-                            stableMeasurementFound = true;
-                            finalMeasurements.Add(normalizedMeasurements[i - 1]);
-                            potentialMeasurementIndex = 0;
-                            bestFit = new MeasurementInfo();
-                        }
-                    }
                 }
             }
-
-            finalMeasurements.Reverse();
-
-            return finalMeasurements;
         }
 
-        private static bool IsWithinTolerance(int measuredValue, int nominalValue, int toleranceInPercentage)
-        {
-            var toleranceInterval = nominalValue - nominalValue * toleranceInPercentage / 100;
-            var toleranceHigh = nominalValue + toleranceInterval;
-            var toleranceLow = nominalValue - toleranceInterval;
+        finalMeasurements.Reverse();
 
-            return ((measuredValue > toleranceLow) && (measuredValue < toleranceHigh));
+        return finalMeasurements;
+    }
+
+    private static bool IsWithinTolerance(int measuredValue, int nominalValue, int toleranceInPercentage)
+    {
+        var toleranceInterval = nominalValue - nominalValue * toleranceInPercentage / 100;
+        var toleranceHigh = nominalValue + toleranceInterval;
+        var toleranceLow = nominalValue - toleranceInterval;
+
+        return ((measuredValue > toleranceLow) && (measuredValue < toleranceHigh));
+    }
+
+    private static bool IsWithinSkewedTolerance(int measuredValue, int nominalValue, int toleranceInPercentage)
+    {
+        var toleranceHigh = nominalValue + (nominalValue - (int)(nominalValue * toleranceInPercentage / 100));
+        var toleranceLow = nominalValue - (nominalValue - (int)(nominalValue * (toleranceInPercentage + 1) / 100)); // skewed to catch more lower
+
+        return ((measuredValue > toleranceLow) && (measuredValue < toleranceHigh));
+    }
+
+    private static bool IsBetterFit(MeasurementInfo currentMeasurement, MeasurementInfo bestFit, int netWeight)
+    {
+        if (Math.Abs(currentMeasurement.Measurement - netWeight) < Math.Abs(bestFit.Measurement - netWeight))
+        {
+            return true;
         }
 
-        private static bool IsWithinSkewedTolerance(int measuredValue, int nominalValue, int toleranceInPercentage)
-        {
-            var toleranceHigh = nominalValue + (nominalValue - (int)(nominalValue * toleranceInPercentage / 100));
-            var toleranceLow = nominalValue - (nominalValue - (int)(nominalValue * (toleranceInPercentage + 1) / 100)); // skewed to catch more lower
+        return false;
+    }
 
-            return ((measuredValue > toleranceLow) && (measuredValue < toleranceHigh));
-        }
+    private void RemoveLastMeasurementIfNotInTolerance(List<MeasurementInfo> finalMeasurements)
+    {
+        if (finalMeasurements?.Count() == 0)
+            return;
 
-        private static bool IsBetterFit(MeasurementInfo currentMeasurement, MeasurementInfo bestFit, int netWeight)
+        if (!IsWithinSkewedTolerance(finalMeasurements.Last().Measurement, lotInfo.Package.NetWeight, Settings.Default.ConfidenceLevel))
+            finalMeasurements.RemoveAt(finalMeasurements.Count - 1);
+    }
+
+    // find fake intervals (less than 20 measurements > 0)
+    private void RemoveFakeMeasurements(List<MeasurementInfo> normalizedMeasurements)
+    {
+        var consecutives = 0;
+        var index = 0;
+        var startingIndex = 0; // index where a non zero measurement is detected
+        var deletedItems = 0; // because we delete from measurements list, we need to manually keep track of current index.
+
+        var clonedList = new List<MeasurementInfo>(normalizedMeasurements); // use temp so we can change list in-place in foreach
+        foreach (var element in clonedList)
         {
-            if (Math.Abs(currentMeasurement.Measurement - netWeight) < Math.Abs(bestFit.Measurement - netWeight))
+            // we ignore everything until we find some positive measurements
+            if (element.Measurement > 0)
             {
-                return true;
+                if (consecutives == 0)
+                    startingIndex = index; // save starting index of first non zero measurement
+
+                consecutives++;
             }
-
-            return false;
-        }
-
-        private void RemoveLastMeasurementIfNotInTolerance(List<MeasurementInfo> finalMeasurements)
-        {
-            if (finalMeasurements?.Count() == 0)
-                return;
-
-            if (!IsWithinSkewedTolerance(finalMeasurements.Last().Measurement, lotInfo.Package.NetWeight, Settings.Default.ConfidenceLevel))
-                finalMeasurements.RemoveAt(finalMeasurements.Count - 1);
-        }
-
-        // find fake intervals (less than 20 measurements > 0)
-        private void RemoveFakeMeasurements(List<MeasurementInfo> normalizedMeasurements)
-        {
-            var consecutives = 0;
-            var index = 0;
-            var startingIndex = 0; // index where a non zero measurement is detected
-            var deletedItems = 0; // because we delete from measurements list, we need to manually keep track of current index.
-
-            var clonedList = new List<MeasurementInfo>(normalizedMeasurements); // use temp so we can change list in-place in foreach
-            foreach (var element in clonedList)
+            else
             {
-                // we ignore everything until we find some positive measurements
-                if (element.Measurement > 0)
+                if (consecutives > 0) // if we detected some consecutive measurements
                 {
-                    if (consecutives == 0)
-                        startingIndex = index; // save starting index of first non zero measurement
-
-                    consecutives++;
-                }
-                else
-                {
-                    if (consecutives > 0) // if we detected some consecutive measurements
+                    if (consecutives < 20) // but not a minimum required number, we have a glitch (a few nozero measurements) and we need to delete it
                     {
-                        if (consecutives < 20) // but not a minimum required number, we have a glitch (a few nozero measurements) and we need to delete it
-                        {
-                            normalizedMeasurements.RemoveRange(startingIndex - deletedItems, consecutives);
-                            deletedItems += consecutives;
+                        normalizedMeasurements.RemoveRange(startingIndex - deletedItems, consecutives);
+                        deletedItems += consecutives;
 
+                        consecutives = 0;
+                    }
+                    else
+                    {
+                        if (IsZeroGlitch(normalizedMeasurements, index - deletedItems))
+                        {
+                            normalizedMeasurements.RemoveRange(index - deletedItems, 1); // remove current Zero Measurement
+                            deletedItems++;
+                        }
+                        else // a real zero region is coming, reset measurement counters
+                        {
                             consecutives = 0;
-                        }
-                        else
-                        {
-                            if (IsZeroGlitch(normalizedMeasurements, index - deletedItems))
-                            {
-                                normalizedMeasurements.RemoveRange(index - deletedItems, 1); // remove current Zero Measurement
-                                deletedItems++;
-                            }
-                            else // a real zero region is coming, reset measurement counters
-                            {
-                                consecutives = 0;
-                                startingIndex = 0;
-                            }
+                            startingIndex = 0;
                         }
                     }
                 }
-
-                index++;
             }
+
+            index++;
         }
+    }
 
-        // read all lines containing measurements from the log file,
-        // save info in a list of structs
-        // and change all measurements below threshold to ZERO
-        private static List<MeasurementInfo> ReadAndNormalizeMeasurements(string logFilePath, int zeroThreshold)
+    // read all lines containing measurements from the log file,
+    // save info in a list of structs
+    // and change all measurements below threshold to ZERO
+    private static List<MeasurementInfo> ReadAndNormalizeMeasurements(string logFilePath, int zeroThreshold)
+    {
+        var normalizedMeasurements = new List<MeasurementInfo>();
+
+        using (var logFile = new StreamReader(logFilePath))
         {
-            var normalizedMeasurements = new List<MeasurementInfo>();
-
-            using (var logFile = new StreamReader(logFilePath))
+            string line;
+            while ((line = logFile.ReadLine()) != null)
             {
-                string line;
-                while ((line = logFile.ReadLine()) != null)
-                {
-                    if (!line.Contains(" - W: ")) continue;
+                if (!line.Contains(" - W: ")) continue;
 
-                    var splitLine = line.Split(' ');
+                var splitLine = line.Split(' ');
 
-                    var measurementInfo = new MeasurementInfo();
-                    measurementInfo.Time = splitLine[0];
-                    measurementInfo.IsStable = (splitLine[4] == "T");
+                var measurementInfo = new MeasurementInfo();
+                measurementInfo.Time = splitLine[0];
+                measurementInfo.IsStable = (splitLine[4] == "T");
 
-                    int.TryParse(splitLine[7], out var measurement);
-                    if (measurement < zeroThreshold)
-                        measurement = 0;
-                    measurementInfo.Measurement = measurement;
+                int.TryParse(splitLine[7], out var measurement);
+                if (measurement < zeroThreshold)
+                    measurement = 0;
+                measurementInfo.Measurement = measurement;
 
-                    normalizedMeasurements.Add(measurementInfo);
-                }
+                normalizedMeasurements.Add(measurementInfo);
             }
-
-            return normalizedMeasurements;
         }
 
-        private bool IsZeroGlitch(List<MeasurementInfo> lines, int startingIndex)
+        return normalizedMeasurements;
+    }
+
+    private bool IsZeroGlitch(List<MeasurementInfo> lines, int startingIndex)
+    {
+        var isZeroGlitch = false;
+        var endIndex = startingIndex + 20;
+
+        if (startingIndex >= lines.Count() - 20)
+            endIndex = lines.Count();
+
+        for (var i = startingIndex; i < endIndex; i++)
         {
-            var isZeroGlitch = false;
-            var endIndex = startingIndex + 20;
-
-            if (startingIndex >= lines.Count() - 20)
-                endIndex = lines.Count();
-
-            for (var i = startingIndex; i < endIndex; i++)
+            if (lines[i].Measurement > 0)
             {
-                if (lines[i].Measurement > 0)
-                {
-                    isZeroGlitch = true;
+                isZeroGlitch = true;
 
-                    break;
-                }
-            }
-
-            return isZeroGlitch;
-        }
-
-        private static void AddPositionToEachMeasurement(List<MeasurementInfo> finalMeasurements, int startingIndex)
-        {
-            for (var i = 0; i < finalMeasurements.Count; i++)
-            {
-                finalMeasurements[i].Position = startingIndex + i + 1;
+                break;
             }
         }
 
-        private void SaveListToFile<T>(List<T> list, string filePath)
-        {
-            using (var file = new StreamWriter(filePath, append: true))
-            {
-                foreach (var element in list)
-                    file.WriteLine(element);
-            }
-        }
+        return isZeroGlitch;
+    }
 
-        private List<string> GetListOfFiles(string folder, string searchPattern)
+    private static void AddPositionToEachMeasurement(List<MeasurementInfo> finalMeasurements, int startingIndex)
+    {
+        for (var i = 0; i < finalMeasurements.Count; i++)
         {
-            return Directory.GetFiles(folder, searchPattern, SearchOption.TopDirectoryOnly).ToList();
+            finalMeasurements[i].Position = startingIndex + i + 1;
         }
+    }
+
+    private void SaveListToFile<T>(List<T> list, string filePath)
+    {
+        using (var file = new StreamWriter(filePath, append: true))
+        {
+            foreach (var element in list)
+                file.WriteLine(element);
+        }
+    }
+
+    private List<string> GetListOfFiles(string folder, string searchPattern)
+    {
+        return Directory.GetFiles(folder, searchPattern, SearchOption.TopDirectoryOnly).ToList();
     }
 }
