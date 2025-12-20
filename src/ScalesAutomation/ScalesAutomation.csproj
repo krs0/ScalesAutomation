@@ -2,40 +2,16 @@
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net10.0-windows</TargetFramework>
-		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
-		<SelfContained>false</SelfContained>
-		<UseWindowsForms>true</UseWindowsForms>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<RootNamespace>ScalesAutomation</RootNamespace>
 		<AssemblyName>ScalesAutomation</AssemblyName>
-		<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
-		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-		<ImplicitUsings>enable</ImplicitUsings>
-	</PropertyGroup>
-
-	<PropertyGroup>
-		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-		<GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
-		<ProduceReferenceAssemblyInOutDir>true</ProduceReferenceAssemblyInOutDir>
-	</PropertyGroup>
-
-	<PropertyGroup>
-		<StartupObject></StartupObject>
-		<IsPublishable>False</IsPublishable>
-		<BaseOutputPath>..\..\out\</BaseOutputPath>
-		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 		<ApplicationIcon>Scales.ico</ApplicationIcon>
 		<FileVersion>2.4.1.0</FileVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="log4net" Version="3.2.0" />
-		<PackageReference Include="System.IO.Ports" Version="10.0.1" />
-		<PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
-		<PackageReference Include="System.Private.Uri" Version="4.3.2" />
-		<PackageReference Include="System.ServiceModel.Primitives" Version="10.0.652802" />
+		<PackageReference Include="log4net" />
+		<PackageReference Include="System.IO.Ports" />
+		<PackageReference Include="System.ServiceModel.Primitives" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -83,9 +59,7 @@ xcopy "$(SolutionDir)src\resources\Images\*" "$(OutDir)Images\"  /S /Y /I /D
 </PostBuildEvent>
 	</PropertyGroup>
 
-	<PropertyGroup>
-		<NoWarn>1701;1702;NETSDK1233</NoWarn>
-	</PropertyGroup>
+
 
 	<Target Name="MakeMyDir" AfterTargets="Build">
 		<MakeDir Directories="$(OutDir)CSVBackup" />

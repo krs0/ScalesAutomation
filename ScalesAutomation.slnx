@@ -1,0 +1,32 @@
+<Solution>
+  <Folder Name="/Distribution/">
+    <File Path="distribution/CatalogProduse.xml" />
+    <File Path="distribution/log4net.config" />
+    <File Path="distribution/log4net.dll" />
+    <File Path="distribution/ScalesAutomation.exe" />
+    <File Path="distribution/ScalesAutomation.exe.config" />
+    <File Path="distribution/SerialTransmissionSimulation.txt" />
+  </Folder>
+  <Folder Name="/Distribution/Server/">
+    <File Path="distribution/Server/CentralizatorMasuratori.xlsm" />
+    <File Path="distribution/Server/Manual - Automatizare Cantar.docx" />
+  </Folder>
+  <Folder Name="/Distribution/Server/CSVServer/" />
+  <Project Path="src/Common/Common.csproj" />
+  <Project Path="src/LogParser/LogParser.csproj" />
+  <Project Path="src/MeasurementsCentral/MeasurementsCentral.csproj" />
+  <Project Path="src/MetrologyReader/MetrologyReader.csproj" />
+  <Project Path="src/ScalesAutomation/ScalesAutomation.csproj" />
+  <Properties Name="AutomaticVersions" Scope="PostLoad">
+    <Property Name="AssemblyFileVersionSettings.Debug|Any CPU" Value="None.None.None.None" />
+    <Property Name="AssemblyInfoVersionSettings.Debug|Any CPU" Value="None.None.None.None" />
+    <Property Name="AssemblyInfoVersionType.Debug|Any CPU" Value="SettingsVersion" />
+    <Property Name="AssemblyVersionSettings.Debug|Any CPU" Value="None.None.None.None" />
+    <Property Name="InheritWinAppVersionFrom.Debug|Any CPU" Value="None" />
+    <Property Name="ShouldCreateLogs.Debug|Any CPU" Value="True" />
+    <Property Name="UpdateAssemblyFileVersion.Debug|Any CPU" Value="True" />
+    <Property Name="UpdateAssemblyInfoVersion.Debug|Any CPU" Value="True" />
+    <Property Name="UpdateAssemblyVersion.Debug|Any CPU" Value="True" />
+    <Property Name="UpdatePackageVersion.Debug|Any CPU" Value="False" />
+  </Properties>
+</Solution>

@@ -1,38 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net10.0-windows</TargetFramework>
-		<SelfContained>false</SelfContained>
-		<UseWindowsForms>true</UseWindowsForms>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<RootNamespace>CommonNS</RootNamespace>
 		<AssemblyName>Common</AssemblyName>
-		<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
-		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-		<ImplicitUsings>enable</ImplicitUsings>
-	</PropertyGroup>
-
-	<PropertyGroup>
-		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-		<GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
-		<ProduceReferenceAssemblyInOutDir>true</ProduceReferenceAssemblyInOutDir>
-	</PropertyGroup>
-
-	<PropertyGroup>
-		<StartupObject></StartupObject>
-		<IsPublishable>false</IsPublishable>
-		<BaseOutputPath>..\..\out\</BaseOutputPath>
-		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-	</PropertyGroup>
-
-	<PropertyGroup>
-	  <NoWarn>1701;1702;NETSDK1233</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="log4net" Version="3.2.0" />
+		<PackageReference Include="log4net" />
 	</ItemGroup>
 
 	<ItemGroup>
