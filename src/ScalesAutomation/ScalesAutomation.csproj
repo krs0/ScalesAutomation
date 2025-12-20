@@ -20,9 +20,6 @@
 
 	<ItemGroup>
 		<None Include="App.config" />
-		<None Include="log4net.config">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
 		<None Include="packages.config" />
 		<None Include="Properties\DataSources\ScalesAutomation.datasource" />
 		<None Include="Properties\DataSources\ScalesAutomation.measurement.datasource" />
@@ -56,10 +53,8 @@ copy /Y "$(OutDir)..\..\Resources\CentralizatorMasuratori.xlsm" "$(OutDir)..\Ser
 copy /Y "$(OutDir)..\..\Resources\CatalogProduseMargarita.xml" "$(OutDir)..\Server\CatalogProduseMargarita.xml"
 copy /Y "$(OutDir)..\..\Resources\CatalogProduseEurocas.xml" "$(OutDir)..\Server\CatalogProduseEurocas.xml"
 xcopy "$(SolutionDir)src\resources\Images\*" "$(OutDir)Images\"  /S /Y /I /D
-</PostBuildEvent>
+		</PostBuildEvent>
 	</PropertyGroup>
-
-
 
 	<Target Name="MakeMyDir" AfterTargets="Build">
 		<MakeDir Directories="$(OutDir)CSVBackup" />

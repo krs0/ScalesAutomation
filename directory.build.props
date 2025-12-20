@@ -31,4 +31,12 @@
 	<PropertyGroup>
 		<NoWarn>1701;1702;NETSDK1233</NoWarn>
 	</PropertyGroup>
+
+	<!-- Log4Net config -->
+	<ItemGroup>
+		<None Include="$(MSBuildThisFileDirectory)log4Net.config">
+			<Link>log4Net.config</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 </Project>
